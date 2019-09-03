@@ -6,7 +6,7 @@ import scipy.constants as cnt
 from abc import abstractmethod
 from collections import MutableMapping
 
-from ..Unit import convert_SI, convert
+from .Unit import convert_SI, convert
 
 
 class GridBase(MutableMapping, object):
@@ -31,7 +31,7 @@ class GridBase(MutableMapping, object):
 
 class GraspGrid (GridBase):
 
-    def __init__(self, filename, meta={}, freq=170*10**9, unit="mm", *args, **kwargs):
+    def __init__(self, filename, meta={}, freq=100*10**9, unit="mm", *args, **kwargs):
         # Set the components dictionary (default empty)
         self._meta = meta
         self.filename = filename

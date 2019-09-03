@@ -1,5 +1,10 @@
-# Python
-*.pyc
+*.pdf
+*.html
+.vscode/*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
 
 # Files and directories specific to pygrasp 
 documentation/
