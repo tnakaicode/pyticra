@@ -6,7 +6,7 @@ import scipy.constants as cnt
 from abc import abstractmethod
 from collections import MutableMapping
 
-from units import convert_SI, convert
+from pygrasp.units import convert_SI, convert
 
 
 class GridBase(MutableMapping, object):

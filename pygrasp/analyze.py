@@ -8,8 +8,8 @@ from numpy.fft import fft2, fftfreq, fftshift
 from scipy.signal import get_window
 from scipy.optimize import leastsq
 
-from flat_map import JonesMap, MuellerMap
-from mapping import circular_gaussian, elliptical_gaussian
+from pygrasp.flat_map import JonesMap, MuellerMap
+from pygrasp.mapping import circular_gaussian, elliptical_gaussian
 
 # Improve using interpolation.
 
