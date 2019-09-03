@@ -4,7 +4,9 @@ from pygrasp.flat_map import Grid
 
 # Add the option to change the extents.
 # Add the option to make other kinds of blank grids.
-def blank_spherical_grid(nx, ny): #, x_min, y_min, x_max, y_max):
+
+
+def blank_spherical_grid(nx, ny):  # , x_min, y_min, x_max, y_max):
     g = Grid()
     g.header = ['Created by pygrasp.fake.blank_spherical_grid()',
                 '++++']

@@ -8,6 +8,7 @@ import numpy as np
 from scipy.signal import convolve
 from scipy.optimize import leastsq
 
+
 def smooth(fm, fwhm):
     spacing = fm.bounds()[4]
     n = np.ceil(fwhm/spacing)
@@ -16,21 +17,25 @@ def smooth(fm, fwhm):
     g /= g.sum()
     return convolve(fm.I, g, mode='same')
 
+
 def circular_gaussian(x, y, x0, y0, A, fwhm):
     xx, yy = np.meshgrid(x, y)
     xx = xx.T
     yy = yy.T
     return A * np.exp(-np.log(2) * ((xx - x0)**2 + (yy - y0)**2) / (fwhm/2)**2)
-                      
+
+
 def circular_gaussian_plus_noise(x, y, x0, y0, A, fwhm, N):
     return circular_gaussian(x, y, x0, y0, A, fwhm) + N
 
 # Figure out how to obtain convergence without a good guess for the FWHM.
+
+
 def fit_circular_gaussian(fm, fwhm, smooth_first=False, x0=None, y0=None, A=None, N=0):
     def error(params):
-        return (fm.I_weight *(fm.I -
-                              circular_gaussian_plus_noise(fm.x, fm.y, *params))).flatten()
-    #if fwhm is None:
+        return (fm.I_weight * (fm.I -
+                               circular_gaussian_plus_noise(fm.x, fm.y, *params))).flatten()
+    # if fwhm is None:
     #    fwhm = np.sqrt(((fm.x[-1]-fm.x[0])/10)**2 +
     #                   ((fm.y[-1]-fm.y[0])/10)**2)
     if smooth_first:
@@ -48,6 +53,7 @@ def fit_circular_gaussian(fm, fwhm, smooth_first=False, x0=None, y0=None, A=None
     params, cov = leastsq(error, guess)
     return params
 
+
 def elliptical_gaussian(x, y, x0, y0, A, fwhm_u, fwhm_v, psi):
     """
     Return an (x.size, y.size) array representing a 2D gaussian with
@@ -58,19 +64,22 @@ def elliptical_gaussian(x, y, x0, y0, A, fwhm_u, fwhm_v, psi):
     yy = yy.T.flatten()
     R_psi = np.array([[np.cos(psi), np.sin(psi)],
                       [-np.sin(psi), np.cos(psi)]])
-    rot_xx, rot_yy = np.vsplit(np.dot(R_psi, np.vstack((xx - x0, yy - y0))), 1)[0]
+    rot_xx, rot_yy = np.vsplit(
+        np.dot(R_psi, np.vstack((xx - x0, yy - y0))), 1)[0]
     rot_xx = rot_xx.reshape((x.size, y.size))
     rot_yy = rot_yy.reshape((x.size, y.size))
     return A * np.exp(-np.log(2) * (rot_xx**2 / (fwhm_u/2)**2 +
                                     rot_yy**2 / (fwhm_v/2)**2))
 
+
 def elliptical_gaussian_plus_noise(x, y, x0, y0, A, fwhm_u, fwhm_v, psi, N):
     return elliptical_gaussian(x, y, x0, y0, A, fwhm_u, fwhm_v, psi) + N
 
+
 def fit_elliptical_gaussian(fm, fwhm, smooth_first=False, x0=None, y0=None, A=None, N=0):
     def error(params):
-        return (fm.I_weight *(fm.I -
-                              elliptical_gaussian_plus_noise(fm.x, fm.y, *params))).flatten()
+        return (fm.I_weight * (fm.I -
+                               elliptical_gaussian_plus_noise(fm.x, fm.y, *params))).flatten()
     if smooth_first:
         guess_map = smooth(fm, fwhm)
     else:
@@ -85,6 +94,7 @@ def fit_elliptical_gaussian(fm, fwhm, smooth_first=False, x0=None, y0=None, A=No
     guess = (x0, y0, A, fwhm, fwhm, 0, N)
     params, cov = leastsq(error, guess)
     return params
+
 
 def clean_elliptical_params(params):
     x0, y0, A, fwhm_u, fwhm_v, psi, N = params

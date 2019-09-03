@@ -9,6 +9,7 @@ from __future__ import division
 
 import os
 import numpy as np
+from linecache import getline, clearcache
 
 # These two functions handle numbers that have three-digit exponents,
 # which GRASP writes as, e.g., 0.123456789-100 for 1.23456789E-99
@@ -20,6 +21,12 @@ import numpy as np
 # 0.xxxxxxxxxx
 # 4 characters for the exponent:
 # E+xx, E-xx, +xxx, or -xxx
+
+
+def call_func(name, *arg, **args):
+    return globals()[name](*arg, **args)
+
+
 def string_to_float(string):
     try:
         return float(string)
@@ -29,11 +36,13 @@ def string_to_float(string):
         else:
             return float('E+'.join(string.rsplit('+', 1)))
 
+
 def float_to_string(number):
     if number == 0 or abs(np.log10(abs(number))) < 100:
         return ' {: 0.10E}'.format(number)
     else:
         return ' {: 0.10E}'.format(number).replace('E', '')
+
 
 def load_cut(filename):
     """
@@ -52,79 +61,138 @@ def load_cut(filename):
         meta['ICUT'] = int(ICUT)
         meta['NCOMP'] = int(NCOMP)
 
-        conv = dict([(column, string_to_float) for column in range(2 * meta['NCOMP'])])
+        conv = dict([(column, string_to_float)
+                     for column in range(2 * meta['NCOMP'])])
         data = np.loadtxt(f, dtype=float, converters=conv)
     cut = np.array([data[:, 2 * column] +
                     1j * data[:, 2 * column + 1]
                     for column in range(meta['NCOMP'])])
     return meta, cut
 
+
 def save_cut(filename, meta, cut):
     pass
 
 
-def load_grd(filename):
+def get_grd(filename, rows):
+    fp = open(filename, "r").readlines()
+    x = []
+    for i in rows:
+        vals = fp[i].split()
+        item = [string_to_float(val) for val in vals]
+        x.append(item)
+    return np.array(x)
+
+
+def get_cur(meta, data):
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    for comp in range(meta['NCOMP']):
+        col = data[:, 2 * comp] + 1j * data[:, 2 * comp + 1]
+        func[comp] = col.reshape(meta['NY'], meta['NX'], order='C')
+    return func
+
+
+def get_pw(meta, data):
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C')
+    func[1] = (data[:, 2] + 1j*data[:, 3]
+               ).reshape(meta['NY'], meta['NX'], order='C')
+    func[2] = (data[:, 4] + 1j*data[:, 5]
+               ).reshape(meta['NY'], meta['NX'], order='C')
+    return func
+
+
+def load_grd(filename, number=0, name="name", meta={}):
     """
     Read and parse data from the GRASP .grd file. The variables in
     capital letters match those in the GRASP-10 manual.
     """
-    with open(filename, 'r') as f:
-        meta = {}
-        meta['header'] = []
+    f = open(filename, "r")
+    meta['header'] = []
+    meta['header'].append(f.readline().rstrip('\n'))
+    while meta['header'][-1] != '++++':
         meta['header'].append(f.readline().rstrip('\n'))
-        while meta['header'][-1] != '++++':
-            meta['header'].append(f.readline().rstrip('\n'))
-        # These determine the type of grid and the field format.
-        meta['KTYPE'] = int(f.readline().split()[0])
-        if meta['KTYPE'] != 1:
-            raise ValueError("Not implemented.")
-        meta['NSET'], meta['ICOMP'], meta['NCOMP'], meta['IGRID'] = [int(s) for s in f.readline().split()]
-        # The grid center in units of the x and y grid spacing.
+    meta['KTYPE'] = int(f.readline().split()[0])
+    if meta['KTYPE'] != 1:
+        raise ValueError("Not implemented.")
+    meta['NSET'], meta['ICOMP'], meta['NCOMP'], meta['IGRID'] = [
+        int(s) for s in f.readline().split()]
+    for i in range(meta['NSET']):
         meta['IX'], meta['IY'] = [int(s) for s in f.readline().split()]
-        # These are the x and y grid limits: S is lower, and E is upper.
-        meta['XS'], meta['YS'], meta['XE'], meta['YE'] = [float(s) for s in f.readline().split()]
-        # These are the numbers of grid points in x and y.
-        meta['NX'], meta['NY'], meta['KLIMIT'] = [int(s) for s in f.readline().split()]
-        # Implement this to read elliptically truncated grids.
-        if meta['KLIMIT'] != 0:
-            raise ValueError("Not implemented.")
-        # Load the field data. This returns an array with shape (NX * NY, 2 * NCOMP).
-        conv = dict([(column, string_to_float) for column in range(2 * meta['NCOMP'])])
-        data = np.loadtxt(f, dtype=float, converters=conv)
-    # Determine the grid spacing and center values.
+    meta['XS'], meta['YS'], meta['XE'], meta['YE'] = [
+        float(s) for s in f.readline().split()]
+    meta['NX'], meta['NY'], meta['KLIMIT'] = [
+        int(s) for s in f.readline().split()]
+    if meta['KLIMIT'] != 0:
+        raise ValueError("Not implemented.")
+    meta['PX'] = np.linspace(meta['XS'], meta['XE'], meta['NX'])
+    meta['PY'] = np.linspace(meta['YS'], meta['YE'], meta['NY'])
+    meta['MESH'] = np.meshgrid(meta['PX'], meta['PY'])
     meta['DX'] = (meta['XE'] - meta['XS']) / (meta['NX'] - 1)
     meta['DY'] = (meta['YE'] - meta['YS']) / (meta['NY'] - 1)
     meta['XCEN'] = meta['DX'] * meta['IX']
     meta['YCEN'] = meta['DY'] * meta['IY']
-    # Reshape the data.
-    map = np.empty((meta['NX'], meta['NY'], meta['NCOMP']),
-                   dtype=np.complex)
-    for component in range(meta['NCOMP']):
-        column = data[:, 2 * component] + 1j * data[:, 2 * component + 1]
-        map[:, :, component] = column.reshape(meta['NX'], meta['NY'], order='F')
-    return meta, map
+    idx = filename.split("/")[-1].split(".")[-2]
 
-def save_grd(filename, meta, map):
+    num = len(meta['header'])
+    num += meta['NSET'] + 4
+    dat_num = meta['NX']*meta['NY']
+    n0, n1 = num + number*(dat_num+2), num + (number+1)*(dat_num) + number*2
+    rows = range(n0, n1)
+    data = get_grd(filename, rows)
+    meta[name] = call_func("get_"+idx, meta, data)
+    num = n1 + 2
+    print(filename, n0, n1)
+    return meta
+
+
+def save_grd(filename, meta, names=["name"], comment=[]):
     """
     Write the data in this Grid to a new .grd file. Will not overwrite.
     """
-    if os.path.exists(filename):
-        raise ValueError("File already exists: {}".format(filename))
-    if map.shape != (meta['NX'], meta['NY'], meta['NCOMP']):
-        raise ValueError("The map shape does not match the metadata dictionary.")
     points = meta['NX'] * meta['NY']
     components = meta['NCOMP']
-    data = np.empty((points, 2 * components))
-    for component in range(components):
-        data[:, 2 * component] = map[:, :, component].reshape(points, order='F').real
-        data[:, 2 * component + 1] = map[:, :, component].reshape(points, order='F').imag
-    with open(filename, 'w') as f:
-        for line in meta['header']:
-            f.write('{}\n'.format(line))
-        f.write('{:2d}\n'.format(meta['KTYPE']))
-        f.write('{:12d}{:12d}{:12d}{:12d}\n'.format(meta['NSET'], meta['ICOMP'], meta['NCOMP'], meta['IGRID']))
+    f = open(filename, "w")
+    for line in meta['header'] + comment:
+        f.write('{}\n'.format(line))
+    f.write('{:2d}\n'.format(meta['KTYPE']))
+    f.write('{:12d}{:12d}{:12d}{:12d}\n'.format(
+        len(names), meta['ICOMP'], meta['NCOMP'], meta['IGRID']))
+    for i in range(len(names)):
         f.write('{:12d}{:12d}\n'.format(meta['IX'], meta['IY']))
-        f.write(' {: 0.10E} {: 0.10E} {: 0.10E} {: 0.10E}\n'.format(meta['XS'], meta['YS'], meta['XE'], meta['YE']))
-        f.write('{:12d}{:12d}{:12d}\n'.format(meta['NX'], meta['NY'], meta['KLIMIT']))
+    for i, name in enumerate(names):
+        f.write(' {: 0.10E} {: 0.10E} {: 0.10E} {: 0.10E}\n'.format(
+            meta['XS'], meta['YS'], meta['XE'], meta['YE']))
+        f.write('{:12d}{:12d}{:12d}\n'.format(
+            meta['NX'], meta['NY'], meta['KLIMIT']))
+        data = np.empty((points, 2 * components))
+        for component in range(components):
+            i0, i1 = 2*component, 2*component+1
+            data[:, i0] = meta[name][component].reshape(points, order='F').real
+            data[:, i1] = meta[name][component].reshape(points, order='F').imag
         for p in range(points):
-            f.write(''.join([float_to_string(number) for number in data[p, :]]) + '\n')
+            f.write(''.join([float_to_string(number)
+                             for number in data[p, :]]) + '\n')
+
+
+def save_grasp_grd(meta, filename, name="E", dir_name="./", comment=[]):
+    n_xy = meta['NX'] * meta['NY']
+    comp = meta[name].shape[0]
+    fp = open(dir_name + filename, "w")
+    fp.write('{}\n'.format(meta["NAME"]))
+    for line in comment:
+        fp.write('{}\n'.format(line))
+    fp.write('++++\n')
+    fp.write('{:2d}\n'.format(1))
+    fp.write('{:12d}{:12d}{:12d}{:12d}\n'.format(1, 3, 3, 3))
+    fp.write('{:12d}{:12d}\n'.format(0, 0))
+    fp.write(' {: 0.10E} {: 0.10E} {: 0.10E} {: 0.10E}\n'.format(
+        meta['XS'], meta['YS'], meta['XE'], meta['YE']))
+    fp.write('{:12d}{:12d}{:12d}\n'.format(meta['NX'], meta['NY'], 0))
+    data = np.empty((n_xy, 2 * comp))
+    for idx in range(comp):
+        i0, i1 = 2*idx, 2*idx + 1
+        data[:, i0] = meta[name][idx].reshape(n_xy, order='C').real
+        data[:, i1] = meta[name][idx].reshape(n_xy, order='C').imag
+    for p in range(n_xy):
+        fp.write(''.join([float_to_string(val) for val in data[p, :]]) + '\n')

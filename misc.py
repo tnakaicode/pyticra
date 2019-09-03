@@ -8,7 +8,8 @@ from pygrasp.convert import Convert
 
 
 def plot_radial_cut(grid_map, component, angle, center=(0, 0)):
-    x_deg, y_deg, cut = grid_map.cut(grid_map.dB(component), angle, center=center, single_sided=True)
+    x_deg, y_deg, cut = grid_map.cut(grid_map.dB(
+        component), angle, center=center, single_sided=True)
     r_deg = np.sqrt(x_deg**2 + y_deg**2)
     plt.ioff()
     fig = plt.figure()
@@ -20,8 +21,11 @@ def plot_radial_cut(grid_map, component, angle, center=(0, 0)):
     return fig
 
 # Add support for double-sided cuts?
+
+
 def plot_radial_cut_uv(grid_map, component, angle, center=(0, 0)):
-    x_uv, y_uv, cut = grid_map.cut(grid_map.dB(component), angle, center=center, single_sided=True)
+    x_uv, y_uv, cut = grid_map.cut(grid_map.dB(
+        component), angle, center=center, single_sided=True)
     x_deg = np.degrees(np.sign(x_uv) * Convert.u_v_to_theta_phi(x_uv, 0)[0])
     y_deg = np.degrees(np.sign(y_uv) * Convert.u_v_to_theta_phi(0, y_uv)[0])
     r_deg = np.sqrt(x_deg**2 + y_deg**2)
@@ -33,6 +37,7 @@ def plot_radial_cut_uv(grid_map, component, angle, center=(0, 0)):
     plt.ion()
     plt.show()
     return fig
+
 
 def mirror_x(half):
     full = GridMap()
@@ -47,14 +52,18 @@ def mirror_x(half):
     return full
 
 # This is useful enough that it should be somewhere else.
+
+
 def u_v_to_degrees(gm):
     gm.x = np.degrees(Convert.u_v_to_theta_phi(gm.x, 0)[0] * np.sign(gm.x))
     gm.y = np.degrees(Convert.u_v_to_theta_phi(gm.y, 0)[0] * np.sign(gm.y))
     return gm
-    
+
+
 def normalize(gm):
     gm.map = gm.map / np.max(np.abs(gm.map))
     return gm
+
 
 def combine_and_normalize(co, cx):
     if any(co.x != cx.x) or any(co.y != cx.y):
@@ -71,6 +80,8 @@ def combine_and_normalize(co, cx):
     return both
 
 # For y-polarization. Generalize.
+
+
 def plot_E_and_H_for_coupling_and_far(coupling, far, frequency):
     fig = plt.figure(figsize=(7, 7), dpi=160)
     x_c = coupling.x * 60
@@ -89,8 +100,8 @@ def plot_E_and_H_for_coupling_and_far(coupling, far, frequency):
     plt.plot(y_f, far_E, 'b', label="far field E")
     far_H = far.dB(1)[:, if_y0]
     plt.plot(x_f, far_H, 'g', label="far field H")
-    plt.title("{} E-plane and H-plane cuts; FWHM values are\nCoupling E: {:.1f}'  Coupling H: {:.1f}'  Far E: {:.1f}'  Far H: {:.1f}'" \
-                  .format(frequency, FWHM(y_c, coupling_E), FWHM(x_c, coupling_H), FWHM(y_f, far_E), FWHM(x_f, far_H)))
+    plt.title("{} E-plane and H-plane cuts; FWHM values are\nCoupling E: {:.1f}'  Coupling H: {:.1f}'  Far E: {:.1f}'  Far H: {:.1f}'"
+              .format(frequency, FWHM(y_c, coupling_E), FWHM(x_c, coupling_H), FWHM(y_f, far_E), FWHM(x_f, far_H)))
     plt.xlabel('[arcminutes]')
     plt.ylabel('[dB]')
     plt.xlim(-30, 30)
@@ -98,6 +109,7 @@ def plot_E_and_H_for_coupling_and_far(coupling, far, frequency):
     plt.legend(loc=8)
     plt.grid()
     return fig
+
 
 def plot_coupling_radial_cuts(coupling, title, hor_label, vert_label, cx_label):
     fig = plt.figure(figsize=(7, 7), dpi=160)

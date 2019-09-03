@@ -7,11 +7,12 @@ from scipy.integrate import trapz
 
 from pygrasp.output import load_grd, save_grd
 
+
 class FlatMap(object):
     """
     This is an abstract class that contains methods useful for
     maps.
-    
+
     """
 
     # Subclasses should define these.
@@ -32,7 +33,8 @@ class FlatMap(object):
         except (ValueError, TypeError):
             use = tuple(int(self.keys.get(k, k)) for k in key)
         if len(use) != len(self.shape):
-            raise ValueError("Key {!r} does not match map shape {!r}".format(key, self.shape))
+            raise ValueError(
+                "Key {!r} does not match map shape {!r}".format(key, self.shape))
         return self.map[(slice(None), slice(None)) + use]
 
     def dx(self):
@@ -65,7 +67,7 @@ class FlatMap(object):
         same size. Also return a boolean array of the same length that
         is True where the pixels are within the grid bounds and False
         elsewhere.
-		
+
         If clip is False, a ValueError is raised if any of the pixel
         centers are outside the grid bounds, and array within will be
         all True. If clip is True, then the i_x and i_y values where
@@ -82,9 +84,11 @@ class FlatMap(object):
         else:
             i_x = np.int_(np.round_((x - self.x[0]) / self.dx()))
             i_y = np.int_(np.round_((y - self.y[0]) / self.dy()))
-        within = ((0 <= i_x) & (i_x < self.x.size) & (0 <= i_y) & (i_y < self.y.size))
+        within = ((0 <= i_x) & (i_x < self.x.size) &
+                  (0 <= i_y) & (i_y < self.y.size))
         if not clip and not all(within):
-            raise ValueError("Not all points are inside the grid bounds, and clipping is not allowed.")
+            raise ValueError(
+                "Not all points are inside the grid bounds, and clipping is not allowed.")
         return i_x, i_y, within
 
     def single_indices(self, x, y):
@@ -137,9 +141,11 @@ class FlatMap(object):
         """
         map = np.load(os.path.join(folder, 'map.npy'))
         if map.shape[2:] != self.shape:
-            raise ValueError("Array shape {} does not match map shape {}.".format(map.shape, self.shape))
+            raise ValueError(
+                "Array shape {} does not match map shape {}.".format(map.shape, self.shape))
         if map.dtype != self.data_type:
-            raise ValueError("Array data type {} does not match map data type {}.".format(map.dtype, self.data_type))
+            raise ValueError("Array data type {} does not match map data type {}.".format(
+                map.dtype, self.data_type))
         self.map = map
         self.x = np.load(os.path.join(folder, 'x.npy'))
         self.y = np.load(os.path.join(folder, 'y.npy'))
@@ -153,7 +159,8 @@ class FlatMap(object):
         m0 = maps[0]
         if not all([abs(m.dx() - m0.dx()) < tolerance and
                     abs(m.dy() - m0.dy()) < tolerance for m in maps]):
-            raise ValueError("Cannot coadd maps with different pixel spacings.")
+            raise ValueError(
+                "Cannot coadd maps with different pixel spacings.")
         # Find the edges of the new map and its pixelization.
         x_min = min([m.x[0] for m in maps])
         x_max = max([m.x[-1] for m in maps])
@@ -215,7 +222,7 @@ class FlatMap(object):
         plt.ion()
         plt.show()
         return fig
-        
+
     def save_plot(self, filename, a, title="", xlabel="", ylabel="", color=plt.cm.hot, vmin=None, vmax=None):
         """
         Save a plot of the given array; see make_plot() for usage.
@@ -238,7 +245,8 @@ class FlatMap(object):
         corner.
         """
         if contours is None:
-            contours = np.linspace(np.min(a.flatten()), np.max(a.flatten()), 10)
+            contours = np.linspace(np.min(a.flatten()),
+                                   np.max(a.flatten()), 10)
         plt.ioff()
         fig = plt.figure()
         plt.contour(a.T,
@@ -260,7 +268,7 @@ class FlatMap(object):
         plt.ion()
         plt.show()
         return fig
-        
+
     def save_contour(self, filename, a, contours=None, title="", xlabel="", ylabel="", color=plt.cm.jet):
         """
         Save a contour plot of the given array; see make_plot() for usage.
@@ -287,7 +295,7 @@ class FlatMap(object):
         # pixel is always part of the cut.
         x0, y0 = self.single_coordinates(*center)
         if (np.pi / 4 < angle < 3 * np.pi / 4 or
-            5 * np.pi / 4 < angle < 7 * np.pi / 4):
+                5 * np.pi / 4 < angle < 7 * np.pi / 4):
             parity = np.sign(np.sin(angle))
             y = self.y[::parity]
             nonnegative = parity * (y - y0) >= 0
@@ -302,7 +310,8 @@ class FlatMap(object):
         i_x = i_x[within]
         i_y = i_y[within]
         nonnegative = nonnegative[within]
-        r = np.sqrt((self.x[i_x]-x0)**2 + (self.y[i_y]-y0)**2) * np.where(nonnegative, 1, -1)
+        r = np.sqrt((self.x[i_x]-x0)**2 + (self.y[i_y]-y0)
+                    ** 2) * np.where(nonnegative, 1, -1)
         cut = map[i_x, i_y]
         if single_sided:
             return r[nonnegative], cut[nonnegative]
@@ -324,7 +333,7 @@ class GridMap(FlatMap):
     """
     A FlatMap created from a .grd file. The file handling logic is
     contained in pygrasp.output.
-    
+
     This class can load near field, far field, and coupling .grd
     files.  It currently cannot load elliptically truncated
     grids. Implement subclasses if necessary.
@@ -343,8 +352,10 @@ class GridMap(FlatMap):
         self.meta, self.map = load_grd(filename)
         self.shape = self.map.shape[2:]
         # Check that XS and XE are offsets.
-        self.x = self.meta['XCEN'] + np.linspace(self.meta['XS'], self.meta['XE'], self.meta['NX'])
-        self.y = self.meta['YCEN'] + np.linspace(self.meta['YS'], self.meta['YE'], self.meta['NY'])
+        self.x = self.meta['XCEN'] + \
+            np.linspace(self.meta['XS'], self.meta['XE'], self.meta['NX'])
+        self.y = self.meta['YCEN'] + \
+            np.linspace(self.meta['YS'], self.meta['YE'], self.meta['NY'])
 
     def save_grd(self, filename):
         save_grd(filename, self.meta, self.map)
@@ -423,7 +434,8 @@ class JonesMap(FlatMap):
         Return the given map component in decibels.
         """
         return 20 * np.log10(abs(self[component]))
-    
+
+
 class MuellerMap(FlatMap):
 
     shape = (4, 4)
@@ -461,7 +473,8 @@ class MuellerMap(FlatMap):
                     # The matrix cast is redundant since numpy takes *
                     # to mean matrix multiplication when either element
                     # is a matrix.
-                    M_xy = self.A * np.mat(np.kron(J_xy, J_xy.conj())) * self.AI
+                    M_xy = self.A * \
+                        np.mat(np.kron(J_xy, J_xy.conj())) * self.AI
                     if np.any(M_xy.imag):
                         raise ValueError("Nonzero complex value in M.")
                     self.map[x, y] = M_xy.real
@@ -478,7 +491,7 @@ class MuellerMap(FlatMap):
                 sub = plt.subplot(4, 4, 4 * i + j + 1)
                 sub.axes.get_xaxis().set_visible(False)
                 sub.axes.get_yaxis().set_visible(False)
-                c=np.linspace(np.min(self[i, j]), np.max(self[i, j]), 8)
+                c = np.linspace(np.min(self[i, j]), np.max(self[i, j]), 8)
                 if all(c == 0):
                     plt.plot()
                 else:
@@ -502,7 +515,7 @@ class MuellerMap(FlatMap):
                 sub.axes.get_yaxis().set_visible(False)
                 plt.imshow(self[i, j].T,
                            cmap=color,
-                           aspect='equal',			 
+                           aspect='equal',
                            interpolation='nearest',
                            origin='lower')
                 sub.title.set_text(name)

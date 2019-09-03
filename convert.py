@@ -3,6 +3,7 @@ from __future__ import division
 import numpy as np
 from scipy import constants
 
+
 class Convert(object):
     """
     This class converts between GRASP units and SI units,

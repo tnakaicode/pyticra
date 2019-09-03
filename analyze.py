@@ -12,6 +12,8 @@ from pygrasp.flat_map import JonesMap, MuellerMap
 from pygrasp.mapping import circular_gaussian, elliptical_gaussian
 
 # Improve using interpolation.
+
+
 def FWHM(x, y_dB):
     """
     Return the full-width at half-maximum of the given peaked function
@@ -23,7 +25,7 @@ def FWHM(x, y_dB):
     the spacing between x values, since it may be off by half this
     spacing on each side.
     """
-    half_dB = -10 * np.log10(2) # = -3.0103
+    half_dB = -10 * np.log10(2)  # = -3.0103
     i_peak = np.argmax(y_dB)
     right = y_dB[i_peak:]
     # Swap the order of left so that argmin finds the instance closest
@@ -33,6 +35,7 @@ def FWHM(x, y_dB):
     i_left = np.argmin(np.abs(left - half_dB))
     fwhm = x[i_peak + i_right] - x[i_peak - i_left]
     return fwhm
+
 
 def B_ell(flat_map, component, bin_size, window=None):
     """
@@ -47,8 +50,8 @@ def B_ell(flat_map, component, bin_size, window=None):
     data: for all i in range(bins.size),
     bins[i] <= data[i] < bins[i+1]
     """
-    ell_x, ell_y= np.meshgrid(fftshift(fftfreq(flat_map.x.size, flat_map.dx()/(2*np.pi))),
-                              fftshift(fftfreq(flat_map.y.size, flat_map.dy()/(2*np.pi))))
+    ell_x, ell_y = np.meshgrid(fftshift(fftfreq(flat_map.x.size, flat_map.dx()/(2*np.pi))),
+                               fftshift(fftfreq(flat_map.y.size, flat_map.dy()/(2*np.pi))))
     ell_x = ell_x.T
     ell_y = ell_y.T
     ell_r = np.sqrt(ell_x**2 + ell_y**2)
@@ -63,15 +66,17 @@ def B_ell(flat_map, component, bin_size, window=None):
     # DFT data because r_ell has a lower bound at 0 and max(r_ell)
     # will have index ell_bins.size.
     bin_indices = np.digitize(ell_r.flatten(), ell_bins) - 1
-    binned = np.zeros(ell_bins.size) # dtype?
+    binned = np.zeros(ell_bins.size)  # dtype?
     for i in range(binned.size):
-        binned[i] = np.sqrt(np.mean(abs(dft.flatten()[i==bin_indices])**2))
+        binned[i] = np.sqrt(np.mean(abs(dft.flatten()[i == bin_indices])**2))
     return ell_bins, binned, dft
 
 # Break this out into individual functions.  We are running sims using
 # unit vector components, but we want to express results in
 # arcminutes. The beam power is normalized in unit vector components,
 # so we have to do the integration in these units.
+
+
 def characterize_beam(u, v):
     """
     Return a JonesMap, a MuellerMap, and a dictionary with
@@ -123,7 +128,8 @@ def characterize_beam(u, v):
     meta['v']['spillover'] = 1 - (meta['v']['integrated co-pol'] +
                                   meta['v']['integrated cross-pol'])
     # Characterize the Mueller map.
-    meta['TT'] = {'fit': fit_elliptical_gaussian(mueller['TT'], mueller.x, mueller.y)}
+    meta['TT'] = {'fit': fit_elliptical_gaussian(
+        mueller['TT'], mueller.x, mueller.y)}
     meta['TT']['eccentricity'] = np.sqrt(1 - (meta['TT']['fit'][4] /
                                               meta['TT']['fit'][3])**2)
     meta['TT']['spillover'] = 1 - mueller.integrate('TT')
@@ -152,6 +158,7 @@ def characterize_beam(u, v):
                                                                (rr <= r_circle))
     return jones, mueller, meta
 
+
 def fit_circular_gaussian(data, x, y):
     def error(params):
         return (data - circular_gaussian(x, y, *params)).flatten()
@@ -163,6 +170,7 @@ def fit_circular_gaussian(data, x, y):
     initial = (x0, y0, A, fwhm)
     params, cov = leastsq(error, initial, xtol=1e-10)
     return params
+
 
 def fit_elliptical_gaussian(data, x, y):
     def error(params):

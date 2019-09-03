@@ -39,7 +39,7 @@ class Project(object):
         tci_file = os.path.join(working, '{}.tci'.format(self.name))
         with open(tci_file, 'w') as f:
             f.write(str(self.tci))
-    
+
     def __str__(self):
         lines = ['[Comment]',
                  'Project comment',
@@ -52,7 +52,8 @@ class Project(object):
                  'GHz m S/m 1',
                  '[Project setup]',
                  '<!DOCTYPE Project>',
-                 '<Project version="{}" application="GRASP">'.format(self.version),
+                 '<Project version="{}" application="GRASP">'.format(
+                     self.version),
                  ' <Results/>',
                  ' <ResultWindows/>',
                  ' <WizardData/>',
@@ -75,7 +76,8 @@ class Grammar(object):
                        p.Optional('.' + p.Word(p.nums)) +
                        p.Optional(p.CaselessLiteral('E') +
                                   p.Word(p.nums + '+-', p.nums)))
-    quantity = number + p.Optional(p.Word(p.alphas, p.alphanums + '-^/' + ' '), default=None)
+    quantity = number + \
+        p.Optional(p.Word(p.alphas, p.alphanums + '-^/' + ' '), default=None)
     quantity.setParseAction(lambda tokens: Quantity(tokens[0], tokens[1]))
     # Added '.' to handle Brad's EBEX sims. See if this breaks anything.
     # An identifier is no longer a valid Python variable.
@@ -90,12 +92,14 @@ class Grammar(object):
                p.Suppress('(') + \
                p.Optional(elements)('elements') + \
                p.Suppress(')')
-    sequence.setParseAction(lambda tokens: [Sequence(tokens.get('elements', []))])
+    sequence.setParseAction(
+        lambda tokens: [Sequence(tokens.get('elements', []))])
     struct = 'struct' + \
              p.Suppress('(') + \
              p.Optional(members)('members') + \
              p.Suppress(')')
-    struct.setParseAction(lambda tokens: [Struct(list(tokens.get('members', [])))])
+    struct.setParseAction(
+        lambda tokens: [Struct(list(tokens.get('members', [])))])
     comment = p.QuotedString('"', unquoteResults=False)
     # This could be a filename or just a string. Added '\' to handle EBEX sim.
     # Should convert to unix filename.
@@ -107,8 +111,8 @@ class Grammar(object):
                 p.Suppress('(') +
                 p.Optional(members)('members') +
                 p.Suppress(')'))
-    physical.ignore(p.cppStyleComment) # '// comment'
-    physical.ignore(p.pythonStyleComment) # '# comment'
+    physical.ignore(p.cppStyleComment)  # '// comment'
+    physical.ignore(p.pythonStyleComment)  # '# comment'
     physical.setParseAction(lambda tokens: [Physical(tokens['display_name'],
                                                      tokens['class_name'],
                                                      list(tokens.get('members', [])))])
@@ -126,15 +130,16 @@ class Grammar(object):
                p.Suppress(')') +
                p.CaselessLiteral('cmd_').suppress() +
                p.Word(p.nums)('number'))
-    command.ignore(p.cppStyleComment) # '// comment'
-    command.ignore(p.pythonStyleComment) # '# comment'
+    command.ignore(p.cppStyleComment)  # '// comment'
+    command.ignore(p.pythonStyleComment)  # '# comment'
     command.ignore(p.Literal('&'))
     command.setParseAction(lambda tokens: [Command(tokens['target_name'],
                                                    tokens['command_name'],
                                                    list(tokens.get('members', [])))])
 
     # Add support for other batch commands.
-    batch_command = p.CaselessLiteral('FILES READ ALL') + other + p.LineEnd().suppress()
+    batch_command = p.CaselessLiteral(
+        'FILES READ ALL') + other + p.LineEnd().suppress()
     batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
     quit_command = p.CaselessLiteral('QUIT')
 
@@ -154,8 +159,8 @@ class CommandInterface(list):
 
     def __init__(self, other=[]):
         super(CommandInterface, self).__init__(other)
-        self.batch_commands = []    
-    
+        self.batch_commands = []
+
     def load(self, filename):
         with open(filename, 'r') as f:
             parsed = Grammar.command_interface.parseFile(f)
@@ -169,7 +174,8 @@ class CommandInterface(list):
         """
         with open(filename, 'w') as f:
             if batch_mode:
-                f.write('\n'.join([str(bc) for bc in self.batch_commands]) + '\n\n' + str(self))
+                f.write(
+                    '\n'.join([str(bc) for bc in self.batch_commands]) + '\n\n' + str(self))
             else:
                 f.write(str(self))
 
@@ -246,24 +252,25 @@ class ObjectRepository(OrderedDict):
 class Command(OrderedDict):
     """
     This class is a container for GRASP commands.
-    
+
     It inherits from OrderedDict so that it remembers the ordering of its properties.
     """
-    
+
     def __init__(self, target_name, command_name, other={}):
         super(Command, self).__init__(other)
         self.target_name = str(target_name)
         self.command_name = str(command_name)
 
     def __str__(self):
-        lines = ['COMMAND OBJECT {} {}'.format(self.target_name, self.command_name)]
+        lines = ['COMMAND OBJECT {} {}'.format(
+            self.target_name, self.command_name)]
         lines.append('(')
         for k, v in self.items():
             lines.append('  {:16s} : {},'.format(k, v))
         lines[-1] = lines[-1].rstrip(',')
         lines.append(')')
         return ' &\n'.join(lines)
-        
+
     def __repr__(self):
         return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
                                                self.target_name,
@@ -278,7 +285,7 @@ class Command(OrderedDict):
         """
         for name, thing in self.items():
             self.visit(name, thing, test, action)
-        
+
     def visit(self, name, thing, test, action):
         """
         Recursively visit every member of this object, calling
@@ -324,9 +331,9 @@ class Physical(OrderedDict):
         lines[-1] = lines[-1].rstrip(',')
         lines.append(')')
         return '\n'.join(lines)
-    
+
     def __repr__(self):
-        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__, 
+        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
                                                self.display_name,
                                                self.class_name,
                                                ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
@@ -339,7 +346,7 @@ class Physical(OrderedDict):
         """
         for name, thing in self.items():
             self.visit(name, thing, test, action)
-        
+
     def visit(self, name, thing, test, action):
         """
         Recursively visit every member of this object, calling
@@ -389,13 +396,13 @@ class Ref(object):
 
 
 class Struct(OrderedDict):
-    
+
     def __str__(self):
         return 'struct({})'.format(', '.join('{}: {}'.format(k, v) for k, v in self.items()))
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__,
-                                   super(OrderedDict, self).__repr__())
+                               super(OrderedDict, self).__repr__())
 
 
 class Sequence(list):
@@ -443,5 +450,3 @@ class Quantity(object):
             return '{}({!r})'.format(self.__class__.__name__, self.number)
         else:
             return '{}({!r}, {!r})'.format(self.__class__.__name__, self.number, self.units)
-
-

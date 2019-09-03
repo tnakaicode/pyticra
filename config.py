@@ -1,6 +1,7 @@
 import os
 import ConfigParser
 
+
 class Config(object):
 
     CONFIG_FILE = 'local.config'
