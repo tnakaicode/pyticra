@@ -8,8 +8,8 @@ from numpy.fft import fft2, fftfreq, fftshift
 from scipy.signal import get_window
 from scipy.optimize import leastsq
 
-from pygrasp.flat_map import JonesMap, MuellerMap
-from pygrasp.mapping import circular_gaussian, elliptical_gaussian
+from flat_map import JonesMap, MuellerMap
+from mapping import circular_gaussian, elliptical_gaussian
 
 # Improve using interpolation.
 
@@ -185,3 +185,7 @@ def fit_elliptical_gaussian(data, x, y):
         return x0, y0, A, fwhm_u, fwhm_v, np.mod(psi, np.pi)
     else:
         return x0, y0, A, fwhm_v, fwhm_u, np.mod(psi+np.pi/2, np.pi)
+
+
+if __name__ == "__main__":
+    print("Test analyze.py")

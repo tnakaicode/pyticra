@@ -3,8 +3,8 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 
-from pygrasp.flat_map import GridMap
-from pygrasp.convert import Convert
+from flat_map import GridMap
+from convert import Convert
 
 
 def plot_radial_cut(grid_map, component, angle, center=(0, 0)):

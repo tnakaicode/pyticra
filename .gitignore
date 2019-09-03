@@ -11,3 +11,8 @@ documentation/
 epydoc/
 misc/
 local.config
+
+# Build
+build/*
+dist/*
+*.egg-info
