@@ -1,6 +1,6 @@
 import numpy as np
 
-from pygrasp.flat_map import Grid
+from .pygraspflat_map import Grid
 
 # Add the option to change the extents.
 # Add the option to make other kinds of blank grids.

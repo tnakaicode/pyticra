@@ -2,11 +2,11 @@
 from setuptools import setup
 
 setup(name='pygrasp',
-      version='0.2',
+      version='0.0',
       description='Python package for GRASP interfacing.',
-      url='www.fluxanet.cl',
-      author='Pedro Fluxa Rojas',
-      author_email='pedro@fluxanet.cl',
+      url='https://github.com/tnakaicode/pygrasp',
+      author='Taku Nakai',
+      author_email='tnakaicode@gmail.com',
       license='GPL',
-      packages=['pygrasp', 'pygrasp.IO'],
+      packages=['pygrasp'],
       zip_safe=False)
