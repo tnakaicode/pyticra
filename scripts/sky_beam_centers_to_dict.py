@@ -9,7 +9,7 @@ frequencies.
 import sys
 import pickle
 import numpy as np
-from .pygraspconvert import Convert
+from pygrasp.convert import Convert
 
 filename = sys.argv[1]
 d = {}

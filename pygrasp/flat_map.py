@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import trapz
 
-from .pygraspoutput import load_grd, save_grd
+from pygrasp.output import load_grd, save_grd
 
 
 class FlatMap(object):

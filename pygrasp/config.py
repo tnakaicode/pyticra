@@ -9,7 +9,7 @@ class Config(object):
 
     def __init__(self):
         self.p = ConfigParser.SafeConfigParser()
-        if not self.p.read(os.path.join(self.PYGRASP_PATH, self.CONFIG_FILE)):
+        if not self.p.read(os.path.join(selfpygrasp._PATH, self.CONFIG_FILE)):
             raise ValueError("Could not parse config file.")
 
     def get(self, section, option):

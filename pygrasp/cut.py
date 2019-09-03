@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 
-from .pygraspoutput import load_cut, save_cut
+from pygrasp.output import load_cut, save_cut
 
 
 class Cut(object):
