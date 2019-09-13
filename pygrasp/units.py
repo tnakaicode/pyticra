@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.constants as cnt
 from scipy import constants
 
 """
@@ -14,18 +15,30 @@ SI = {
 
 def convert_SI(val_unit, unit_in="cm", unit_out="mm"):
     val = float(val_unit.split(unit_in)[0])
-    return val*SI[unit_in]/SI[unit_out]
+    return val * SI[unit_in] / SI[unit_out]
 
 
 def convert(unit_in="cm", unit_out="mm"):
-    return SI[unit_in]/SI[unit_out]
+    return SI[unit_in] / SI[unit_out]
+
+
+def convert_wave(val, unit_in="GHz", unit_out="mm"):
+    if unit_in in ["GHz", "MHz", "kHz", "Hz"]:
+        freq = convert_SI(val, unit_in, "Hz")
+        wave = cnt.c / freq * convert("m", unit_out)
+        freq *= convert("Hz", unit_in)
+    elif unit_in in ["mm", "cm", "m", "km"]:
+        wave = convert_SI(val, unit_in, "m")
+        freq = cnt.c / wave * convert("Hz", unit_out)
+        wave *= convert("m", unit_in)
+    return freq, wave
 
 
 def power_unit(val, unit_in="mW", unit_out="dBm"):
     if unit_in in ["uW", "mW", "W", "kW", "MeW"]:
-        return 10*np.log10(val*convert(unit_in, "mW"))
+        return 10 * np.log10(val * convert(unit_in, "mW"))
     elif unit_in == "dBm":
-        return 10**(val/10)*convert("mW", unit_out)
+        return 10**(val / 10) * convert("mW", unit_out)
     else:
         return val
 
@@ -67,4 +80,3 @@ if __name__ == "__main__":
     print(power_unit(30, "dBm", "W"))
     print(power_unit(-30, "dBm", "mW"))
     print(power_unit(3, "dBm", "mW"))
-    
