@@ -31,7 +31,7 @@ class GridBase(MutableMapping, object):
 
 class GraspGrid (GridBase):
 
-    def __init__(self, filename, meta={}, freq=100*10**9, unit="mm", *args, **kwargs):
+    def __init__(self, filename, meta={}, freq=100 * 10**9, unit="mm", *args, **kwargs):
         # Set the components dictionary (default empty)
         self._meta = meta
         self.filename = filename
@@ -40,7 +40,7 @@ class GraspGrid (GridBase):
         self.split_header()
         self.freq = freq
         self.wave = cnt.c / self.freq * convert(unit_in="m", unit_out="mm")
-        self.knum = 2*np.pi / self.wave
+        self.knum = 2 * np.pi / self.wave
         self.z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
         self.unit = unit
         self.initialize()
@@ -86,7 +86,7 @@ class GraspGrid (GridBase):
             self._meta['IX'], self._meta['IY'] = [
                 int(s) for s in self.fp.readline().split()]
         self._meta['XS'], self._meta['YS'], self._meta['XE'], self._meta['YE'] = [float(
-            s)*convert(unit_in=self.unit, unit_out="mm") for s in self.fp.readline().split()]
+            s) * convert(unit_in=self.unit, unit_out="mm") for s in self.fp.readline().split()]
         self._meta['NX'], self._meta['NY'], self._meta['KLIMIT'] = [
             int(s) for s in self.fp.readline().split()]
         if self._meta['KLIMIT'] != 0:
@@ -107,30 +107,30 @@ class GraspGrid (GridBase):
         num = len(self._meta['header'])
         num += self._meta['NSET'] + 4
         row = self._meta['NX'] * self._meta['NY']
-        n0 = num + indx*(row+2)
+        n0 = num + indx * (row + 2)
         n1 = n0 + row
         rows = range(n0, n1)
         data = get_grd(self.filename, rows)
         knum_m = self.knum * convert("mm", "m")
         if self.id == "cur":
-            coef = 1 / knum_m * (np.sqrt(self.z_0/2))
+            coef = 1 / knum_m * (np.sqrt(self.z_0 / 2))
             #coef = 1.0
             self._meta[name] = get_cur(
-                self._meta, data, coef=1/coef) / (convert("mm", "mm")**2)
+                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
         elif self.id == "e":
-            coef = 1 / (knum_m*np.sqrt(2*self.z_0))
+            coef = 1 / (knum_m * np.sqrt(2 * self.z_0))
             #coef = 1.0
             self._meta[name] = get_e(
-                self._meta, data, coef=1/coef) / (convert("mm", "mm")**2)
+                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
         elif self.id == "h":
-            coef = 1 / (knum_m) * np.sqrt(self.z_0/2)
+            coef = 1 / (knum_m) * np.sqrt(self.z_0 / 2)
             #coef = 1.0
             self._meta[name] = get_h(
-                self._meta, data, coef=1/coef) / (convert("mm", "mm")**2)
+                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
         elif self.id == "pw":
             coef = 1.0
             self._meta[name] = get_pw(
-                self._meta, data, coef=1/coef) / (convert("mm", "mm")**2)
+                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
         else:
             coef = 1.0
             self._meta[name] = get_e(self._meta, data) / \
@@ -174,19 +174,19 @@ def get_pw(meta, data, coef=1.0):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']))
     func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C') * coef
     func[1] = data[:, 2].reshape(meta['NY'], meta['NX'], order='C') * coef
-    func[2] = (data[:, 4] + 1j*data[:, 5]).reshape(meta['NY'],
-                                                   meta['NX'], order='C') * coef
+    func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
+                                                     meta['NX'], order='C') * coef
     return func
 
 
 def get_eh(meta, data, coef=1.0):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
-    func[0] = (data[:, 0] + 1j*data[:, 1]).reshape(meta['NY'],
-                                                   meta['NX'], order='C') * coef
-    func[1] = (data[:, 2] + 1j*data[:, 3]).reshape(meta['NY'],
-                                                   meta['NX'], order='C') * coef
-    func[2] = (data[:, 4] + 1j*data[:, 5]).reshape(meta['NY'],
-                                                   meta['NX'], order='C') * coef
+    func[0] = (data[:, 0] + 1j * data[:, 1]).reshape(meta['NY'],
+                                                     meta['NX'], order='C') * coef
+    func[1] = (data[:, 2] + 1j * data[:, 3]).reshape(meta['NY'],
+                                                     meta['NX'], order='C') * coef
+    func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
+                                                     meta['NX'], order='C') * coef
     return func
 
 

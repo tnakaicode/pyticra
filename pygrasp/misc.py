@@ -115,8 +115,8 @@ def plot_E_and_H_for_coupling_and_far(coupling, far, frequency):
 def plot_coupling_radial_cuts(coupling, title, hor_label, vert_label, cx_label):
     fig = plt.figure(figsize=(7, 7), dpi=160)
     r_hor, co_hor = coupling.radial_cut(0, 0)
-    r_vert, co_vert = coupling.radial_cut(0, np.pi/2)
-    r_cx, cx = coupling.radial_cut(1, np.pi/4)
+    r_vert, co_vert = coupling.radial_cut(0, np.pi / 2)
+    r_cx, cx = coupling.radial_cut(1, np.pi / 4)
     plt.plot(r_hor * 60, co_hor, label=hor_label)
     plt.plot(r_vert * 60, co_vert, label=vert_label)
     plt.plot(r_cx * 60, cx, label=cx_label)

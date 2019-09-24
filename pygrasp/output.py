@@ -95,9 +95,9 @@ def get_cur(meta, data):
 def get_pw(meta, data):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
     func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C')
-    func[1] = (data[:, 2] + 1j*data[:, 3]
+    func[1] = (data[:, 2] + 1j * data[:, 3]
                ).reshape(meta['NY'], meta['NX'], order='C')
-    func[2] = (data[:, 4] + 1j*data[:, 5]
+    func[2] = (data[:, 4] + 1j * data[:, 5]
                ).reshape(meta['NY'], meta['NX'], order='C')
     return func
 
@@ -136,11 +136,12 @@ def load_grd(filename, number=0, name="name", meta={}):
 
     num = len(meta['header'])
     num += meta['NSET'] + 4
-    dat_num = meta['NX']*meta['NY']
-    n0, n1 = num + number*(dat_num+2), num + (number+1)*(dat_num) + number*2
+    dat_num = meta['NX'] * meta['NY']
+    n0, n1 = num + number * (dat_num + 2), num + \
+        (number + 1) * (dat_num) + number * 2
     rows = range(n0, n1)
     data = get_grd(filename, rows)
-    meta[name] = call_func("get_"+idx, meta, data)
+    meta[name] = call_func("get_" + idx, meta, data)
     num = n1 + 2
     print(filename, n0, n1)
     return meta
@@ -167,7 +168,7 @@ def save_grd(filename, meta, names=["name"], comment=[]):
             meta['NX'], meta['NY'], meta['KLIMIT']))
         data = np.empty((points, 2 * components))
         for component in range(components):
-            i0, i1 = 2*component, 2*component+1
+            i0, i1 = 2 * component, 2 * component + 1
             data[:, i0] = meta[name][component].reshape(points, order='F').real
             data[:, i1] = meta[name][component].reshape(points, order='F').imag
         for p in range(points):
@@ -191,7 +192,7 @@ def save_grasp_grd(meta, filename, name="E", dir_name="./", comment=[]):
     fp.write('{:12d}{:12d}{:12d}\n'.format(meta['NX'], meta['NY'], 0))
     data = np.empty((n_xy, 2 * comp))
     for idx in range(comp):
-        i0, i1 = 2*idx, 2*idx + 1
+        i0, i1 = 2 * idx, 2 * idx + 1
         data[:, i0] = meta[name][idx].reshape(n_xy, order='C').real
         data[:, i1] = meta[name][idx].reshape(n_xy, order='C').imag
     for p in range(n_xy):

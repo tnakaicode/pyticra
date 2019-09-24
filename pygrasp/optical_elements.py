@@ -12,6 +12,7 @@ import numpy as np
 # light rotates in the right-handed sense with respect to the
 # direction of photon propagation.
 
+
 def linear_polarizer(angle_radians):
     """
     Return the Jones matrix of a linear polarizer oriented at the
@@ -19,16 +20,19 @@ def linear_polarizer(angle_radians):
     """
     pass
 
+
 def circular_polarizer(positive_helicity):
     if positive_helicity:
-        return 1/2 * np.array([[1, 1j],
-                               [-1j, 1]])
+        return 1 / 2 * np.array([[1, 1j],
+                                 [-1j, 1]])
     else:
-        return 1/2 * np.array([[1, -1j],
-                               [1j, 1]])
+        return 1 / 2 * np.array([[1, -1j],
+                                 [1j, 1]])
+
 
 def quarter_wave_plate(fast_axis_radians):
     pass
+
 
 def half_wave_plate(fast_axis_radians):
     pass

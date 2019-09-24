@@ -11,7 +11,7 @@ from scipy.optimize import leastsq
 
 def smooth(fm, fwhm):
     spacing = fm.bounds()[4]
-    n = np.ceil(fwhm/spacing)
+    n = np.ceil(fwhm / spacing)
     x = y = np.linspace(-n * spacing, n * spacing, 2 * n + 1)
     g = circular_gaussian(x, y, 0, 0, 1, fwhm)
     g /= g.sum()
@@ -22,7 +22,7 @@ def circular_gaussian(x, y, x0, y0, A, fwhm):
     xx, yy = np.meshgrid(x, y)
     xx = xx.T
     yy = yy.T
-    return A * np.exp(-np.log(2) * ((xx - x0)**2 + (yy - y0)**2) / (fwhm/2)**2)
+    return A * np.exp(-np.log(2) * ((xx - x0)**2 + (yy - y0)**2) / (fwhm / 2)**2)
 
 
 def circular_gaussian_plus_noise(x, y, x0, y0, A, fwhm, N):
@@ -68,8 +68,8 @@ def elliptical_gaussian(x, y, x0, y0, A, fwhm_u, fwhm_v, psi):
         np.dot(R_psi, np.vstack((xx - x0, yy - y0))), 1)[0]
     rot_xx = rot_xx.reshape((x.size, y.size))
     rot_yy = rot_yy.reshape((x.size, y.size))
-    return A * np.exp(-np.log(2) * (rot_xx**2 / (fwhm_u/2)**2 +
-                                    rot_yy**2 / (fwhm_v/2)**2))
+    return A * np.exp(-np.log(2) * (rot_xx**2 / (fwhm_u / 2)**2 +
+                                    rot_yy**2 / (fwhm_v / 2)**2))
 
 
 def elliptical_gaussian_plus_noise(x, y, x0, y0, A, fwhm_u, fwhm_v, psi, N):
@@ -101,4 +101,4 @@ def clean_elliptical_params(params):
     if fwhm_u >= fwhm_v:
         return x0, y0, A, fwhm_u, fwhm_v, np.mod(psi, np.pi), N
     else:
-        return x0, y0, A, fwhm_v, fwhm_u, np.mod(psi+np.pi/2, np.pi), N
+        return x0, y0, A, fwhm_v, fwhm_u, np.mod(psi + np.pi / 2, np.pi), N

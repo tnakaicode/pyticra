@@ -176,7 +176,7 @@ class FlatMap(object):
         for m in maps:
             i_x, i_y, within = coadded.indices(m.x, m.y)
             # This uses broadcasting
-            coadded.map[i_x[0]:i_x[-1]+1, i_y[0]:i_y[-1]+1] += m.map
+            coadded.map[i_x[0]:i_x[-1] + 1, i_y[0]:i_y[-1] + 1] += m.map
         return coadded
 
     # In progress
@@ -195,9 +195,9 @@ class FlatMap(object):
         w = 3.5
         h = 3
         fig = plt.figure(figsize=(w, h), dpi=200)
-        cbar_ax = fig.add_axes((2.9/w, 0.4/h, 0.1/w, 2.3/h))
+        cbar_ax = fig.add_axes((2.9 / w, 0.4 / h, 0.1 / w, 2.3 / h))
         cbar_ax.tick_params(direction='out', labelsize=4)
-        image_ax = fig.add_axes((0.5/w, 0.4/h, 2.3/w, 2.3/h))
+        image_ax = fig.add_axes((0.5 / w, 0.4 / h, 2.3 / w, 2.3 / h))
         image_ax.tick_params(direction='out', labelsize=4)
         image = image_ax.imshow(a.T,
                                 cmap=color,
@@ -310,7 +310,7 @@ class FlatMap(object):
         i_x = i_x[within]
         i_y = i_y[within]
         nonnegative = nonnegative[within]
-        r = np.sqrt((self.x[i_x]-x0)**2 + (self.y[i_y]-y0)
+        r = np.sqrt((self.x[i_x] - x0)**2 + (self.y[i_y] - y0)
                     ** 2) * np.where(nonnegative, 1, -1)
         cut = map[i_x, i_y]
         if single_sided:
@@ -449,10 +449,10 @@ class MuellerMap(FlatMap):
                     2: 'U',
                     3: 'V'}
 
-    A = np.mat(np.array([[1,   0,   0,   1],
-                         [1,   0,   0,  -1],
-                         [0,   1,   1,   0],
-                         [0,  1j, -1j,   0]]))
+    A = np.mat(np.array([[1, 0, 0, 1],
+                         [1, 0, 0, -1],
+                         [0, 1, 1, 0],
+                         [0, 1j, -1j, 0]]))
     AI = A.getI()
 
     def __init__(self, jones_map=None):

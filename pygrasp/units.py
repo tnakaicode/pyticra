@@ -7,7 +7,7 @@ This class converts between GRASP units and SI units.
 """
 
 SI = {
-    'mm': 0.001, 'cm': 0.01, 'm': 1.0, 'km': 1000.,
+    'um': 10**(-6), 'mm': 0.001, 'cm': 0.01, 'm': 1.0, 'km': 1000.,
     'GHz': 10**9, 'MHz': 10**6, 'kHz': 10**3, 'Hz': 1.0,
     'MeW': 10**6, 'kW': 10**3, 'W': 1.0, 'mW': 10**(-3), "uW": 10**(-6)
 }

@@ -50,8 +50,8 @@ def B_ell(flat_map, component, bin_size, window=None):
     data: for all i in range(bins.size),
     bins[i] <= data[i] < bins[i+1]
     """
-    ell_x, ell_y = np.meshgrid(fftshift(fftfreq(flat_map.x.size, flat_map.dx()/(2*np.pi))),
-                               fftshift(fftfreq(flat_map.y.size, flat_map.dy()/(2*np.pi))))
+    ell_x, ell_y = np.meshgrid(fftshift(fftfreq(flat_map.x.size, flat_map.dx() / (2 * np.pi))),
+                               fftshift(fftfreq(flat_map.y.size, flat_map.dy() / (2 * np.pi))))
     ell_x = ell_x.T
     ell_y = ell_y.T
     ell_r = np.sqrt(ell_x**2 + ell_y**2)
@@ -177,14 +177,14 @@ def fit_elliptical_gaussian(data, x, y):
         return (data - elliptical_gaussian(x, y, *params)).flatten()
     center = np.where(data == np.max(data))
     initial = (x[center[0][0]], y[center[1][0]], np.max(data),
-               (x[-1]-x[0])/3, (y[-1]-y[0])/3, 0)
+               (x[-1] - x[0]) / 3, (y[-1] - y[0]) / 3, 0)
     params, cov = leastsq(error, initial, xtol=1e-10)
     # For some reason, leastsq tends to converge on values of |psi| >> 2 pi.
     x0, y0, A, fwhm_u, fwhm_v, psi = params
     if fwhm_u >= fwhm_v:
         return x0, y0, A, fwhm_u, fwhm_v, np.mod(psi, np.pi)
     else:
-        return x0, y0, A, fwhm_v, fwhm_u, np.mod(psi+np.pi/2, np.pi)
+        return x0, y0, A, fwhm_v, fwhm_u, np.mod(psi + np.pi / 2, np.pi)
 
 
 if __name__ == "__main__":
