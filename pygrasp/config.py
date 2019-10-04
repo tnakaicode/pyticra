@@ -1,5 +1,5 @@
 import os
-import ConfigParser
+import configparser
 
 
 class Config(object):
@@ -8,7 +8,7 @@ class Config(object):
     PYGRASP_PATH = os.path.split(os.path.abspath(__file__))[0]
 
     def __init__(self):
-        self.p = ConfigParser.SafeConfigParser()
+        self.p = configparser.SafeConfigParser()
         if not self.p.read(os.path.join(self.pygrasp._PATH, self.CONFIG_FILE)):
             raise ValueError("Could not parse config file.")
 
