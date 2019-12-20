@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 This is an abstract class that contains methods useful for maps.
 """
 
+
 class Map(object):
 
     # Figure out if it's possible to get subclasses to read
@@ -54,7 +55,7 @@ class Map(object):
         length. Also, return a boolean array of the same length that
         is True where the pixels are within the grid bounds and False
         elsewhere.
-		
+
         If clip is False, a ValueError is raised if any of the pixel
         centers are outside the grid bounds, and array within will be
         all True. If clip is True, then the i_x and i_y values where
@@ -71,9 +72,11 @@ class Map(object):
         else:
             i_x = np.int_(np.round_((x - self.X[0]) / self.dx()))
             i_y = np.int_(np.round_((y - self.Y[0]) / self.dy()))
-        within = ((0 <= i_x) & (i_x < self.X.size) & (0 <= i_y) & (i_y < self.Y.size))
+        within = ((0 <= i_x) & (i_x < self.X.size) &
+                  (0 <= i_y) & (i_y < self.Y.size))
         if not clip and not all(within):
-            raise ValueError("Not all points are inside the grid bounds, and clipping is not allowed.")
+            raise ValueError(
+                "Not all points are inside the grid bounds, and clipping is not allowed.")
         return i_x, i_y, within
 
     def coordinates(self, x, y):
@@ -98,32 +101,34 @@ class Map(object):
         #assert all(map.shape[:2] == self.shape)
 
     # Switch the plotting methods to return the figure.
-    
+
     # Work out transposition and extents.
     def make_plot(self, a, title="", xlabel="", ylabel="", color=plt.cm.jet):
         plt.ioff()
         plt.figure()
         plt.imshow(a.T,
                    cmap=color,
-                   aspect='equal',			 
+                   aspect='equal',
                    interpolation='nearest',
                    origin='lower',
                    extent=(self.X[0], self.X[-1], self.Y[0], self.Y[-1]))
-        plt.colorbar(shrink=0.8, aspect=20*0.8)
+        plt.colorbar(shrink=0.8, aspect=20 * 0.8)
         plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
 
     def show_plot(self, a, title="", xlabel="", ylabel="", color=plt.cm.jet):
         """Create and show a plot of the data or weights map; see make_plot() for usage."""
-        self.make_plot(a, title=title, xlabel=xlabel, ylabel=ylabel, color=color)
+        self.make_plot(a, title=title, xlabel=xlabel,
+                       ylabel=ylabel, color=color)
         plt.ion()
         plt.show()
-        
+
     def save_plot(self, filename, a, title="", xlabel="", ylabel="", color=plt.cm.jet):
         """Create and save a plot of the data or weights map; see make_plot() for usage."""
         interactive = plt.isinteractive()
-        self.make_plot(a, title=title, xlabel=xlabel, ylabel=ylabel, color=color)
+        self.make_plot(a, title=title, xlabel=xlabel,
+                       ylabel=ylabel, color=color)
         plt.savefig(filename)
         if interactive:
             plt.ion()
@@ -137,7 +142,8 @@ class Map(object):
         shape.
         """
         if contours is None:
-            contours = np.linspace(np.min(a.flatten()), np.max(a.flatten()), 10)
+            contours = np.linspace(np.min(a.flatten()),
+                                   np.max(a.flatten()), 10)
         plt.ioff()
         plt.figure()
         plt.contour(a.T,
@@ -145,7 +151,7 @@ class Map(object):
                     cmap=color,
                     extent=(self.X[0], self.X[-1], self.Y[0], self.Y[-1]))
         #plt.colorbar(shrink=0.8, aspect=20*0.8, format='%.3f')
-        plt.colorbar(shrink=0.8, aspect=20*0.8, format='%3.3g')
+        plt.colorbar(shrink=0.8, aspect=20 * 0.8, format='%3.3g')
         plt.title(title)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
@@ -154,7 +160,7 @@ class Map(object):
         self.make_contour(a, contours, title, xlabel, ylabel, color)
         plt.ion()
         plt.show()
-        
+
     def save_contour(self, filename, a, contours=None, title="", xlabel="", ylabel="", color=plt.cm.jet):
         interactive = plt.isinteractive()
         self.make_contour(a, contours, title, xlabel, ylabel, color)

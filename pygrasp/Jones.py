@@ -2,8 +2,8 @@ from __future__ import division
 
 import numpy as np
 
-from pygrasp.map import Map
-from pygrasp.grid import Grid
+from pygrasp.Map import Map
+from pygrasp.Grid import Grid
 
 class JonesMap(Map):
 

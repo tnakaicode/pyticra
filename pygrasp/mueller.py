@@ -3,8 +3,9 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 
-from pygrasp.map import Map
-from pygrasp.jones import JonesMap
+from pygrasp.Map import Map
+from pygrasp.Jones import JonesMap
+
 
 class MuellerMap(Map):
 
@@ -19,10 +20,10 @@ class MuellerMap(Map):
               2: 'U', 'U': 2,
               3: 'V', 'V': 3}
 
-    A = np.mat(np.array([[1,   0,   0,   1],
-                         [1,   0,   0,  -1],
-                         [0,   1,   1,   0],
-                         [0,  1j, -1j,   0]]))
+    A = np.mat(np.array([[1, 0, 0, 1],
+                         [1, 0, 0, -1],
+                         [0, 1, 1, 0],
+                         [0, 1j, -1j, 0]]))
     AI = A.getI()
 
     def __init__(self, jones_map=None):
@@ -47,8 +48,10 @@ class MuellerMap(Map):
                     # The matrix cast is redundant since numpy takes *
                     # to mean matrix multiplication when either element
                     # is a matrix.
-                    M_xy = self.A * np.mat(np.kron(J_xy, J_xy.conj())) * self.AI
-                    assert np.all(M_xy.imag == 0), "Nonzero complex value in M."
+                    M_xy = self.A * \
+                        np.mat(np.kron(J_xy, J_xy.conj())) * self.AI
+                    assert np.all(
+                        M_xy.imag == 0), "Nonzero complex value in M."
                     self.map[:, :, x, y] = M_xy.real
 
     # Figure out what this means.
@@ -61,10 +64,11 @@ class MuellerMap(Map):
         for x in range(self.X.size):
             for y in range(self.Y.size):
                 J_xy = np.mat(J[:, :, x, y])
-                M_xy = np.mat(self.A * np.kron(J_xy, J_xy.conj()) * self.AI).getI()
+                M_xy = np.mat(self.A * np.kron(J_xy, J_xy.conj())
+                              * self.AI).getI()
                 assert np.all(M_xy.imag == 0), "Nonzero complex value in map."
                 self.map[:, :, x, y] = M_xy.real
-        
+
     @classmethod
     def coadd(cls, mueller_maps):
         assert all([isinstance(m, MuellerMap) for m in mueller_maps])
@@ -87,7 +91,7 @@ class MuellerMap(Map):
         coadded.M = np.zeros((4, 4, coadded.X.size, coadded.Y.size))
         for m in mueller_maps:
             i_x, i_y, within = coadded.indices(m.X, m.Y)
-            coadded.M[:, :, i_x[0]:i_x[-1]+1, i_y[0]:i_y[-1]+1] += m.M
+            coadded.M[:, :, i_x[0]:i_x[-1] + 1, i_y[0]:i_y[-1] + 1] += m.M
         return coadded
 
     # Figure out how to create a title and axes labels.
@@ -102,9 +106,9 @@ class MuellerMap(Map):
                 sub.axes.get_xaxis().set_visible(False)
                 sub.axes.get_yaxis().set_visible(False)
                 a = self.map[i, j]
-                c=np.linspace(np.min(a.flatten()),
-                              np.max(a.flatten()),
-                              8)
+                c = np.linspace(np.min(a.flatten()),
+                                np.max(a.flatten()),
+                                8)
                 if all(c == 0):
                     plt.plot()
                 else:
@@ -128,7 +132,7 @@ class MuellerMap(Map):
                 a = self.map[i, j]
                 plt.imshow(a.T,
                            cmap=color,
-                           aspect='equal',			 
+                           aspect='equal',
                            interpolation='nearest',
                            origin='lower')
                 sub.title.set_text(name)
