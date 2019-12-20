@@ -222,7 +222,7 @@ class Grammar (object):
         value +
         p.Suppress(")")
     )
-    s_ref.setParseAction(lambda tokens: [Ref(tokens['ref'])])
+    s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
 
     s_sequence_elements = p.Combine(
         value + p.Optional(' ') + p.Optional(identifier)
