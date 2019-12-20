@@ -1,5 +1,4 @@
-*.pdf
-*.html
+# VSCode
 .vscode/*
 
 # Byte-compiled / optimized / DLL files
@@ -16,3 +15,9 @@ local.config
 build/*
 dist/*
 *.egg-info
+
+# Documents
+*.pdf
+
+# tmp
+tmp/*
