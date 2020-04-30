@@ -1,0 +1,497 @@
+global_coor  coor_sys  
+(
+)
+ 
+main_surface  rotationally_symmetric  
+(
+  nodes            : table
+    (
+      0.00000E+00   -6.00000E+00  
+      1.00000E+00   -6.00000E+00  
+      1.050279329608939E+00   -5.999894666208919E+00  
+      1.100558659217877E+00   -5.999578664835679E+00  
+      1.150837988826816E+00   -5.999051995880278E+00  
+      1.201117318435754E+00   -5.998314659342717E+00  
+      1.251396648044693E+00   -5.997366655222995E+00  
+      1.301675977653631E+00   -5.996207983521114E+00  
+      1.351955307262570E+00   -5.994838644237071E+00  
+      1.402234636871508E+00   -5.993258637370869E+00  
+      1.452513966480447E+00   -5.991467962922505E+00  
+      1.502793296089385E+00   -5.989466620891982E+00  
+      1.553072625698324E+00   -5.987254611279298E+00  
+      1.603351955307263E+00   -5.984831934084454E+00  
+      1.653631284916201E+00   -5.982198589307449E+00  
+      1.703910614525140E+00   -5.979354576948285E+00  
+      1.754189944134078E+00   -5.976299897006959E+00  
+      1.804469273743017E+00   -5.973034549483474E+00  
+      1.854748603351955E+00   -5.969558534377828E+00  
+      1.905027932960894E+00   -5.965871851690022E+00  
+      1.955307262569832E+00   -5.961974501420055E+00  
+      2.005586592178771E+00   -5.957866483567929E+00  
+      2.055865921787710E+00   -5.953547798133641E+00  
+      2.106145251396648E+00   -5.949018445117193E+00  
+      2.156424581005587E+00   -5.944278424518585E+00  
+      2.206703910614525E+00   -5.939327736337817E+00  
+      2.256983240223464E+00   -5.934166380574888E+00  
+      2.307262569832402E+00   -5.928794357229799E+00  
+      2.357541899441341E+00   -5.923211666302550E+00  
+      2.407821229050279E+00   -5.917418307793140E+00  
+      2.458100558659218E+00   -5.911414281701570E+00  
+      2.508379888268156E+00   -5.905199588027839E+00  
+      2.558659217877095E+00   -5.898774226771948E+00  
+      2.608938547486034E+00   -5.892138197933897E+00  
+      2.659217877094972E+00   -5.885291501513685E+00  
+      2.709497206703911E+00   -5.878234137511313E+00  
+      2.759776536312849E+00   -5.870966105926781E+00  
+      2.810055865921788E+00   -5.863487406760089E+00  
+      2.860335195530726E+00   -5.855798040011235E+00  
+      2.910614525139665E+00   -5.847898005680222E+00  
+      2.960893854748603E+00   -5.839787303767048E+00  
+      3.011173184357542E+00   -5.831465934271714E+00  
+      3.061452513966481E+00   -5.822933897194220E+00  
+      3.111731843575419E+00   -5.814191192534565E+00  
+      3.162011173184358E+00   -5.805237820292750E+00  
+      3.212290502793296E+00   -5.796073780468775E+00  
+      3.262569832402235E+00   -5.786699073062638E+00  
+      3.312849162011173E+00   -5.777113698074342E+00  
+      3.363128491620112E+00   -5.767317655503885E+00  
+      3.413407821229050E+00   -5.757310945351269E+00  
+      3.463687150837989E+00   -5.747093567616491E+00  
+      3.513966480446927E+00   -5.736665522299553E+00  
+      3.564245810055866E+00   -5.726026809400456E+00  
+      3.614525139664805E+00   -5.715177428919198E+00  
+      3.664804469273743E+00   -5.704117380855778E+00  
+      3.715083798882682E+00   -5.692846665210199E+00  
+      3.765363128491620E+00   -5.681365281982460E+00  
+      3.815642458100559E+00   -5.669673231172560E+00  
+      3.865921787709497E+00   -5.657770512780500E+00  
+      3.916201117318436E+00   -5.645657126806279E+00  
+      3.966480446927374E+00   -5.633333073249899E+00  
+      4.016759776536313E+00   -5.620798352111358E+00  
+      4.067039106145252E+00   -5.608052963390656E+00  
+      4.117318435754190E+00   -5.595096907087794E+00  
+      4.167597765363128E+00   -5.581930183202771E+00  
+      4.217877094972067E+00   -5.568552791735589E+00  
+      4.268156424581006E+00   -5.554964732686246E+00  
+      4.318435754189944E+00   -5.541166006054742E+00  
+      4.368715083798882E+00   -5.527156611841079E+00  
+      4.418994413407821E+00   -5.512936550045255E+00  
+      4.469273743016760E+00   -5.498505820667270E+00  
+      4.519553072625698E+00   -5.483864423707125E+00  
+      4.569832402234637E+00   -5.469012359164820E+00  
+      4.620111731843576E+00   -5.453949627040354E+00  
+      4.670391061452515E+00   -5.438676227333729E+00  
+      4.720670391061453E+00   -5.423192160044942E+00  
+      4.770949720670391E+00   -5.407497425173996E+00  
+      4.821229050279330E+00   -5.391592022720888E+00  
+      4.871508379888269E+00   -5.375475952685622E+00  
+      4.921787709497207E+00   -5.359149215068194E+00  
+      4.972067039106145E+00   -5.342611809868606E+00  
+      5.022346368715084E+00   -5.325863737086857E+00  
+      5.072625698324023E+00   -5.308904996722949E+00  
+      5.122905027932961E+00   -5.291735588776880E+00  
+      5.173184357541899E+00   -5.274355513248651E+00  
+      5.223463687150838E+00   -5.256764770138260E+00  
+      5.273743016759777E+00   -5.238963359445710E+00  
+      5.324022346368715E+00   -5.220951281171000E+00  
+      5.374301675977653E+00   -5.202728535314129E+00  
+      5.424581005586592E+00   -5.184295121875097E+00  
+      5.474860335195531E+00   -5.165651040853906E+00  
+      5.525139664804469E+00   -5.146796292250554E+00  
+      5.575418994413408E+00   -5.127730876065042E+00  
+      5.625698324022347E+00   -5.108454792297369E+00  
+      5.675977653631286E+00   -5.088968040947536E+00  
+      5.726256983240224E+00   -5.069270622015543E+00  
+      5.776536312849162E+00   -5.049362535501389E+00  
+      5.826815642458101E+00   -5.029243781405075E+00  
+      5.877094972067040E+00   -5.008914359726600E+00  
+      5.927374301675978E+00   -4.988374270465965E+00  
+      5.977653631284916E+00   -4.967623513623170E+00  
+      6.027932960893855E+00   -4.946662089198215E+00  
+      6.078212290502794E+00   -4.925489997191098E+00  
+      6.128491620111732E+00   -4.904107237601822E+00  
+      6.178770949720670E+00   -4.882513810430386E+00  
+      6.229050279329609E+00   -4.860709715676789E+00  
+      6.279329608938548E+00   -4.838694953341031E+00  
+      6.329608938547486E+00   -4.816469523423114E+00  
+      6.379888268156424E+00   -4.794033425923036E+00  
+      6.430167597765363E+00   -4.771386660840798E+00  
+      6.480446927374302E+00   -4.748529228176398E+00  
+      6.530726256983240E+00   -4.725461127929840E+00  
+      6.581005586592179E+00   -4.702182360101121E+00  
+      6.631284916201118E+00   -4.678692924690241E+00  
+      6.681564245810057E+00   -4.654992821697200E+00  
+      6.731843575418995E+00   -4.631082051122000E+00  
+      6.782122905027933E+00   -4.606960612964639E+00  
+      6.832402234636872E+00   -4.582628507225118E+00  
+      6.882681564245811E+00   -4.558085733903436E+00  
+      6.932960893854749E+00   -4.533332292999594E+00  
+      6.983240223463687E+00   -4.508368184513592E+00  
+      7.033519553072626E+00   -4.483193408445429E+00  
+      7.083798882681565E+00   -4.457807964795106E+00  
+      7.134078212290503E+00   -4.432211853562623E+00  
+      7.184357541899441E+00   -4.406405074747979E+00  
+      7.234636871508380E+00   -4.380387628351174E+00  
+      7.284916201117319E+00   -4.354159514372210E+00  
+      7.335195530726257E+00   -4.327720732811086E+00  
+      7.385474860335195E+00   -4.301071283667801E+00  
+      7.435754189944134E+00   -4.274211166942355E+00  
+      7.486033519553073E+00   -4.247140382634749E+00  
+      7.536312849162011E+00   -4.219858930744983E+00  
+      7.586592178770950E+00   -4.192366811273057E+00  
+      7.636871508379889E+00   -4.164664024218969E+00  
+      7.687150837988828E+00   -4.136750569582722E+00  
+      7.737430167597766E+00   -4.108626447364315E+00  
+      7.787709497206704E+00   -4.080291657563746E+00  
+      7.837988826815643E+00   -4.051746200181018E+00  
+      7.888268156424582E+00   -4.022990075216129E+00  
+      7.938547486033520E+00   -3.994023282669080E+00  
+      7.988826815642458E+00   -3.964845822539871E+00  
+      8.039106145251397E+00   -3.935457694828500E+00  
+      8.089385474860336E+00   -3.905858899534970E+00  
+      8.139664804469273E+00   -3.876049436659280E+00  
+      8.189944134078212E+00   -3.846029306201430E+00  
+      8.240223463687151E+00   -3.815798508161418E+00  
+      8.290502793296090E+00   -3.785357042539246E+00  
+      8.340782122905029E+00   -3.754704909334914E+00  
+      8.391061452513966E+00   -3.723842108548423E+00  
+      8.441340782122905E+00   -3.692768640179769E+00  
+      8.491620111731844E+00   -3.661484504228956E+00  
+      8.541899441340782E+00   -3.629989700695983E+00  
+      8.592178770949721E+00   -3.598284229580849E+00  
+      8.642458100558660E+00   -3.566368090883555E+00  
+      8.692737430167599E+00   -3.534241284604100E+00  
+      8.743016759776538E+00   -3.501903810742486E+00  
+      8.793296089385475E+00   -3.469355669298711E+00  
+      8.843575418994414E+00   -3.436596860272775E+00  
+      8.893854748603353E+00   -3.403627383664679E+00  
+      8.944134078212290E+00   -3.370447239474423E+00  
+      8.994413407821229E+00   -3.337056427702007E+00  
+      9.044692737430168E+00   -3.303454948347429E+00  
+      9.094972067039107E+00   -3.269642801410692E+00  
+      9.145251396648046E+00   -3.235619986891794E+00  
+      9.195530726256983E+00   -3.201386504790737E+00  
+      9.245810055865922E+00   -3.166942355107519E+00  
+      9.296089385474861E+00   -3.132287537842139E+00  
+      9.346368715083798E+00   -3.097422052994601E+00  
+      9.396648044692737E+00   -3.062345900564901E+00  
+      9.446927374301676E+00   -3.027059080553041E+00  
+      9.497206703910615E+00   -2.991561592959021E+00  
+      9.547486033519554E+00   -2.955853437782840E+00  
+      9.597765363128492E+00   -2.919934615024500E+00  
+      9.648044692737431E+00   -2.883805124683998E+00  
+      9.698324022346370E+00   -2.847464966761336E+00  
+      9.748603351955307E+00   -2.810914141256516E+00  
+      9.798882681564246E+00   -2.774152648169533E+00  
+      9.849162011173185E+00   -2.737180487500390E+00  
+      9.899441340782124E+00   -2.699997659249087E+00  
+      9.949720670391063E+00   -2.662604163415623E+00  
+      1.00000E+01   -2.62500E+00  
+    ),
+  file_name        : " ",
+  tip              : on
+)
+ 
+cut_coor  coor_sys  
+(
+  base             : ref(global_coor)
+)
+ 
+frequencies  frequency  
+(
+  frequency_list   : sequence(1.5 GHz)
+)
+ 
+sub_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(sub_reflector),
+  spill_over       : on,
+  coor_sys         : ref(sub_coor),
+  file_name        : sub.cur
+)
+ 
+plane  plane  
+(
+)
+ 
+panel_reflector  panels_in_polar_grid  
+(
+  coor_sys         : ref(global_coor),
+  surface          : ref(main_surface),
+  polar_grid       : sequence
+    (    struct(outer_rho_limit: 1.0 m, phi_0: 0.0, n_panels: 1),
+    struct(outer_rho_limit: 3.25 m, phi_0: 0.0, n_panels: 6),
+    struct(outer_rho_limit: 5.5 m, phi_0: 0.0, n_panels: 12),
+    struct(outer_rho_limit: 7.75 m, phi_0: 0.0, n_panels: 18),
+    struct(outer_rho_limit: 10.0 m, phi_0: 0.0, n_panels: 24)
+    ),
+  gap_widths       : struct(circular_gaps: 0.2E-01 m, radial_gaps: 0.2E-01 m),
+  misalignments_file : " "
+)
+ 
+po_panels  po_panels_in_polar_grid  
+(
+  frequency        : ref(frequencies),
+  panels_in_polar_grid : ref(panel_reflector),
+  spill_over       : on,
+  file_name        : panels.cur
+)
+ 
+feed  gaussian_beam_pattern  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 25.0,
+  taper            : -12.0,
+  polarisation     : rhc
+)
+ 
+circular_struts_1  circular_struts  
+(
+  coor_sys         : ref(global_coor),
+  radius           : 0.8E-01 m,
+  end_points       : sequence
+    (    struct(point1_x: -9.8 m, point1_y: 0.0 m, point1_z: -2.625 m, point2_x: -1.0 m, point2_y: 0.0 m, 
+point2_z: 0.753 m)
+    )
+)
+ 
+main_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 10.0 m, y: 10.0 m)
+)
+ 
+main_reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(main_surface)),
+  rim              : ref(main_rim)
+)
+ 
+sub_coor  coor_sys  
+(
+  base             : ref(global_coor)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -1.58868758516436 m),
+  base             : ref(sub_coor)
+)
+ 
+sub_surface  rotationally_symmetric  
+(
+  nodes            : table
+    (
+      1.00000E+00    5.558193353451967E-01  
+      8.888888888888888E-01    5.735443041560399E-01  
+      7.777777777777778E-01    5.783816838880612E-01  
+      6.666666666666667E-01    5.713319590469214E-01  
+      5.555555555555556E-01    5.529920151287627E-01  
+      4.444444444444444E-01    5.236417186089261E-01  
+      3.333333333333334E-01    4.832810694874113E-01  
+      2.222222222222223E-01    4.316302012888779E-01  
+      1.111111111111112E-01    3.680922285171833E-01  
+      0.00000E+00    2.916666666666666E-01  
+    ),
+  file_name        : " ",
+  tip              : on
+)
+ 
+sub_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 1.0 m, y: 1.0 m)
+)
+ 
+sub_reflector  reflector  
+(
+  coor_sys         : ref(sub_coor),
+  surfaces         : sequence(ref(sub_surface)),
+  rim              : ref(sub_rim)
+)
+ 
+main_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(main_reflector),
+  spill_over       : on,
+  coor_sys         : ref(global_coor),
+  file_name        : main.cur
+)
+ 
+PWE  plane_wave_expansion  
+(
+  frequency        : ref(frequencies),
+  beam_coor_sys    : ref(global_coor),
+  beam_cone_angle  : 20.0,
+  file_name        : PWE.pwe
+)
+ 
+sub_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+strut_analysis_1  strut_analysis_circ_cross  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(circular_struts_1),
+  spill_over       : on,
+  file_name        : strut_1.cur
+)
+ 
+strut_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+total_solid_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+total_panel_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+strut_main_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(main_reflector),
+  spill_over       : on,
+  coor_sys         : ref(global_coor),
+  file_name        : main_2.cur
+)
+ 
+strut_main_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+total_strut_main_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+circular_struts_4  circular_struts  
+(
+  coor_sys         : ref(global_coor),
+  radius           : 0.8E-01 m,
+  end_points       : sequence
+    (    struct(point1_x: -9.8 m, point1_y: 0.0 m, point1_z: -2.625 m, point2_x: -1.0 m, point2_y: 0.0 m, 
+point2_z: 0.753 m),
+    struct(point1_x: 9.8 m, point1_y: 0.0 m, point1_z: -2.625 m, point2_x: 1.0 m, point2_y: 0.0 m, point2_z: 
+0.753 m),
+    struct(point1_x: 0.0 m, point1_y: 9.8 m, point1_z: -2.625 m, point2_x: 0.0 m, point2_y: 1.0 m, point2_z: 
+0.753 m),
+    struct(point1_x: 0.0 m, point1_y: -9.8 m, point1_z: -2.625 m, point2_x: 0.0 m, point2_y: -1.0 m, 
+point2_z: 0.753 m)
+    )
+)
+ 
+strut_analysis_4  strut_analysis_circ_cross  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(circular_struts_4),
+  spill_over       : on,
+  file_name        : strut_4.cur
+)
+ 
+total_field_cuts  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  polarisation     : circular,
+  file_name        : " ",
+  comment          : " ",
+  frequency        : ref(frequencies)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(view_1_reflector_with_panels_plot),ref(view_1_circular_struts_plot),
+ref(rays_from_point_sources)),
+  resolution_index : 6
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+  x_lines          : 1,
+  y_lines          : 1
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_reflector_with_panels_plot  reflector_with_panels_plot  
+(
+  panel_plot_specification : sequence
+    (    struct(start_panel: -1, end_panel: -1, rho_lines: 0, phi_lines: 0, rim_plot: on)
+    )
+)
+ 
+view_1_circular_struts_plot  circular_struts_plot  
+(
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  theta_range      : struct(start: -6.5, end: -23.0, np: 11),
+  ray_path_range   : struct(start: 0.0 m, end: 35.0 m)
+)
+ 
+ //$$ Saved at 16:54:10 on 30.04.2020 by TICRA Tools 19.1.1 SN=007839
+  

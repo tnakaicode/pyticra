@@ -1,0 +1,40 @@
+COMMAND OBJECT sub_po get_currents ( source : sequence(ref(feed)),  &
+auto_convergence_of_po : on, convergence_on_scatterer :  &
+sequence(ref(main_reflector)), convergence_on_output_grid :  &
+sequence(ref(total_solid_cuts))) po_sub 
+COMMAND OBJECT main_po get_currents ( source : sequence(ref(sub_po)),  &
+auto_convergence_of_po : on, convergence_on_output_grid :  &
+sequence(ref(total_solid_cuts))) po_main 
+COMMAND OBJECT po_panels get_currents ( source : sequence(ref(sub_po)),  &
+auto_convergence_of_po : on, convergence_on_output_grid :  &
+sequence(ref(total_solid_cuts))) cmd_1 
+COMMAND OBJECT total_solid_cuts get_field ( source : sequence(ref(feed),  &
+ref(main_po), ref(sub_po))) cmd_12 
+COMMAND OBJECT total_panel_cuts get_field ( source : sequence(ref(feed),  &
+ref(sub_po), ref(po_panels))) cmd_13 
+//COMMAND OBJECT PWE get_plane_wave_expansion ( source :  &
+//sequence(ref(main_po)), auto_convergence : on, convergence_on_scatterer :  &
+//sequence(ref(circular_struts_1))) cmd_7 
+//COMMAND OBJECT strut_analysis_1 get_currents ( source : sequence(ref(PWE)),  &
+//auto_convergence_of_po : on, convergence_on_scatterer :  &
+//sequence(ref(main_reflector)), convergence_on_output_grid :  &
+//sequence(ref(strut_cuts))) cmd_8 
+//COMMAND OBJECT strut_cuts get_field ( source :  &
+//sequence(ref(strut_analysis_1))) cmd_9 
+//COMMAND OBJECT strut_main_po get_currents ( source :  &
+//sequence(ref(strut_analysis_1)), auto_convergence_of_po : on,  &
+//convergence_on_output_grid : sequence(ref(strut_cuts))) cmd_14 
+//COMMAND OBJECT strut_main_cuts get_field ( source :  &
+//sequence(ref(strut_main_po))) cmd_15 
+//COMMAND OBJECT total_strut_main_cuts get_field ( source :  &
+//sequence(ref(strut_main_po), ref(strut_analysis_1))) cmd_16 
+//COMMAND OBJECT strut_analysis_4 get_currents ( source : sequence(ref(PWE)),  &
+//auto_convergence_of_po : on, convergence_on_scatterer :  &
+//sequence(ref(main_reflector)), convergence_on_output_grid :  &
+//sequence(ref(total_field_cuts))) cmd_17 
+//COMMAND OBJECT strut_main_po get_currents ( source :  &
+//sequence(ref(strut_analysis_4)), auto_convergence_of_po : on,  &
+//convergence_on_output_grid : sequence(ref(total_field_cuts))) cmd_18 
+//COMMAND OBJECT total_field_cuts get_field ( source : sequence(ref(feed),  &
+//ref(sub_po), ref(main_po), ref(strut_analysis_4), ref(strut_main_po))) cmd_19 
+QUIT 

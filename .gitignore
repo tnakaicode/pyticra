@@ -4,6 +4,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyc[cod]
 
 # Files and directories specific to pygrasp 
 documentation/
@@ -19,5 +20,16 @@ dist/*
 # Documents
 *.pdf
 
-# tmp
+# Tmp
 tmp/*
+input/Gyrotron/tmp/
+temp_*/*
+*/temp_*/*
+
+# Ticra Tools
+Project/*/*.stp
+Project/*/*.log
+Project/*/*.out
+Project/*/*.xml
+Project/*/*.grd
+Project/*/screenoutput.txt
