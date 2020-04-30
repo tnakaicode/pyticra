@@ -32,4 +32,6 @@ Project/*/*.log
 Project/*/*.out
 Project/*/*.xml
 Project/*/*.grd
+project/*/*.cur
+project/*/*.pwe
 Project/*/screenoutput.txt
