@@ -1,73 +1,91 @@
 [Comment]
 Project comment
 [TOR file]
-working/project.tor
+working/Project.tor
 [Auxiliary TOR files]
 [TCI file]
-working/project.tci
+working/Project.tci
 [Default units]
 GHz m S/m 1
 [Project setup]
 <!DOCTYPE Project>
-<Project application="TICRA Tools" version="19.1.1">
+<Project version="19.1.1" application="TICRA Tools">
  <Results>
   <Analysis Path="Job_01" Name="Job_01">
    <Objects Path="Job_01.tor"/>
    <Commands Path="Job_01.tci"/>
-   <Output Path="output_files_4128.xml"/>
-   <Job JobStatus="Job Finished" JobHidden="false" JobOutputSpec="output_files_4128.xml" JobProcessID="4128" NumCommands="5" StartTime="2019-03-27T16:37:58" Name="Job_01"/>
+   <Output Path="output_files_8904.xml"/>
+   <Job JobProcessID="8904" StartTime="2019-03-27T16:29:49" NumCommands="3" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8904.xml" Name="Job_01"/>
   </Analysis>
   <Analysis Path="Job_02" Name="Job_02">
    <Objects Path="Job_02.tor"/>
    <Commands Path="Job_02.tci"/>
-   <Output Path="output_files_8752.xml"/>
-   <Job JobStatus="Job Finished" JobHidden="false" JobOutputSpec="output_files_8752.xml" JobProcessID="8752" NumCommands="6" StartTime="2019-03-27T16:39:20" Name="Job_02"/>
+   <Output Path="output_files_6680.xml"/>
+   <Job JobProcessID="6680" StartTime="2019-03-27T16:30:27" NumCommands="6" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_6680.xml" Name="Job_02"/>
   </Analysis>
   <Analysis Path="Job_03" Name="Job_03">
    <Objects Path="Job_03.tor"/>
    <Commands Path="Job_03.tci"/>
-   <Output Path="output_files_5268.xml"/>
-   <Job JobStatus="Job Finished" JobHidden="false" JobOutputSpec="output_files_5268.xml" JobProcessID="5268" NumCommands="3" StartTime="2019-03-27T16:40:25" Name="Job_03"/>
+   <Output Path="output_files_7620.xml"/>
+   <Job JobProcessID="7620" StartTime="2019-03-27T16:30:57" NumCommands="9" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7620.xml" Name="Job_03"/>
+  </Analysis>
+  <Analysis Path="Job_04" Name="Job_04">
+   <Objects Path="Job_04.tor"/>
+   <Commands Path="Job_04.tci"/>
+   <Output Path="output_files_8352.xml"/>
+   <Job JobProcessID="8352" StartTime="2019-03-27T16:32:37" NumCommands="12" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8352.xml" Name="Job_04"/>
+  </Analysis>
+  <Analysis Path="Job_05" Name="Job_05">
+   <Objects Path="Job_05.tor"/>
+   <Commands Path="Job_05.tci"/>
+   <Output Path="output_files_7304.xml"/>
+   <Job JobProcessID="7304" StartTime="2019-03-27T16:33:06" NumCommands="15" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7304.xml" Name="Job_05"/>
+  </Analysis>
+  <Analysis Path="Job_06" Name="Job_06">
+   <Objects Path="Job_06.tor"/>
+   <Commands Path="Job_06.tci"/>
+   <Output Path="output_files_1972.xml"/>
+   <Job JobProcessID="1972" StartTime="2019-03-27T16:34:05" NumCommands="20" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_1972.xml" Name="Job_06"/>
   </Analysis>
  </Results>
  <ResultWindows/>
  <WizardData>
   <ReflectorWizard>
    <Axial-FdRatio Value="0.3"/>
-   <Axial-FocalLength Unit="m" Value="0.3"/>
-   <Axial-Frequency Unit="GHz" Value="20"/>
-   <Axial-HalfAngle Unit="deg" Value="30"/>
-   <Axial-MainDiameter Unit="m" Value="1"/>
+   <Axial-FocalLength Value="0.3" Unit="m"/>
+   <Axial-Frequency Value="20" Unit="GHz"/>
+   <Axial-HalfAngle Value="30" Unit="deg"/>
+   <Axial-MainDiameter Value="1" Unit="m"/>
    <Axial-Mode Value="0"/>
    <Axial-Prefix Value="ring_focus_"/>
    <Axial-SubDiameter Value="0.15"/>
-   <Axial-SubDiameterAbsolute Unit="m" Value="0.15"/>
+   <Axial-SubDiameterAbsolute Value="0.15" Unit="m"/>
    <Axial-useRelative Value="1"/>
    <Dual-Angle1 Value="0"/>
    <Dual-Angle2 Value="0"/>
-   <Dual-Diameter Unit="m" Value="11.1"/>
+   <Dual-Diameter Value="11.1" Unit="m"/>
    <Dual-Eccentricity Value="1.5"/>
-   <Dual-FocalLength Unit="m" Value="6.66"/>
+   <Dual-FocalLength Value="6.66" Unit="m"/>
    <Dual-FocalLengthRelative Value="0.6"/>
-   <Dual-FociDistance Unit="m" Value="3.33"/>
+   <Dual-FociDistance Value="3.33" Unit="m"/>
    <Dual-FociDistanceRelative Value="0.5"/>
-   <Dual-Frequency Unit="GHz" Value="3.625"/>
+   <Dual-Frequency Value="3.625" Unit="GHz"/>
    <Dual-Mizuguchi Value="1"/>
    <Dual-Prefix Value="dual_"/>
    <Dual-UseRelative Value="1"/>
    <Main-SelectFrequency Value="1"/>
-   <Single-Diameter Unit="m" Value="1"/>
-   <Single-FocalLength Unit="m" Value="0.6"/>
+   <Single-Diameter Value="1" Unit="m"/>
+   <Single-FocalLength Value="0.6" Unit="m"/>
    <Single-FocalLengthRelative Value="0.6"/>
-   <Single-Frequency Unit="GHz" Value="12"/>
-   <Single-Offset Unit="m" Value="0"/>
+   <Single-Frequency Value="12" Unit="GHz"/>
+   <Single-Offset Value="0" Unit="m"/>
    <Single-OffsetRelative Value="0"/>
    <Single-Prefix Value="single_"/>
    <Single-UseRelative Value="1"/>
   </ReflectorWizard>
  </WizardData>
  <view_configuration>
-  <view show_rulers="yes" minimized="no" locked_phi_theta="no" orientation_type="0" show_surfaces="yes" name="view_1" collapsed_view_settings_entries="" viewCenter="31.05513191223145,11.7377405166626,10.48746204376221" perspective_view="no" enable_theta_slider="no" maximized="yes" scale="13.3333" position="31.93704986572266,12.07107448577881,10.8207950592041" show_wire_grid="yes" enable_psi_slider="no" enable_phi_slider="no" pos="0x0" upVector="-0.3118048310279846,-0.1178510561585426,0.942808985710144" size="-1x-1"/>
+  <view maximized="yes" upVector="-0.3118041455745697,-0.1178507432341576,0.9428091049194336" viewCenter="1.560081005096436,0.4051155149936676,0.7579654455184937" locked_phi_theta="no" perspective_view="no" orientation_type="0" minimized="no" show_wire_grid="yes" enable_psi_slider="no" size="-1x-1" scale="0.815668" show_rulers="yes" enable_theta_slider="no" collapsed_view_settings_entries="" enable_phi_slider="no" pos="0x0" position="2.441998481750488,0.7384487986564636,1.09129798412323" name="view_1" show_surfaces="yes"/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>

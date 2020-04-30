@@ -1,1 +1,1 @@
-All contributions, 4 struts.
+Step 3: Transmission of the rear-reflector scattered field through the front reflector, using a plane-wave expansion of the field from the rear reflector.

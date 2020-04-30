@@ -1,6 +1,8 @@
 //field_1 () 
 //field_2 () 
-field_3 () 
+//field_3 () 
+//field_4 () 
+field_5 () 
 FUNCTION field_1 
    COMMAND OBJECT front_PO get_currents ( source :  &
    sequence(ref(rear_feed_def)), auto_convergence_of_po : on,  &
@@ -26,5 +28,23 @@ FUNCTION field_3
    sequence(ref(field_3)), convergence_on_expansion_grid :  &
    sequence(ref(front_PWE))) 
    COMMAND OBJECT field_3 get_field ( source : sequence(ref(front_PO))) 
+END 
+FUNCTION field_4 
+   COMMAND OBJECT front_PWE get_plane_wave_expansion ( source :  &
+   sequence(ref(front_PO)), auto_convergence : on, convergence_on_scatterer :  &
+   sequence(ref(rear_reflector))) 
+   COMMAND OBJECT rear_PO get_currents ( source : sequence(ref(front_PWE)),  &
+   auto_convergence_of_po : on, convergence_on_output_grid :  &
+   sequence(ref(field_4)), convergence_on_expansion_grid : sequence(ref(PWE))) 
+   COMMAND OBJECT field_4 get_field ( source : sequence(ref(rear_PO))) 
+END 
+FUNCTION field_5 
+   COMMAND OBJECT PWE get_plane_wave_expansion ( source :  &
+   sequence(ref(rear_PO)), auto_convergence : on, convergence_on_scatterer :  &
+   sequence(ref(front_reflector))) 
+   COMMAND OBJECT front_PO get_currents ( source : sequence(ref(PWE)),  &
+   auto_convergence_of_po : on, convergence_on_output_grid :  &
+   sequence(ref(field_5))) 
+   COMMAND OBJECT field_5 get_field ( source : sequence(ref(front_PO))) 
 END 
 QUIT 

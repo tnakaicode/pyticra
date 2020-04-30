@@ -19,11 +19,17 @@ if __name__ == "__main__":
     opt, argc = parser.parse_args(argvs)
     print(argc, opt)
 
-    tor_file = opt.dir + "/Project.tor"
-    tci_file = opt.dir + "/Project.tci"
+    dir_name = os.path.dirname(opt.tor) + "/"
+    sub_name = os.path.basename(os.path.dirname(opt.tor))
+    rootname, ext_name = os.path.splitext(opt.tor)
+    print(dir_name, sub_name)
+    print(rootname)
+
+    job_name = sub_name
+    tor_file = rootname + ".tor"
+    tci_file = rootname + ".tci"
 
     tor_obj = ObjectRepository()
     tor_obj.load(tor_file)
 
-    print(tor_obj)
-    print(tor_obj.items())
+    print(tor_obj.keys())
