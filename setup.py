@@ -8,5 +8,5 @@ setup(name='pyticra',
       author='Taku Nakai',
       author_email='tnakaicode@gmail.com',
       license='GPL',
-      packages=['pygrasp'],
+      packages=['pyticra'],
       zip_safe=False)

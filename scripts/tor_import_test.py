@@ -9,7 +9,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
 from optparse import OptionParser
 
-from pygrasp.Object import ObjectRepository
+from pyticra.Object import ObjectRepository
 
 if __name__ == "__main__":
     argvs = sys.argv

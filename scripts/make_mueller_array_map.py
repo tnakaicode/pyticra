@@ -2,9 +2,9 @@ import os
 import pickle
 import numpy as np
 
-from pygrasp.convert import Convert
-from pygrasp.mueller import MuellerMap
-from pygrasp. import sim 
+from pyticra.convert import Convert
+from pyticra.mueller import MuellerMap
+from pyticra import sim 
 
 # Pair grid files in the differencing or HWP configuration to make
 # Jones maps and hence Mueller maps for each beam. Coadd these beams
