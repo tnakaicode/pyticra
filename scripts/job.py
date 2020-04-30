@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+import time
+import os
+import subprocess
+from optparse import OptionParser
+
+
+def split_filename(filename="../temp_20200408000/not_ignore.txt"):
+    name = os.path.basename(filename)
+    dir_name = os.path.dirname(filename)
+    sub_name = os.path.basename(os.path.dirname(filename))
+    rootname, ext_name = os.path.splitext(name)
+    return rootname, dir_name, sub_name
+
+
+if __name__ == "__main__":
+    argvs = sys.argv
+    parser = OptionParser()
+    parser.add_option("--job", dest="job",
+                      default="../Project/Job_01/Job_01.tor")
+    opt, argc = parser.parse_args(argvs)
+    print(argc, opt)
+
+    ticra_tool = r'ticra-tools.exe'
+
+    root_dir = os.getcwd()
+    tor_file = root_dir + opt.job
+    rootname, dir_name, sub_name = split_filename(opt.job)
+    print(dir_name, sub_name)
+    print(rootname)
+
+    subprocess.call(
+        ticra_tool + " batch.gxp {}.out {}.log -nif".format(sub_name, sub_name))
+    os.chdir("{}".format(root_dir))
