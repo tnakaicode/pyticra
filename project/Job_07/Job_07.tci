@@ -1,0 +1,9 @@
+field_1 () 
+FUNCTION field_1 
+   COMMAND OBJECT front_PO get_currents ( source :  &
+   sequence(ref(rear_feed_def)), auto_convergence_of_po : on,  &
+   convergence_on_output_grid : sequence(ref(field_1)),  &
+   convergence_on_expansion_grid : sequence(ref(rear_PWE))) 
+   COMMAND OBJECT field_1 get_field ( source : sequence(ref(front_PO))) 
+END 
+QUIT 

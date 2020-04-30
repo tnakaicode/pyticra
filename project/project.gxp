@@ -9,43 +9,49 @@ working/Project.tci
 GHz m S/m 1
 [Project setup]
 <!DOCTYPE Project>
-<Project version="19.1.1" application="TICRA Tools">
+<Project application="TICRA Tools" version="19.1.1">
  <Results>
   <Analysis Path="Job_01" Name="Job_01">
    <Objects Path="Job_01.tor"/>
    <Commands Path="Job_01.tci"/>
    <Output Path="output_files_8904.xml"/>
-   <Job JobProcessID="8904" StartTime="2019-03-27T16:29:49" NumCommands="3" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8904.xml" Name="Job_01"/>
+   <Job JobStatus="Job Finished" NumCommands="3" JobProcessID="8904" Name="Job_01" JobHidden="false" JobOutputSpec="output_files_8904.xml" StartTime="2019-03-27T16:29:49"/>
   </Analysis>
   <Analysis Path="Job_02" Name="Job_02">
    <Objects Path="Job_02.tor"/>
    <Commands Path="Job_02.tci"/>
    <Output Path="output_files_6680.xml"/>
-   <Job JobProcessID="6680" StartTime="2019-03-27T16:30:27" NumCommands="6" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_6680.xml" Name="Job_02"/>
+   <Job JobStatus="Job Finished" NumCommands="6" JobProcessID="6680" Name="Job_02" JobHidden="false" JobOutputSpec="output_files_6680.xml" StartTime="2019-03-27T16:30:27"/>
   </Analysis>
   <Analysis Path="Job_03" Name="Job_03">
    <Objects Path="Job_03.tor"/>
    <Commands Path="Job_03.tci"/>
    <Output Path="output_files_7620.xml"/>
-   <Job JobProcessID="7620" StartTime="2019-03-27T16:30:57" NumCommands="9" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7620.xml" Name="Job_03"/>
+   <Job JobStatus="Job Finished" NumCommands="9" JobProcessID="7620" Name="Job_03" JobHidden="false" JobOutputSpec="output_files_7620.xml" StartTime="2019-03-27T16:30:57"/>
   </Analysis>
   <Analysis Path="Job_04" Name="Job_04">
    <Objects Path="Job_04.tor"/>
    <Commands Path="Job_04.tci"/>
    <Output Path="output_files_8352.xml"/>
-   <Job JobProcessID="8352" StartTime="2019-03-27T16:32:37" NumCommands="12" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8352.xml" Name="Job_04"/>
+   <Job JobStatus="Job Finished" NumCommands="12" JobProcessID="8352" Name="Job_04" JobHidden="false" JobOutputSpec="output_files_8352.xml" StartTime="2019-03-27T16:32:37"/>
   </Analysis>
   <Analysis Path="Job_05" Name="Job_05">
    <Objects Path="Job_05.tor"/>
    <Commands Path="Job_05.tci"/>
    <Output Path="output_files_7304.xml"/>
-   <Job JobProcessID="7304" StartTime="2019-03-27T16:33:06" NumCommands="15" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7304.xml" Name="Job_05"/>
+   <Job JobStatus="Job Finished" NumCommands="15" JobProcessID="7304" Name="Job_05" JobHidden="false" JobOutputSpec="output_files_7304.xml" StartTime="2019-03-27T16:33:06"/>
   </Analysis>
   <Analysis Path="Job_06" Name="Job_06">
    <Objects Path="Job_06.tor"/>
    <Commands Path="Job_06.tci"/>
    <Output Path="output_files_1972.xml"/>
-   <Job JobProcessID="1972" StartTime="2019-03-27T16:34:05" NumCommands="20" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_1972.xml" Name="Job_06"/>
+   <Job JobStatus="Job Finished" NumCommands="20" JobProcessID="1972" Name="Job_06" JobHidden="false" JobOutputSpec="output_files_1972.xml" StartTime="2019-03-27T16:34:05"/>
+  </Analysis>
+  <Analysis Path="Job_07" Name="Job_07">
+   <Objects Path="Job_07.tor"/>
+   <Commands Path="Job_07.tci"/>
+   <Output Path="output_files_43908.xml"/>
+   <Job JobStatus="Job Finished" NumCommands="3" JobProcessID="43908" Name="Job_07" JobHidden="false" JobOutputSpec="output_files_43908.xml" StartTime="2020-04-30T18:28:36"/>
   </Analysis>
  </Results>
  <ResultWindows/>
@@ -85,7 +91,7 @@ GHz m S/m 1
   </ReflectorWizard>
  </WizardData>
  <view_configuration>
-  <view maximized="yes" upVector="-0.3118041455745697,-0.1178507432341576,0.9428091049194336" viewCenter="1.560081005096436,0.4051155149936676,0.7579654455184937" locked_phi_theta="no" perspective_view="no" orientation_type="0" minimized="no" show_wire_grid="yes" enable_psi_slider="no" size="-1x-1" scale="0.815668" show_rulers="yes" enable_theta_slider="no" collapsed_view_settings_entries="" enable_phi_slider="no" pos="0x0" position="2.441998481750488,0.7384487986564636,1.09129798412323" name="view_1" show_surfaces="yes"/>
+  <view position="2.000463724136353,-0.9830493927001953,1.639152526855469" show_wire_grid="yes" enable_theta_slider="no" scale="0.815668" show_rulers="yes" enable_phi_slider="no" size="-1x-1" minimized="no" pos="0x0" collapsed_view_settings_entries="" viewCenter="1.317853569984436,-0.539304256439209,1.058520197868347" upVector="-0.6344974040985107,0.03431764245033264,0.7721626758575439" maximized="yes" perspective_view="no" locked_phi_theta="no" show_surfaces="yes" enable_psi_slider="no" orientation_type="0" name="view_1"/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>
