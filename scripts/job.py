@@ -31,6 +31,7 @@ if __name__ == "__main__":
     print(dir_name, sub_name)
     print(rootname)
 
+    os.chdir("{}/{}".format(root_dir, dir_name))
     subprocess.call(
         ticra_tool + " batch.gxp {}.out {}.log -nif".format(sub_name, sub_name))
     os.chdir("{}".format(root_dir))
