@@ -1,53 +1,16 @@
 [Comment]
 Project comment
 [TOR file]
-working/Project.tor
+working/project.tor
 [Auxiliary TOR files]
 [TCI file]
-working/Project.tci
+working/project.tci
 [Default units]
 GHz m S/m 1
 [Project setup]
 <!DOCTYPE Project>
-<Project version="19.1.1" application="TICRA Tools">
- <Results>
-  <Analysis Path="Job_01" Name="Job_01">
-   <Objects Path="Job_01.tor"/>
-   <Commands Path="Job_01.tci"/>
-   <Output Path="output_files_8904.xml"/>
-   <Job JobProcessID="8904" StartTime="2019-03-27T16:29:49" NumCommands="3" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8904.xml" Name="Job_01"/>
-  </Analysis>
-  <Analysis Path="Job_02" Name="Job_02">
-   <Objects Path="Job_02.tor"/>
-   <Commands Path="Job_02.tci"/>
-   <Output Path="output_files_6680.xml"/>
-   <Job JobProcessID="6680" StartTime="2019-03-27T16:30:27" NumCommands="6" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_6680.xml" Name="Job_02"/>
-  </Analysis>
-  <Analysis Path="Job_03" Name="Job_03">
-   <Objects Path="Job_03.tor"/>
-   <Commands Path="Job_03.tci"/>
-   <Output Path="output_files_7620.xml"/>
-   <Job JobProcessID="7620" StartTime="2019-03-27T16:30:57" NumCommands="9" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7620.xml" Name="Job_03"/>
-  </Analysis>
-  <Analysis Path="Job_04" Name="Job_04">
-   <Objects Path="Job_04.tor"/>
-   <Commands Path="Job_04.tci"/>
-   <Output Path="output_files_8352.xml"/>
-   <Job JobProcessID="8352" StartTime="2019-03-27T16:32:37" NumCommands="12" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_8352.xml" Name="Job_04"/>
-  </Analysis>
-  <Analysis Path="Job_05" Name="Job_05">
-   <Objects Path="Job_05.tor"/>
-   <Commands Path="Job_05.tci"/>
-   <Output Path="output_files_7304.xml"/>
-   <Job JobProcessID="7304" StartTime="2019-03-27T16:33:06" NumCommands="15" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_7304.xml" Name="Job_05"/>
-  </Analysis>
-  <Analysis Path="Job_06" Name="Job_06">
-   <Objects Path="Job_06.tor"/>
-   <Commands Path="Job_06.tci"/>
-   <Output Path="output_files_1972.xml"/>
-   <Job JobProcessID="1972" StartTime="2019-03-27T16:34:05" NumCommands="20" JobHidden="false" JobStatus="Job Finished" JobOutputSpec="output_files_1972.xml" Name="Job_06"/>
-  </Analysis>
- </Results>
+<Project application="TICRA Tools" version="19.1.1">
+ <Results/>
  <ResultWindows/>
  <WizardData>
   <ReflectorWizard>
@@ -85,7 +48,7 @@ GHz m S/m 1
   </ReflectorWizard>
  </WizardData>
  <view_configuration>
-  <view maximized="yes" upVector="-0.3118041455745697,-0.1178507432341576,0.9428091049194336" viewCenter="1.560081005096436,0.4051155149936676,0.7579654455184937" locked_phi_theta="no" perspective_view="no" orientation_type="0" minimized="no" show_wire_grid="yes" enable_psi_slider="no" size="-1x-1" scale="0.815668" show_rulers="yes" enable_theta_slider="no" collapsed_view_settings_entries="" enable_phi_slider="no" pos="0x0" position="2.441998481750488,0.7384487986564636,1.09129798412323" name="view_1" show_surfaces="yes"/>
+  <view enable_phi_slider="no" show_wire_grid="yes" scale="0.815668" show_surfaces="yes" enable_theta_slider="no" collapsed_view_settings_entries="" position="0.4882455766201019,0,0.3528507649898529" perspective_view="no" locked_phi_theta="no" show_rulers="yes" enable_psi_slider="no" maximized="yes" minimized="no" upVector="-0.3118041455745697,-0.1178507432341576,0.9428091049194336" viewCenter="-0.393671840429306,-0.333333283662796,0.01951819658279419" pos="0x0" name="view_1" orientation_type="0" size="925x619"/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>
