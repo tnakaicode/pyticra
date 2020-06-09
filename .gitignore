@@ -22,7 +22,6 @@ dist/*
 
 # Tmp
 tmp/*
-input/Gyrotron/tmp/
 temp_*/*
 */temp_*/*
 
@@ -31,6 +30,7 @@ Project/*/*.stp
 Project/*/*.log
 Project/*/*.out
 Project/*/*.xml
+Project/*/*.sfc
 Project/*/*.grd
 project/*/*.cur
 project/*/*.pwe
