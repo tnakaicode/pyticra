@@ -3,9 +3,9 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 
-from pygrasp.flat_map import GridMap
-from pygrasp.convert import Convert
-from pygrasp.analyze import FWHM
+from pyticra.flat_map import GridMap
+from pyticra.convert import Convert
+from pyticra.analyze import FWHM
 
 
 def plot_radial_cut(grid_map, component, angle, center=(0, 0)):

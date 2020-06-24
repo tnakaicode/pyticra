@@ -2,8 +2,8 @@ import os
 from glob import glob
 import numpy as np
 
-from pygrasp.config import Config
-from pygrasp.flat_map import GridMap, JonesMap
+from pyticra.config import Config
+from pyticra.flat_map import GridMap, JonesMap
 
 
 # This is a library for dealing specifically with Brad's GRASP simulations.

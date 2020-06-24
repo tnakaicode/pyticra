@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 
-from pygrasp.output import load_cut, save_cut
+from pyticra.output import load_cut, save_cut
 
 
 class Cut(object):

@@ -1,6 +1,6 @@
 import numpy as np
 
-from pygrasp.flat_map import Grid
+from pyticra.flat_map import Grid
 
 # Add the option to change the extents.
 # Add the option to make other kinds of blank grids.
@@ -8,7 +8,7 @@ from pygrasp.flat_map import Grid
 
 def blank_spherical_grid(nx, ny):  # , x_min, y_min, x_max, y_max):
     g = Grid()
-    g.header = ['Created by pygrasp.fake.blank_spherical_grid()',
+    g.header = ['Created by pyticra.fake.blank_spherical_grid()',
                 '++++']
     g.KTYPE = 1
     g.NSET = 1

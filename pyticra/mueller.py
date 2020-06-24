@@ -3,8 +3,8 @@ from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 
-from pygrasp.Map import Map
-from pygrasp.Jones import JonesMap
+from pyticra.Map import Map
+from pyticra.Jones import JonesMap
 
 
 class MuellerMap(Map):

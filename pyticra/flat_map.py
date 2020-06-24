@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import trapz
 
-from pygrasp.output import load_grd, save_grd
+from pyticra.output import load_grd, save_grd
 
 
 class FlatMap(object):
@@ -332,7 +332,7 @@ class FlatMap(object):
 class GridMap(FlatMap):
     """
     A FlatMap created from a .grd file. The file handling logic is
-    contained in pygrasp.output.
+    contained in pyticra.output.
 
     This class can load near field, far field, and coupling .grd
     files.  It currently cannot load elliptically truncated
