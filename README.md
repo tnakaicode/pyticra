@@ -24,3 +24,19 @@ $$\begin{aligned}
     P &= \frac{1}{2} Re(E_{SI} \times H^*_{SI}) \\
     &= k^2 Re(E \times H^*)
 \end{aligned}$$
+
+Planar Grid Polarizarition
+-----
+
+- linear
+- circular
+- rho_phi
+- major_minor
+- liner_xpd
+  - cross-polar discrimination ratio
+- circular_xpd
+- rho_phi_xpd
+- majo_minor_xpd
+- power
+- poynting
+  - unit [Watts/m^2]

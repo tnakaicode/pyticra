@@ -5,6 +5,7 @@ import numpy as np
 from pyticra.Map import Map
 from pyticra.Grid import Grid
 
+
 class JonesMap(Map):
 
     # This is the shape of the matrix at each pixel.
@@ -23,7 +24,7 @@ class JonesMap(Map):
         if co is None and cx is None:
             super(JonesMap, self).__init__(self.shape, self.data_type)
         else:
-            assert(isinstance(co, Grid) and isinstance(cx, Grid))            
+            assert(isinstance(co, Grid) and isinstance(cx, Grid))
             assert(all(co.X == cx.X))
             self.X = co.X
             assert(all(co.Y == cx.Y))
@@ -61,7 +62,7 @@ class JonesMap(Map):
                                dtype=np.complex)
         for j in jones_maps:
             i_x, i_y, within = coadded.indices(j.X, j.Y)
-            coadded.map[:, :, i_x[0]:i_x[-1]+1, i_y[0]:i_y[-1]+1] += j.map
+            coadded.map[:, :, i_x[0]:i_x[-1] + 1, i_y[0]:i_y[-1] + 1] += j.map
         return coadded
 
     # It's not clear what this means.

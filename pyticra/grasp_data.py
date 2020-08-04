@@ -77,6 +77,14 @@ class GraspGrid (GridBase):
             self._meta['header'].append(self.fp.readline().rstrip('\n'))
 
     def initialize(self):
+        """
+        ICOMP =  2 (Circular)
+        ICOMP =  3 (Linear)
+        ICOMP =  4 (Major Minor)
+        ICOMP =  7 (Linear Xpd)
+        ICOMP =  9 (Power)
+        ICOMP = 11 (Poynting)
+        """
         self._meta['KTYPE'] = int(self.fp.readline().split()[0])
         if self._meta['KTYPE'] != 1:
             raise ValueError("Not implemented.")
