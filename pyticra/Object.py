@@ -6,8 +6,8 @@ from collections import OrderedDict
 
 # sys.setrecursionlimit(10000)
 
-from .base import Grammar
-from .base import Quantity, Ref, Sequence, Struct, Physical
+from pyticra.base import Grammar
+from pyticra.base import Quantity, Ref, Sequence, Struct, Physical
 
 
 class ObjectRepository(OrderedDict):

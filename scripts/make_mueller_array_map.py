@@ -4,7 +4,7 @@ import numpy as np
 
 from pyticra.convert import Convert
 from pyticra.mueller import MuellerMap
-from pyticra import sim 
+from pyticra import sim
 
 # Pair grid files in the differencing or HWP configuration to make
 # Jones maps and hence Mueller maps for each beam. Coadd these beams
@@ -12,12 +12,13 @@ from pyticra import sim
 
 # The feeds in the HF focal plane are numbered 1 to 310.
 mueller_maps = []
-beam_centers = pickle.load(open(os.path.join(sim.base, 'sky_beam_centers.pkl')))
+beam_centers = pickle.load(
+    open(os.path.join(sim.base, 'sky_beam_centers.pkl')))
 feeds = np.arange(1, 311)
 #feeds = np.arange(1, 311, 10)
 #feeds = [1, 2]
 for feed in feeds:
-    print("Creating a Mueller matrix map for feed %s." %(feed))
+    print("Creating a Mueller matrix map for feed %s." % (feed))
     #j = sim.make_diff_jones_map(sim.maps_150, feed)
     #j = sim.make_hwp_jones_map(sim.maps_150, feed)
     #j = sim.make_diff_jones_map(sim.maps_225, feed)
@@ -41,9 +42,9 @@ for feed in feeds:
     m = MuellerMap(j)
     mueller_maps.append(m)
 
-print("Coadding %s feeds." %(len(feeds)))
+print("Coadding %s feeds." % (len(feeds)))
 array_map = MuellerMap.coadd(mueller_maps)
 
 folder = os.path.join(sim.HF_225, 'array')
-print("Saving array map to %s" %(folder))
+print("Saving array map to %s" % (folder))
 array_map.save(folder, 'hwp225')

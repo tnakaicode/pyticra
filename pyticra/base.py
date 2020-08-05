@@ -119,6 +119,7 @@ class Physical(OrderedDict):
         return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__, self.display_name,
                                                self.class_name, ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
 
+
 class Command(OrderedDict):
     """
     This class is a container for GRASP commands.

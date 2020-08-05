@@ -29,7 +29,7 @@ with open(filename) as f:
             # x = theta * cos(phi)
             # y = theta * sin(phi)
             theta = np.sqrt(x**2 + y**2)
-            phi = np.arctan2(y/theta, x/theta)
+            phi = np.arctan2(y / theta, x / theta)
             u, v = Convert.theta_phi_to_u_v(theta, phi)
             if not frequency in d:
                 d[frequency] = {}
@@ -37,4 +37,4 @@ with open(filename) as f:
     except StopIteration:
         pass
 
-pickle.dump(d, open("%s.pkl" %filename, 'w'))
+pickle.dump(d, open("%s.pkl" % filename, 'w'))
