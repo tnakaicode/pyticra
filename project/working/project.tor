@@ -270,6 +270,16 @@ front_reflector.cur  surface_grid
   frequency        : ref(Frequency_1)
 )
  
+hybrid_mode_conical_horn  hybrid_mode_conical_horn  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(front_feed_coor_sys),
+  waveguide_radius : 0.1 m,
+  aperture_radius  : 0.1 m,
+  semi_flare_angle : 0.0,
+  modes            : sequence(struct(type: HE11, amp: 1.0, phase: 0.0, rot: 0.0), struct(type: HE21, amp: 0.1, phase: 0.0, rot: 0.0))
+)
+ 
 view_1  view  
 (
   objects          : sequence(ref(view_1_reflector_plot), ref(view_1_coor_sys_plot), ref(view_1_feed_plot), ref(view_1_output_points_plot), ref(front_reflector_plot)),

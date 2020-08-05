@@ -1,6 +1,8 @@
 import pyparsing as p
 from collections import OrderedDict
 
+from pyparsing import delimitedList, dictOf
+
 
 class Quantity(object):
     """
@@ -116,8 +118,10 @@ class Physical(OrderedDict):
         return '\n'.join(lines)
 
     def __repr__(self):
-        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__, self.display_name,
-                                               self.class_name, ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
+        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
+                                               self.display_name,
+                                               self.class_name,
+                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
 
 
 class Command(OrderedDict):
@@ -286,19 +290,19 @@ class Grammar (object):
 
     command = (p.Suppress('COMMAND') +
                p.Suppress('OBJECT') +
-               identifier('target_name') +
-               identifier('command_name') +
+               identifier +
+               identifier +
                p.Suppress('(') +
-               p.Optional(members)('members') +
+               p.Optional(p.delimitedList(member)) +
                p.Suppress(')') +
                p.CaselessLiteral('cmd_').suppress() +
                p.Word(p.nums)('number'))
     command.ignore(p.cppStyleComment)  # '// comment'
     command.ignore(p.pythonStyleComment)  # '# comment'
     command.ignore(p.Literal('&'))
-    command.setParseAction(lambda tokens: [Command(tokens['target_name'],
-                                                   tokens['command_name'],
-                                                   list(tokens.get('members', [])))])
+    command.setParseAction(
+        lambda tokens: [Command(tokens[0], tokens[1], tokens[2:])]
+    )
 
     # Add support for other batch commands.
     batch_command = p.CaselessLiteral(
@@ -307,9 +311,115 @@ class Grammar (object):
     quit_command = p.CaselessLiteral('QUIT')
 
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(batch_command)('batch_commands') +
-                         p.ZeroOrMore(command)('commands') +
-                         quit_command +
-                         p.StringEnd())
+    command_interface = p.ZeroOrMore(command)('commands') + quit_command
+    command_interface.ignore(p.cppStyleComment)
+    command_interface.ignore(p.pythonStyleComment)
+
+
+class CommandGrammar(object):
+    """
+    This class contains the pyparsing grammar for the TICRA .tor and
+    .tci file formats.
+    """
+
+    # It might be cleaner to have the grammar for each class in the
+    # class itself, but this causes scope problems.
+    # Added '.' to handle Brad's EBEX sims. See if this breaks anything.
+    # An identifier is no longer a valid Python variable.
+    identifier = p.Word(p.alphas + '_', p.alphanums + '_.')
+    plus_or_minus = p.Literal('+') ^ p.Literal('-')
+    value = p.Forward()
+    s_int = p.Word(p.nums)
+    s_flt = p.Word(p.nums + '.')
+
+    number = p.Combine(
+        p.Optional(plus_or_minus) +
+        p.Word(p.nums) +
+        p.Optional('.' + p.Word(p.nums)) +
+        p.Optional(p.CaselessLiteral('E') + p.Word(p.nums + '+-', p.nums)) +
+        p.Optional(' ')
+    )
+    quantity = (
+        number +
+        p.Optional(p.Word(p.alphas, p.alphanums + '-^/' + ' '), default=None) +
+        p.Optional(identifier)
+    )
+    quantity.setParseAction(lambda tokens: Quantity(*tokens))
+
+    value = p.Forward()
+    elements = p.delimitedList(value)
+
+    s_ref = (
+        "ref" +
+        p.Suppress("(") +
+        value +
+        p.Suppress(")")
+    )
+    s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
+
+    s_sequence_elements = p.Combine(
+        value + p.Optional(' ') + p.Optional(identifier)
+    )
+    s_sequence = (
+        "sequence" +
+        p.Suppress("(") +
+        p.delimitedList(s_sequence_elements) +
+        p.Suppress(")")
+    )
+    s_sequence.setParseAction(
+        lambda tokens: [Sequence(tokens[1:])]
+    )
+
+    s_struct_elements = p.Group(
+        identifier +
+        p.Suppress(":") +
+        p.Combine(
+            value +
+            p.Optional(' ') +
+            p.Optional(identifier))
+    )
+    s_struct = (
+        "struct" +
+        p.Suppress("(") +
+        p.delimitedList(s_struct_elements) +
+        p.Suppress(")")
+    )
+    s_struct.setParseAction(
+        lambda tokens: [Struct((dat[0], dat[1]) for dat in tokens[1:])]
+    )
+
+    comment = p.QuotedString('"', unquoteResults=False)
+
+    # This could be a filename or just a string. Added '\' to handle EBEX sim.
+    # Should convert to unix filename.
+    other = p.Word(p.alphanums + r'\/._-')
+    s_val = p.Combine(
+        '"' + value + '"' + p.Optional(' ') + p.Optional(identifier)
+    )
+    value << (quantity | s_ref | s_val | s_struct |
+              s_sequence | other | comment)
+
+    member = p.Group(identifier + p.Suppress(":") + value)
+    command = ("COMMAND OBJECT" +
+               identifier +
+               identifier +
+               p.Suppress('(') +
+               p.Optional(p.delimitedList(member)) +
+               p.Suppress(')'))
+    command.ignore(p.cppStyleComment)  # '// comment'
+    command.ignore(p.pythonStyleComment)  # '# comment'
+    command.ignore(p.Literal('&'))
+    command.setParseAction(
+        lambda tokens: [Command(tokens[0], tokens[1], tokens[2:])]
+    )
+
+    # Add support for other batch commands.
+    batch_command = p.CaselessLiteral(
+        'FILES READ ALL') + other + p.LineEnd().suppress()
+    batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
+    quit_command = p.CaselessLiteral('QUIT')
+
+    # Add support for multiple QUIT statements.
+    command_interface = p.ZeroOrMore(command) + p.StringEnd()
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)

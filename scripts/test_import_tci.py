@@ -9,7 +9,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
 from optparse import OptionParser
 
-from pyticra.input import CommandInterface
+from pyticra.Object import CommandInterface
 
 if __name__ == "__main__":
     argvs = sys.argv
@@ -32,3 +32,4 @@ if __name__ == "__main__":
     tci_obj = CommandInterface()
     tci_obj.load(tci_file)
     print(tci_obj.parsed)
+    print(tci_obj)

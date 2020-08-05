@@ -235,13 +235,12 @@ class Grammar(object):
     other = p.Word(p.alphanums + r'\/._-')
     s_val = p.Combine('"' + value + '"' + p.Optional(' ') + p.Optional(ident))
 
-    obj_values = p.Forward()
-    obj_values << (quantity | s_ref | s_val | s_sct | s_seq | other | comment)
-    obj_member = p.Group(ident + p.Suppress(":") + obj_values)
+    value << (quantity | s_ref | s_val | s_sct | s_seq | other | comment)
+    member = p.Group(ident + p.Suppress(":") + value)
     physical = (
         ident + ident +
         p.Suppress('(') +
-        p.Optional(p.delimitedList(obj_member)) +
+        p.Optional(p.delimitedList(member)) +
         p.Suppress(')')
     )
     physical.ignore(p.cppStyleComment)  # '// comment'
@@ -253,32 +252,6 @@ class Grammar(object):
     object_repository = p.ZeroOrMore(physical) + p.StringEnd()
     object_repository.ignore(p.cppStyleComment)
     object_repository.ignore(p.pythonStyleComment)
-
-    cmd_values = p.Forward()
-    cmd_values << (s_seq | other | comment)
-    cmd_member = p.Group(ident + p.Suppress(":") + cmd_values)
-    command = ('COMMAND' + 'OBJECT' +
-               ident + ident +
-               p.Suppress('(') +
-               p.Optional(p.delimitedList(cmd_member)) +
-               p.Suppress(')'))
-    command.ignore(p.cppStyleComment)  # '// comment'
-    command.ignore(p.pythonStyleComment)  # '# comment'
-    command.ignore(p.Literal('&'))
-    command.setParseAction(
-        lambda tokens: [Command(tokens[0], tokens[1], list(tokens[2:]))]
-    )
-
-    # Add support for other batch commands.
-    batch_command = p.CaselessLiteral(
-        'FILES READ ALL') + other + p.LineEnd().suppress()
-    batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
-    quit_command = p.CaselessLiteral('QUIT')
-
-    # Add support for multiple QUIT statements.
-    command_interface = p.ZeroOrMore(command)
-    command_interface.ignore(p.cppStyleComment)
-    command_interface.ignore(p.pythonStyleComment)
 
 
 class Command(OrderedDict):
