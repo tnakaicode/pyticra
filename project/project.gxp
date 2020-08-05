@@ -6,46 +6,12 @@ working/project.tor
 working/project.tci
 [Project setup]
 <!DOCTYPE Project>
-<Project version="20.0.0" application="TICRA Tools">
+<Project application="TICRA Tools" version="20.0.0">
  <Results/>
  <ResultWindows/>
- <WizardData>
-  <ReflectorWizard>
-   <Axial-FdRatio Value="0.3"/>
-   <Axial-FocalLength Value="0.3" Unit="m"/>
-   <Axial-Frequency Value="20" Unit="GHz"/>
-   <Axial-HalfAngle Value="30" Unit="deg"/>
-   <Axial-MainDiameter Value="1" Unit="m"/>
-   <Axial-Mode Value="0"/>
-   <Axial-Prefix Value="ring_focus_"/>
-   <Axial-SubDiameter Value="0.15"/>
-   <Axial-SubDiameterAbsolute Value="0.15" Unit="m"/>
-   <Axial-useRelative Value="1"/>
-   <Dual-Angle1 Value="0"/>
-   <Dual-Angle2 Value="0"/>
-   <Dual-Diameter Value="11.1" Unit="m"/>
-   <Dual-Eccentricity Value="1.5"/>
-   <Dual-FocalLength Value="6.66" Unit="m"/>
-   <Dual-FocalLengthRelative Value="0.6"/>
-   <Dual-FociDistance Value="3.33" Unit="m"/>
-   <Dual-FociDistanceRelative Value="0.5"/>
-   <Dual-Frequency Value="3.625" Unit="GHz"/>
-   <Dual-Mizuguchi Value="1"/>
-   <Dual-Prefix Value="dual_"/>
-   <Dual-UseRelative Value="1"/>
-   <Main-SelectFrequency Value="1"/>
-   <Single-Diameter Value="1" Unit="m"/>
-   <Single-FocalLength Value="0.6" Unit="m"/>
-   <Single-FocalLengthRelative Value="0.6"/>
-   <Single-Frequency Value="12" Unit="GHz"/>
-   <Single-Offset Value="0" Unit="m"/>
-   <Single-OffsetRelative Value="0"/>
-   <Single-Prefix Value="single_"/>
-   <Single-UseRelative Value="1"/>
-  </ReflectorWizard>
- </WizardData>
+ <WizardData/>
  <view_configuration>
-  <view scale="1.12154" show_surfaces="yes" maximized="yes" pos="0x0" name="view_1" show_rulers="yes" minimized="no" enable_psi_slider="no" collapsed_view_settings_entries="" position="0.2504326999187469,-0.004905655980110168,0.7465126514434814" enable_theta_slider="no" locked_phi_theta="no" enable_phi_slider="no" orientation_type="0" upVector="0.418006032705307,0.211799144744873,0.8834092617034912" show_wire_grid="yes" size="1362x971" perspective_view="no" viewCenter="1.01615309715271,0.4362041354179382,0.2784367203712463"/>
+  <view minimized="no" enable_phi_slider="no" viewCenter="1.01615309715271,0.4362041354179382,0.2784367203712463" maximized="yes" perspective_view="no" scale="1.12154" show_surfaces="yes" enable_psi_slider="no" name="view_1" pos="0x0" upVector="0.418006032705307,0.211799144744873,0.8834092617034912" locked_phi_theta="no" position="0.2504326999187469,-0.004905655980110168,0.7465126514434814" enable_theta_slider="no" show_wire_grid="yes" orientation_type="0" collapsed_view_settings_entries="" show_rulers="yes" size="1362x971"/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>

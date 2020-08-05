@@ -80,9 +80,9 @@ class CommandInterface(list):
 
     def load(self, filename):
         with open(filename, 'r') as f:
-            parsed = Grammar.command_interface.parseFile(f)
-            self.batch_commands.extend(parsed.get('batch_commands', []))
-            self.extend(parsed.get('commands', []))
+            self.parsed = Grammar.command_interface.parseFile(f)
+            self.batch_commands.extend(self.parsed.get('batch_commands', []))
+            self.extend(self.parsed.get('commands', []))
 
     def save(self, filename, batch_mode=True):
         """
@@ -234,13 +234,14 @@ class Grammar(object):
     comment = p.QuotedString('"', unquoteResults=False)
     other = p.Word(p.alphanums + r'\/._-')
     s_val = p.Combine('"' + value + '"' + p.Optional(' ') + p.Optional(ident))
-    value << (quantity | s_ref | s_val | s_sct | s_seq | other | comment)
 
-    member = p.Group(ident + p.Suppress(":") + value)
+    obj_values = p.Forward()
+    obj_values << (quantity | s_ref | s_val | s_sct | s_seq | other | comment)
+    obj_member = p.Group(ident + p.Suppress(":") + obj_values)
     physical = (
         ident + ident +
         p.Suppress('(') +
-        p.Optional(p.delimitedList(member)) +
+        p.Optional(p.delimitedList(obj_member)) +
         p.Suppress(')')
     )
     physical.ignore(p.cppStyleComment)  # '// comment'
@@ -253,21 +254,20 @@ class Grammar(object):
     object_repository.ignore(p.cppStyleComment)
     object_repository.ignore(p.pythonStyleComment)
 
-    command = (p.Suppress('COMMAND') +
-               p.Suppress('OBJECT') +
-               ident('target_name') +
-               ident('command_name') +
+    cmd_values = p.Forward()
+    cmd_values << (s_seq | other | comment)
+    cmd_member = p.Group(ident + p.Suppress(":") + cmd_values)
+    command = ('COMMAND' + 'OBJECT' +
+               ident + ident +
                p.Suppress('(') +
-               # p.Optional(members)('members') +
-               p.Suppress(')') +
-               p.CaselessLiteral('cmd_').suppress() +
-               p.Word(p.nums)('number'))
+               p.Optional(p.delimitedList(cmd_member)) +
+               p.Suppress(')'))
     command.ignore(p.cppStyleComment)  # '// comment'
     command.ignore(p.pythonStyleComment)  # '# comment'
     command.ignore(p.Literal('&'))
-    command.setParseAction(lambda tokens: [Command(tokens['target_name'],
-                                                   tokens['command_name'],
-                                                   list(tokens.get('members', [])))])
+    command.setParseAction(
+        lambda tokens: [Command(tokens[0], tokens[1], list(tokens[2:]))]
+    )
 
     # Add support for other batch commands.
     batch_command = p.CaselessLiteral(
@@ -276,10 +276,7 @@ class Grammar(object):
     quit_command = p.CaselessLiteral('QUIT')
 
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(batch_command)('batch_commands') +
-                         p.ZeroOrMore(command)('commands') +
-                         quit_command +
-                         p.StringEnd())
+    command_interface = p.ZeroOrMore(command)
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
 
