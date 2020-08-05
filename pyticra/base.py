@@ -121,7 +121,7 @@ class Physical(OrderedDict):
         return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
                                                self.display_name,
                                                self.class_name,
-                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
+                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.iteritems()]))
 
 
 class Command(OrderedDict):
@@ -132,6 +132,7 @@ class Command(OrderedDict):
     """
 
     def __init__(self, target_name, command_name, other={}):
+        print(target_name, command_name, other)
         super(Command, self).__init__(other)
         self.target_name = str(target_name)
         self.command_name = str(command_name)
@@ -153,27 +154,27 @@ class Command(OrderedDict):
                                                ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.iteritems()]))
 
     # This code is shared between Command and Physical objects. Fix this.
-    def traverse(self, test, action):
-        """
-        Recursively visit all members of this object. See visit() for
-        parameter meanings.
-        """
-        for name, thing in self.iteritems():
-            self.visit(name, thing, test, action)
+    #def traverse(self, test, action):
+    #    """
+    #    Recursively visit all members of this object. See visit() for
+    #    parameter meanings.
+    #    """
+    #    for name, thing in self.iteritems():
+    #        self.visit(name, thing, test, action)
 
-    def visit(self, name, thing, test, action):
-        """
-        Recursively visit every member of this object, calling
-        action(name, thing) if test(name, thing) is True.
-        """
-        if test(name, thing):
-            action(name, thing)
-        elif isinstance(thing, Sequence):
-            for index, element in enumerate(thing):
-                self.visit(index, element, test, action)
-        elif isinstance(thing, Struct):
-            for key, value in thing.iteritems():
-                self.visit(key, value, test, action)
+    #def visit(self, name, thing, test, action):
+    #    """
+    #    Recursively visit every member of this object, calling
+    #    action(name, thing) if test(name, thing) is True.
+    #    """
+    #    if test(name, thing):
+    #        action(name, thing)
+    #    elif isinstance(thing, Sequence):
+    #        for index, element in enumerate(thing):
+    #            self.visit(index, element, test, action)
+    #    elif isinstance(thing, Struct):
+    #        for key, value in thing.iteritems():
+    #            self.visit(key, value, test, action)
 
 
 class BatchCommand(list):
@@ -299,7 +300,7 @@ class Grammar (object):
                p.Word(p.nums)('number'))
     command.ignore(p.cppStyleComment)  # '// comment'
     command.ignore(p.pythonStyleComment)  # '# comment'
-    command.ignore(p.Literal('&'))
+    command.ignore(p.Literal('&\n'))
     command.setParseAction(
         lambda tokens: [Command(tokens[0], tokens[1], tokens[2:])]
     )
@@ -410,7 +411,7 @@ class CommandGrammar(object):
     command.ignore(p.pythonStyleComment)  # '# comment'
     command.ignore(p.Literal('&'))
     command.setParseAction(
-        lambda tokens: [Command(tokens[0], tokens[1], tokens[2:])]
+        lambda tokens: [Command(tokens[1], tokens[2], tokens[3:])]
     )
 
     # Add support for other batch commands.

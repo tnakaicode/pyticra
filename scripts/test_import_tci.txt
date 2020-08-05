@@ -1,0 +1,10 @@
+front_PO get_currents [
+    (['source', Sequence(['ref(rear_feed_def)', 'ref(front_feed_def)'])], {}), (['auto_convergence_of_po', 'on'], {}), (['convergence_on_scatterer', Sequence(['ref(rear_reflector)'])], {}), (['convergence_on_output_grid', Sequence(['ref(field_1)', 'ref(front_reflector.cur)'])], {}), (['convergence_on_expansion_grid', Sequence(['ref(rear_PWE)', 'ref(front_PWE)'])], {})
+]
+
+field_1 get_field [
+    (
+        ['source', Sequence(['ref(front_PO)'])], 
+        {}
+    )
+]
