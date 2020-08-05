@@ -2,22 +2,12 @@
 Project comment
 [TOR file]
 working/project.tor
-[Auxiliary TOR files]
 [TCI file]
 working/project.tci
-[Default units]
-GHz m S/m 1
 [Project setup]
 <!DOCTYPE Project>
-<Project version="19.1.1" application="TICRA Tools">
- <Results>
-  <Analysis Path="Job_08" Name="Job_08">
-   <Objects Path="Job_08.tor"/>
-   <Commands Path="Job_08.tci"/>
-   <Output Path="output_files_25120.xml"/>
-   <Job NumCommands="5" JobHidden="false" JobStatus="Job Finished" Name="Job_08" JobOutputSpec="output_files_25120.xml" JobProcessID="25120" StartTime="2020-06-09T10:04:53"/>
-  </Analysis>
- </Results>
+<Project version="20.0.0" application="TICRA Tools">
+ <Results/>
  <ResultWindows/>
  <WizardData>
   <ReflectorWizard>
@@ -55,7 +45,7 @@ GHz m S/m 1
   </ReflectorWizard>
  </WizardData>
  <view_configuration>
-  <view enable_theta_slider="no" collapsed_view_settings_entries="" perspective_view="no" position="0.03739142417907715,0.1714056581258774,0.4318141341209412" enable_psi_slider="no" enable_phi_slider="no" orientation_type="0" minimized="no" show_surfaces="yes" show_rulers="yes" viewCenter="0.4874133467674255,-0.5513494610786438,-0.09269148111343384" scale="1.12154" locked_phi_theta="no" size="1362x971" upVector="0.2804494798183441,-0.4432424604892731,0.8514010310173035" pos="0x0" show_wire_grid="yes" maximized="yes" name="view_1"/>
+  <view scale="1.12154" show_surfaces="yes" maximized="yes" pos="0x0" name="view_1" show_rulers="yes" minimized="no" enable_psi_slider="no" collapsed_view_settings_entries="" position="0.2504326999187469,-0.004905655980110168,0.7465126514434814" enable_theta_slider="no" locked_phi_theta="no" enable_phi_slider="no" orientation_type="0" upVector="0.418006032705307,0.211799144744873,0.8834092617034912" show_wire_grid="yes" size="1362x971" perspective_view="no" viewCenter="1.01615309715271,0.4362041354179382,0.2784367203712463"/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>

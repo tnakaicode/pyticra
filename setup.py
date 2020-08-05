@@ -9,4 +9,6 @@ setup(name='pyticra',
       author_email='tnakaicode@gmail.com',
       license='GPL',
       packages=['pyticra'],
+      package_dir={'pyticra': 'pyticra'},
+      package_data={'pyticra': ['temp.*']},
       zip_safe=False)

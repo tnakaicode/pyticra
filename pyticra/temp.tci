@@ -1,0 +1,5 @@
+Coord () 
+FUNCTION Coord 
+   COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys)) 
+END 
+QUIT 

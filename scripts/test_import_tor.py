@@ -31,5 +31,6 @@ if __name__ == "__main__":
 
     tor_obj = ObjectRepository()
     tor_obj.load(tor_file)
-    print(tor_obj.keys())
+    for obj_name in tor_obj.keys():
+        print(tor_obj[obj_name])
     tor_obj.save(tor_file)

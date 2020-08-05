@@ -1,0 +1,22 @@
+global.coor_sys  coor_sys  
+(
+)
+ 
+local.coor_sys  coor_sys  
+(
+  base             : ref(global.coor_sys)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+   

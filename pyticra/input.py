@@ -1,7 +1,10 @@
 import os
+from os import path
 from copy import deepcopy
 from collections import OrderedDict
 import pyparsing as p
+
+basepath = path.dirname(__file__) + "/"
 
 
 class Project(object):
@@ -11,13 +14,15 @@ class Project(object):
     It currently can only create a blank project.
     """
 
-    extensions = {9: 'g9p', 10: 'gxp'}
+    extensions = {9: 'g9p', 10: 'gxp', 20: 'gxp'}
 
-    def __init__(self, name, version='10.0.1'):
+    def __init__(self, name="Project", version='20.0.0'):
         self.name = str(name)
         self.version = str(version)
         self.tor = ObjectRepository()
+        self.tor.load(basepath + "temp.tor")
         self.tci = CommandInterface()
+        #self.tci.load(basepath + "temp.tci")
 
     def create(self, folder):
         """
@@ -41,24 +46,26 @@ class Project(object):
             f.write(str(self.tci))
 
     def __str__(self):
-        lines = ['[Comment]',
-                 'Project comment',
-                 '[TOR file]',
-                 os.path.join('working', '{}.tor'.format(self.name)),
-                 '[Auxiliary TOR files]',
-                 '[TCI file]',
-                 os.path.join('working', '{}.tci'.format(self.name)),
-                 '[Default units]',
-                 'GHz m S/m 1',
-                 '[Project setup]',
-                 '<!DOCTYPE Project>',
-                 '<Project version="{}" application="GRASP">'.format(
-                     self.version),
-                 ' <Results/>',
-                 ' <ResultWindows/>',
-                 ' <WizardData/>',
-                 ' <view_configuration/>',
-                 '</Project>']
+        lines = [
+            '[Comment]',
+            'Project comment',
+            '[TOR file]',
+            os.path.join('working', '{}.tor'.format(self.name)),
+            '[Auxiliary TOR files]',
+            '[TCI file]',
+            os.path.join('working', '{}.tci'.format(self.name)),
+            '[Default units]',
+            'GHz m S/m 1',
+            '[Project setup]',
+            '<!DOCTYPE Project>',
+            '<Project version="{}" application="TICRA Tools">'.format(
+                self.version),
+            ' <Results/>',
+            ' <ResultWindows/>',
+            ' <WizardData/>',
+            ' <view_configuration/>',
+            '</Project>'
+        ]
         return ''.join(['{}\n'.format(line) for line in lines])
 
 
