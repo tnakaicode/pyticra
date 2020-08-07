@@ -11,7 +11,7 @@ working/project.tci
  <ResultWindows/>
  <WizardData/>
  <view_configuration>
-  <view locked_phi_theta="no" name="view_1" perspective_view="no" scale="0.407511" position="0.0001437775790691376,0.9988613128662109,-0.7744943499565125" orientation_type="0" collapsed_view_settings_entries="" show_wire_grid="yes" size="1362x971" enable_phi_slider="no" enable_psi_slider="no" maximized="yes" viewCenter="-0.6553611159324646,0.2839901745319366,-1.017954468727112" minimized="no" upVector="-0.3056152164936066,-0.04369428753852844,0.9511516094207764" show_rulers="yes" pos="0x0" enable_theta_slider="no" show_surfaces="yes"/>
+  <view locked_phi_theta="no" orientation_type="0" name="view_1" show_rulers="yes" scale="4.36907" minimized="no" show_surfaces="yes" enable_theta_slider="no" show_wire_grid="yes" viewCenter="1.713462829589844,2.338351726531982,-0.6971983909606934" pos="0x0" enable_phi_slider="no" upVector="0.1723876148462296,0.08910287916660309,0.9809907674789429" position="0.9729676246643066,1.693328619003296,-0.5084848403930664" maximized="yes" enable_psi_slider="no" perspective_view="no" size="1362x971" collapsed_view_settings_entries=""/>
  </view_configuration>
  <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
  <projectSettings/>

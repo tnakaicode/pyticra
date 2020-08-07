@@ -331,6 +331,57 @@ curvature_difference: 0.0, half_cone_angle: 5.0, cone_axis_angle: 0.0, cone_vert
     )
 )
  
+single_reflector_gtd  single_reflector_gtd  
+(
+  frequency        : ref(Frequency_1),
+  source           : ref(rear_feed_def),
+  reflector        : ref(rear_reflector),
+  go               : on,
+  ray_tracing      : advanced,
+  gtd              : on
+)
+ 
+multi_gtd  multi_gtd  
+(
+  frequency        : ref(Frequency_1),
+  source           : ref(rear_feed_def)
+)
+ 
+gtd_reflector  gtd_reflector  
+(
+  reflectors       : sequence(ref(rear_reflector)),
+  diffraction      : struct(method: numerical, edge_index: -1, sample_points: 120, max_diffraction_points: -1
+, slope: on),
+  transmission     : on
+)
+ 
+unfurlable_surface_button_attached  unfurlable_surface_button_attached  
+(
+  button_distance  : 0.1 mm,
+  focal_length     : 1000.0 mm
+)
+ 
+grating.coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 2.0 m, z: -1.0 m),
+  base             : ref(global_coor_sys)
+)
+ 
+grating  reflector  
+(
+  coor_sys         : ref(grating.coor_sys),
+  surfaces         : sequence(ref(unfurlable_surface_button_attached)),
+  rim              : ref(front_rim)
+)
+ 
+dielectric_layer  dielectric_layer  
+(
+  displacement     : 0.0 mm,
+  thickness        : 1.0 mm,
+  dielectric_constant : 2.0,
+  loss_tangent     : 0.2E-03
+)
+ 
 //DO NOT MODIFY OBJECTS BELOW THIS LINE.
 //THESE OBJECTS ARE CREATED AND MANAGED BY THE
 //GRAPHICAL USER INTERFACE AND SHOULD NOT BE
@@ -338,8 +389,10 @@ curvature_difference: 0.0, half_cone_angle: 5.0, cone_axis_angle: 0.0, cone_vert
 view_1  view  
 (
   objects          : sequence(ref(view_1_reflector_plot),ref(view_1_coor_sys_plot),ref(view_1_feed_plot),
-ref(view_1_output_points_plot),ref(front_reflector_plot),ref(rooftop_mirror_plot_for_view_1),
-ref(lens_plot_for_view_1)),
+ref(view_1_output_points_plot),ref(rooftop_mirror_plot_for_view_1),ref(lens_plot_for_view_1),
+ref(feed_plot_for_front_feed_def_for_view_1),ref(feed_plot_for_rear_feed_def_for_view_1),
+ref(gaussian_beam_tube)),
+  hidden_objects   : sequence(ref(hybrid_mode_conical_horn),ref(gaussian_beam_tube)),
   show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
 struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, radiating_devices: show, 
 mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: show, plane_waves: show, 
@@ -357,15 +410,11 @@ view_1_coor_sys_plot  coor_sys_plot
  
 view_1_feed_plot  feed_plot  
 (
+  surface_colour   : struct(r: 0.666666666666667, g: 0.333333333333333, b: 0.0)
 )
  
 view_1_output_points_plot  output_points_plot  
 (
-)
- 
-front_reflector_plot  reflector_plot  
-(
-  objects          : sequence(ref(front_reflector))
 )
  
 rooftop_mirror_plot_for_view_1  rooftop_mirror_plot  
@@ -376,5 +425,23 @@ lens_plot_for_view_1  lens_plot
 (
 )
  
- //$$ Saved at 10:51:56 on 06.08.2020 by TICRA Tools 20.0 SN=007839
+feed_plot_for_front_feed_def_for_view_1  feed_plot  
+(
+  objects          : sequence(ref(front_feed_def)),
+  surface_colour   : struct(r: 0.0, g: 0.0, b: 1.0)
+)
+ 
+feed_plot_for_rear_feed_def_for_view_1  feed_plot  
+(
+  objects          : sequence(ref(rear_feed_def)),
+  surface_colour   : struct(r: 1.0, g: 1.0, b: 0.0)
+)
+ 
+gaussian_beam_tube  gaussian_beam_tube  
+(
+  objects          : sequence(ref(front_feed_def),ref(rear_feed_def)),
+  beam_path_range  : struct(start: 0.0 m, end: 1.0 m, number_of_cross_sections: 3)
+)
+ 
+ //$$ Saved at 09:47:04 on 07.08.2020 by TICRA Tools 20.0 SN=007839
   

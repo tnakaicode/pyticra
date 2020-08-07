@@ -7,6 +7,20 @@ local.coor_sys  coor_sys
   base             : ref(global.coor_sys)
 )
  
+freq  frequency  
+(
+  frequency_list   : sequence("ref(freq_num)" GHz)
+)
+ 
+freq_num  real_variable  
+(
+  value            : 170.0
+)
+ 
+plane  plane  
+(
+)
+ 
 //DO NOT MODIFY OBJECTS BELOW THIS LINE.
 //THESE OBJECTS ARE CREATED AND MANAGED BY THE
 //GRAPHICAL USER INTERFACE AND SHOULD NOT BE
