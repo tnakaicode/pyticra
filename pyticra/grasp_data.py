@@ -78,18 +78,33 @@ class GraspGrid (GridBase):
 
     def initialize(self):
         """
-        ICOMP =  2 (Circular)
-        ICOMP =  3 (Linear)
-        ICOMP =  4 (Major Minor)
-        ICOMP =  7 (Linear Xpd)
-        ICOMP =  9 (Power)
-        ICOMP = 11 (Poynting)
+        Grid Type
+            Spherical Far  (F1, F2)
+            Spherical Near (F1, F2, F3)
+            Planer    (F1, F2, F3)
+            Surface   (F1, F2, F3)            
+
+        line 3; NSET, ICOMP, NCOMP, IGRID
+        ICOMP =  1 "linear"          (Linear  ; E_rho,E_phi)
+        ICOMP =  2 "circular"        (Circular; rhc,lhc)
+        ICOMP =  3 "theta_phi"       (Linear  ; x,y)
+        ICOMP =  4 "major_minor"     (Major Minor; pol-elipse)
+        ICOMP =  5 "linear_xpd"      (XPD; E_rho/E_phi, E_phi/E_rho)
+        ICOMP =  6 "circular_xpd"    (XPD; rhc/lhc, lhc/rhc)
+        ICOMP =  7 "theta_phi_xpd"   (XPD; E_x/E_x, E_y/E_x)
+        ICOMP =  8 "major_minor_xpd" (XPD; major/minor, minor/major)
+        ICOMP =  9 "power"           (Power; |E|, sqrt(rhc/lhc))
+        ICOMP = 11 "poyting"         (Poynting)
         """
         self._meta['KTYPE'] = int(self.fp.readline().split()[0])
         if self._meta['KTYPE'] != 1:
             raise ValueError("Not implemented.")
-        self._meta['NSET'], self._meta['ICOMP'], self._meta['NCOMP'], self._meta['IGRID'] = [
-            int(s) for s in self.fp.readline().split()]
+        nset, icomp, ncomp, igrid = [int(s)
+                                     for s in self.fp.readline().split()]
+        self._meta['NSET'] = nset
+        self._meta['ICOMP'] = icomp
+        self._meta['NCOMP'] = ncomp
+        self._meta['IGRID'] = igrid
         for i in range(self._meta['NSET']):
             self._meta['IX'], self._meta['IY'] = [
                 int(s) for s in self.fp.readline().split()]
@@ -182,19 +197,18 @@ def get_pw(meta, data, coef=1.0):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']))
     func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C') * coef
     func[1] = data[:, 2].reshape(meta['NY'], meta['NX'], order='C') * coef
-    func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
-                                                     meta['NX'], order='C') * coef
+    if meta['NCOM'] == 3:
+        func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
+                                                         meta['NX'], order='C') * coef
     return func
 
 
 def get_eh(meta, data, coef=1.0):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
-    func[0] = (data[:, 0] + 1j * data[:, 1]).reshape(meta['NY'],
-                                                     meta['NX'], order='C') * coef
-    func[1] = (data[:, 2] + 1j * data[:, 3]).reshape(meta['NY'],
-                                                     meta['NX'], order='C') * coef
-    func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
-                                                     meta['NX'], order='C') * coef
+    for i in range(meta['NCOMP']):
+        i0, i1 = i * 2, i * 2 + 1
+        func[i] = (data[:, i0] + 1j * data[:, i1]
+                   ).reshape(meta['NY'], meta['NX'], order='C') * coef
     return func
 
 

@@ -40,3 +40,29 @@ Planar Grid Polarizarition
 - power
 - poynting
   - unit [Watts/m^2]
+
+IGRID
+---
+
+- 1  uv-grid
+- 2  $\rho\phi$-grid
+- 3  xy-grid
+- 4  Elevation over Azimuth
+- 5  Elevation and  Azimuth
+- 6  Azimuth   over Elevation
+- 7  $\theta\phi$-grid
+- 8  $\phi z$-grid
+- 9  Azimuth over Elevation (EDX Definition)
+- 10 Elevation over Azimuth (EDX Definition)
+
+IGRID uv-grid
+---
+
+r = (u, v, $\sqrt{1-u^2-v^2}$)  
+u = $\sin\theta\cos\phi$  
+v = $\sin\theta\sin\phi$  
+
+IGRID $\rho\phi$-grid
+---
+
+r = $-\sin(Az)\cos(El)$, $\sin(El)$, $\cos(Az)\cos(El)$  
