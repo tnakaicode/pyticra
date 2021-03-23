@@ -43,6 +43,7 @@ class GraspGrid (GridBase):
         self.knum = 2 * np.pi / self.wave
         self.z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
         self.unit = unit
+        self.knum_m = self.knum * convert("mm", "m")
         self.initialize()
 
         for name, data in meta.items():
@@ -134,30 +135,25 @@ class GraspGrid (GridBase):
         n1 = n0 + row
         rows = range(n0, n1)
         data = get_grd(self.filename, rows)
-        knum_m = self.knum * convert("mm", "m")
         if self.id == "cur":
-            coef = 1 / knum_m * (np.sqrt(self.z_0 / 2))
+            coef = 1 / self.knum_m * (np.sqrt(self.z_0 / 2))
             #coef = 1.0
-            self._meta[name] = get_cur(
-                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
+            self._meta[name] = get_cur(self._meta, data, coef=1 / coef)
         elif self.id == "e":
-            coef = 1 / (knum_m * np.sqrt(2 * self.z_0))
+            coef = 1 / (self.knum_m * np.sqrt(2 * self.z_0))
             #coef = 1.0
-            self._meta[name] = get_e(
-                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
+            self._meta[name] = get_e(self._meta, data, coef=1 / coef)
         elif self.id == "h":
-            coef = 1 / (knum_m) * np.sqrt(self.z_0 / 2)
+            coef = 1 / (self.knum_m) * np.sqrt(self.z_0 / 2)
             #coef = 1.0
-            self._meta[name] = get_h(
-                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
+            self._meta[name] = get_h(self._meta, data, coef=1 / coef)
         elif self.id == "pw":
             coef = 1.0
-            self._meta[name] = get_pw(
-                self._meta, data, coef=1 / coef) / (convert("mm", "mm")**2)
+            self._meta[name] = get_pw(self._meta, data, coef=1 / coef)
         else:
             coef = 1.0
-            self._meta[name] = get_e(self._meta, data) / \
-                (convert("mm", "mm")**2)
+            self._meta[name] = get_e(self._meta, data)
+        self._meta[name] *= (convert("mm", "mm")**2)
         print(self.filename, n0, n1)
 
 
