@@ -38,7 +38,7 @@ class GraspGrid (GridBase):
         self.fp = open(filename, "r")
         self.id = filename.split("/")[-1].split(".")[-2]
         self.split_header()
-        self.freq = freq
+        self.freq = freq * convert(unit_in="GHz", unit_out="Hz")
         self.wave = cnt.c / self.freq * convert(unit_in="m", unit_out="mm")
         self.knum = 2 * np.pi / self.wave
         self.z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
