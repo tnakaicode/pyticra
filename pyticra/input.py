@@ -1,4 +1,6 @@
+import numpy as np
 import os
+import json
 from os import path
 from copy import deepcopy
 from collections import OrderedDict
@@ -455,3 +457,21 @@ class Quantity(object):
             return '{}({!r})'.format(self.__class__.__name__, self.number)
         else:
             return '{}({!r}, {!r})'.format(self.__class__.__name__, self.number, self.units)
+
+
+class TicraTorEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        if isinstance(obj, Ref):
+            return str(obj)
+        if isinstance(obj, Struct):
+            return str(obj)
+        if isinstance(obj, Sequence):
+            return str(obj)
+        if isinstance(obj, Quantity):
+            return str(obj)
+        if isinstance(obj, Physical):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
