@@ -1,5 +1,5 @@
 # VSCode
-.vscode/*
+.vscode*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -13,16 +13,16 @@ misc/
 local.config
 
 # Build
-build/*
-dist/*
+build*
+dist*
 *.egg-info
 
 # Documents
 *.pdf
 
 # Tmp
-tmp/*
-temp_*/*
+tmp*
+temp_*
 */temp_*/*
 
 # Ticra Tools
