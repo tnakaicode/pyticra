@@ -10,7 +10,6 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
 from optparse import OptionParser
 
-from pyticra.Object import ObjectRepository
 from pyticra.input import Project
 
 if __name__ == "__main__":

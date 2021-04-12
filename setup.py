@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='pyticra',
-      version='0.0',
+      version='20.1.2',
       description='Python package for Ticra Tools interfacing.',
       url='https://github.com/tnakaicode/pyticra',
       author='Taku Nakai',

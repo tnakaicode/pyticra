@@ -9,7 +9,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
 from optparse import OptionParser
 
-from pyticra.Object import CommandInterface
+from pyticra.input import CommandInterface
 
 if __name__ == "__main__":
     argvs = sys.argv
