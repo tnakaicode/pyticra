@@ -198,6 +198,8 @@ class Grammar(object):
 
     # Added '.' to handle Brad's EBEX sims. See if this breaks anything.
     # An identifier is no longer a valid Python variable.
+
+    # "ref(val_name)"
     s_ref = (
         "ref" +
         p.Suppress("(") +
@@ -206,6 +208,17 @@ class Grammar(object):
     )
     s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
 
+    # "ref(val_name)" mm
+    s_ref_u = (
+        "ref" +
+        p.Suppress("(") +
+        value +
+        p.Suppress(")") + 
+        value
+    )
+    s_ref_u.setParseAction(lambda tokens: [Ref(tokens[1])])
+
+    # sequence(ref(val1), ref(val2), 1.0)
     s_seq_e = p.Combine(value + p.Optional(' ') + p.Optional(ident))
     s_seq = (
         "sequence" +
@@ -215,13 +228,16 @@ class Grammar(object):
     )
     s_seq.setParseAction(lambda tokens: [Sequence(tokens[1:])])
 
+    # struct(v1: 0.0 mm, v2:  "ref(v2)", v3:  "ref(v3_1)+ref(v3_2)")
     s_sct_e = p.Group(
         ident +
         p.Suppress(":") +
         p.Combine(
             value +
             p.Optional(' ') +
-            p.Optional(ident)))
+            p.Optional(ident)
+        )
+    )
 
     s_sct = (
         "struct" +
