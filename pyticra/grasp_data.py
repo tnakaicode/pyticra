@@ -38,12 +38,11 @@ class GraspGrid (GridBase):
         self.fp = open(filename, "r")
         self.id = filename.split("/")[-1].split(".")[-2]
         self.split_header()
-        self.freq = freq * convert(unit_in="GHz", unit_out="Hz")
-        self.wave = cnt.c / self.freq * convert(unit_in="m", unit_out="mm")
+        self.freq = freq
+        self.wave = cnt.c / self.freq
         self.knum = 2 * np.pi / self.wave
         self.z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
         self.unit = unit
-        self.knum_m = self.knum * convert("mm", "m")
         self.initialize()
 
         for name, data in meta.items():
@@ -136,24 +135,28 @@ class GraspGrid (GridBase):
         rows = range(n0, n1)
         data = get_grd(self.filename, rows)
         if self.id == "cur":
-            coef = 1 / self.knum_m * (np.sqrt(self.z_0 / 2))
+            coef = 1 / self.knum * (np.sqrt(self.z_0 / 2))
             #coef = 1.0
-            self._meta[name] = get_cur(self._meta, data, coef=1 / coef)
+            self._meta[name] = get_cur(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "e":
-            coef = 1 / (self.knum_m * np.sqrt(2 * self.z_0))
+            coef = 1 / (self.knum * np.sqrt(2 * self.z_0))
             #coef = 1.0
-            self._meta[name] = get_e(self._meta, data, coef=1 / coef)
+            self._meta[name] = get_e(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "h":
-            coef = 1 / (self.knum_m) * np.sqrt(self.z_0 / 2)
+            coef = 1 / (self.knum) * np.sqrt(self.z_0 / 2)
             #coef = 1.0
-            self._meta[name] = get_h(self._meta, data, coef=1 / coef)
+            self._meta[name] = get_h(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "pw":
             coef = 1.0
-            self._meta[name] = get_pw(self._meta, data, coef=1 / coef)
+            self._meta[name] = get_pw(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         else:
             coef = 1.0
-            self._meta[name] = get_e(self._meta, data)
-        self._meta[name] *= (convert("mm", "mm")**2)
+            self._meta[name] = get_e(self._meta, data) / \
+                (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
 
 
@@ -193,7 +196,7 @@ def get_pw(meta, data, coef=1.0):
     func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']))
     func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C') * coef
     func[1] = data[:, 2].reshape(meta['NY'], meta['NX'], order='C') * coef
-    if meta['NCOM'] == 3:
+    if meta['NCOMP'] == 3:
         func[2] = (data[:, 4] + 1j * data[:, 5]).reshape(meta['NY'],
                                                          meta['NX'], order='C') * coef
     return func
