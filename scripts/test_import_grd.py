@@ -7,17 +7,17 @@ import time
 import os
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
-from optparse import OptionParser
+import argparse
 
 from pyticra.input import ObjectRepository, CommandInterface
 from pyticra.grasp_data import GraspGrid
 
 if __name__ == "__main__":
     argvs = sys.argv
-    parser = OptionParser()
-    parser.add_option("--tor", dest="tor",
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tor", dest="tor",
                       default="../project/working/project.tor")
-    opt, argc = parser.parse_args(argvs)
+    opt = parser.parse_args()
     print(argc, opt)
 
     dir_name = os.path.dirname(opt.tor) + "/"

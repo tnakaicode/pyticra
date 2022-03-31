@@ -8,16 +8,16 @@ import time
 import os
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
-from optparse import OptionParser
+import argparse
 
 from pyticra.input import Project
 
 if __name__ == "__main__":
     argvs = sys.argv
-    parser = OptionParser()
-    parser.add_option("--dir", dest="dir", default="./temp_000/")
-    parser.add_option("--name", dest="name",default="Project")
-    opt, argc = parser.parse_args(argvs)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dir", dest="dir", default="./temp_000/")
+    parser.add_argument("--name", dest="name",default="Project")
+    opt = parser.parse_args()
     print(argc, opt)
 
     prj = Project(name=opt.name)

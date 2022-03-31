@@ -4,7 +4,7 @@ import sys
 import time
 import os
 import subprocess
-from optparse import OptionParser
+import argparse
 
 
 def split_filename(filename="../temp_20200408000/not_ignore.txt"):
@@ -17,10 +17,10 @@ def split_filename(filename="../temp_20200408000/not_ignore.txt"):
 
 if __name__ == "__main__":
     argvs = sys.argv
-    parser = OptionParser()
-    parser.add_option("--job", dest="job",
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--job", dest="job",
                       default="../Project/Job_01/Job_01.tor")
-    opt, argc = parser.parse_args(argvs)
+    opt = parser.parse_args()
     print(argc, opt)
 
     ticra_tool = r'ticra-tools.exe'

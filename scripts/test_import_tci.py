@@ -7,16 +7,16 @@ import time
 import os
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from linecache import getline, clearcache
-from optparse import OptionParser
+import argparse
 
 from pyticra.input import CommandInterface
 
 if __name__ == "__main__":
     argvs = sys.argv
-    parser = OptionParser()
-    parser.add_option("--tci", dest="tci",
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--tci", dest="tci",
                       default="../project/working/project.tci")
-    opt, argc = parser.parse_args(argvs)
+    opt = parser.parse_args()
     print(argc, opt)
 
     dir_name = os.path.dirname(opt.tci) + "/"
