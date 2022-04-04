@@ -6,8 +6,8 @@ import sys
 import time
 import os
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-from linecache import getline, clearcache
 import argparse
+from linecache import getline, clearcache
 
 from pyticra.input import ObjectRepository, CommandInterface
 from pyticra.grasp_data import GraspGrid
