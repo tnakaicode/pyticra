@@ -1,4 +1,4 @@
-get_coor () 
+COMMAND OBJECT front_coor_sys get_coor_sys ( base : ref(global_coor_sys)) 
 COMMAND OBJECT front_PO get_currents ( source : sequence(ref(rear_feed_def)),  &
 auto_convergence_of_po : on, convergence_on_output_grid :  &
 sequence(ref(field_1)), convergence_on_expansion_grid :  &
@@ -8,7 +8,4 @@ COMMAND OBJECT front_reflector.e get_field ( source :  &
 sequence(ref(rear_feed_def))) 
 COMMAND OBJECT front_reflector.cur get_field ( source :  &
 sequence(ref(rear_feed_def))) 
-FUNCTION get_coor 
-   COMMAND OBJECT front_coor_sys get_coor_sys ( base : ref(global_coor_sys)) 
-END 
 QUIT 

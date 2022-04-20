@@ -6,13 +6,30 @@ working/project.tor
 working/project.tci
 [Project setup]
 <!DOCTYPE Project>
-<Project application="TICRA Tools" version="20.0.0">
- <Results/>
- <ResultWindows/>
+<Project application="TICRA Tools" version="21.0.2">
+ <Results>
+  <Analysis Name="Job_01" Path="Job_01">
+   <Objects Path="Job_01.tor"/>
+   <Commands Path="Job_01.tci"/>
+   <Output Path="output_files_21688.xml"/>
+   <Job JobOutputSpec="output_files_21688.xml" JobStatus="Job Finished" JobProcessID="21688" NumCommands="0" JobHidden="false" StartTime="2022-04-20T16:59:33" Name="Job_01"/>
+  </Analysis>
+  <Analysis Name="Job_02" Path="Job_02">
+   <Objects Path="Job_02.tor"/>
+   <Commands Path="Job_02.tci"/>
+   <Output Path="output_files_30892.xml"/>
+   <Job JobOutputSpec="output_files_30892.xml" JobStatus="Job Finished" JobProcessID="30892" NumCommands="0" JobHidden="false" StartTime="2022-04-20T17:05:42" Name="Job_02"/>
+  </Analysis>
+ </Results>
+ <ResultWindows>
+  <PlotStyleModel/>
+  <GridStyleModel/>
+ </ResultWindows>
  <WizardData/>
  <view_configuration>
-  <view locked_phi_theta="no" orientation_type="0" name="view_1" show_rulers="yes" scale="4.36907" minimized="no" show_surfaces="yes" enable_theta_slider="no" show_wire_grid="yes" viewCenter="1.713462829589844,2.338351726531982,-0.6971983909606934" pos="0x0" enable_phi_slider="no" upVector="0.1723876148462296,0.08910287916660309,0.9809907674789429" position="0.9729676246643066,1.693328619003296,-0.5084848403930664" maximized="yes" enable_psi_slider="no" perspective_view="no" size="1362x971" collapsed_view_settings_entries=""/>
+  <view scale="0.560404" size="1362x971" show_surfaces="yes" name="view_1" show_wire_grid="yes" enable_phi_slider="no" enable_theta_slider="no" pos="0x0" viewCenter="0.9257723689079285,1.172342538833618,0.3420652151107788" position="0.9847962856292725,2.108834743499756,0.6877505779266357" orientation_type="0" perspective_view="no" collapsed_view_settings_entries="" maximized="yes" enable_psi_slider="no" show_rulers="yes" locked_phi_theta="no" upVector="0.0579487532377243,-0.3489193320274353,0.9353590607643127" minimized="no"/>
  </view_configuration>
- <optimisation_configuration current_tab="Press 'New manager' to create an optimisation manager"/>
+ <optimisation_configuration current_tab="optimisation_manager"/>
+ <uq_configuration current_tab="Press 'New Manager' to create an uncertainty quantification manager"/>
  <projectSettings/>
 </Project>
