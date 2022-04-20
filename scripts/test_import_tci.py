@@ -34,3 +34,4 @@ if __name__ == "__main__":
     tci_obj.load(tci_file)
     print(tci_obj.parsed)
     print(tci_obj)
+    tci_obj.save(tci_file, batch_mode=False)

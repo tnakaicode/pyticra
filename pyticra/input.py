@@ -83,9 +83,9 @@ class CommandInterface(list):
         with open(filename, 'r') as f:
             self.parsed = Grammar.command_interface.parse_string(f.read()[:-6])
             self.batch_commands.extend(self.parsed.get('batch_commands', []))
-            self.extend(self.parsed.get('commands', []))
+            self.extend(self.parsed.get('command', []))
 
-    def save(self, filename, batch_mode=True):
+    def save(self, filename, batch_mode=False):
         """
         Write all the class descriptions to a file, which should have
         the .tci extension.
@@ -275,7 +275,7 @@ class Grammar(object):
                ident('target_name') +
                ident('command_name') +
                p.Suppress('(') +
-               p.Optional(p.delimitedList(member)) +
+               p.Optional(p.delimitedList(member))('member') +
                p.Suppress(')'))
     command.ignore(p.cppStyleComment)  # '// comment'
     command.ignore(p.pythonStyleComment)  # '# comment'
@@ -290,7 +290,7 @@ class Grammar(object):
     quit_command = p.CaselessLiteral('QUIT')
 
     # Add support for multiple QUIT statements.
-    command_interface = (p.OneOrMore(command) +
+    command_interface = (p.ZeroOrMore(command)("command") +
                          p.StringEnd())
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
