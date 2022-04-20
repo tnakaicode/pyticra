@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 # Tools for handling polarization on the sphere.
 # Encode Ludwig-3.

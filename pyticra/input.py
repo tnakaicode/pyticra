@@ -2,7 +2,6 @@ import numpy as np
 import os
 import json
 from os import path
-from copy import deepcopy
 from collections import OrderedDict
 import pyparsing as p
 
@@ -213,7 +212,7 @@ class Grammar(object):
         "ref" +
         p.Suppress("(") +
         value +
-        p.Suppress(")") + 
+        p.Suppress(")") +
         value
     )
     s_ref_u.setParseAction(lambda tokens: [Ref(tokens[1])])

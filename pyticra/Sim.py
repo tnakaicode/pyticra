@@ -1,6 +1,6 @@
 import os
-from glob import glob
 import numpy as np
+from glob import glob
 
 from pyticra.flat_map import GridMap, JonesMap
 
@@ -52,5 +52,5 @@ def Brad_angles_to_theta_phi(xd, yd):
     xr = np.radians(xd)
     yr = np.radians(yd)
     theta = np.sqrt(xr**2 + yr**2)
-    phi = np.arctan2(y / theta, x / theta)
+    phi = np.arctan2(yr / theta, xr / theta)
     return theta, phi

@@ -7,9 +7,7 @@ Hack .cur files.
 """
 from __future__ import division
 
-import os
 import numpy as np
-from linecache import getline, clearcache
 
 # These two functions handle numbers that have three-digit exponents,
 # which GRASP writes as, e.g., 0.123456789-100 for 1.23456789E-99

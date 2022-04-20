@@ -1,7 +1,6 @@
 import os
-from copy import deepcopy
-from collections import OrderedDict
 import pyparsing as p
+from collections import OrderedDict
 
 
 class Project(object):

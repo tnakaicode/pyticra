@@ -1,6 +1,6 @@
+import numpy as np
 import os
 from glob import glob
-import numpy as np
 
 from pyticra.config import Config
 from pyticra.flat_map import GridMap, JonesMap

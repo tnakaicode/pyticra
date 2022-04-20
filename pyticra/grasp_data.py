@@ -1,12 +1,9 @@
 import numpy as np
-import sys
-import time
-import os
 import scipy.constants as cnt
 from abc import abstractmethod
 from collections import MutableMapping
 
-from pyticra.units import convert_SI, convert
+from pyticra.units import convert
 
 
 class GridBase(MutableMapping, object):

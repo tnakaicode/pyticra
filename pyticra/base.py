@@ -1,8 +1,6 @@
 import pyparsing as p
 from collections import OrderedDict
 
-from pyparsing import delimitedList, dictOf
-
 
 class Quantity(object):
     """
@@ -154,7 +152,7 @@ class Command(OrderedDict):
                                                ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.iteritems()]))
 
     # This code is shared between Command and Physical objects. Fix this.
-    #def traverse(self, test, action):
+    # def traverse(self, test, action):
     #    """
     #    Recursively visit all members of this object. See visit() for
     #    parameter meanings.
@@ -162,7 +160,7 @@ class Command(OrderedDict):
     #    for name, thing in self.iteritems():
     #        self.visit(name, thing, test, action)
 
-    #def visit(self, name, thing, test, action):
+    # def visit(self, name, thing, test, action):
     #    """
     #    Recursively visit every member of this object, calling
     #    action(name, thing) if test(name, thing) is True.

@@ -2,7 +2,7 @@ from __future__ import division
 
 import numpy as np
 
-from pyticra.output import load_cut, save_cut
+from pyticra.output import load_cut
 
 
 class Cut(object):
