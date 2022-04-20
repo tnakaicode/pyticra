@@ -10,5 +10,7 @@ COMMAND OBJECT front_reflector.cur get_field ( source :  &
 sequence(ref(rear_feed_def))) 
 FUNCTION get_coor 
    COMMAND OBJECT front_coor_sys get_coor_sys ( base : ref(global_coor_sys)) 
+   COMMAND OBJECT front_feed_coor_sys get_coor_sys ( base :  &
+   ref(global_coor_sys)) 
 END 
 QUIT 

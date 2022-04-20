@@ -27,8 +27,8 @@ front_rim  elliptical_rim
 front_rot_coor_sys  coor_sys  
 (
   origin           : struct(x: 0.59999998 m, y: 0.0 m, z: 0.14999999 m),
-  x_axis           : struct(x: 0.9981347984, y: 0.6104853953E-01, z: 0.0),
-  y_axis           : struct(x: -0.6104853953E-01, y: 0.9981347984, z: 0.0),
+  x_axis           : struct(x: 0.9981347984, y: 0.06104853953, z: 0.0),
+  y_axis           : struct(x: -0.06104853953, y: 0.9981347984, z: 0.0),
   base             : ref(global_coor_sys)
 )
  
@@ -40,8 +40,8 @@ Frequency_1  frequency
 front_feed_coor_sys  coor_sys  
 (
   origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.6 m),
-  x_axis           : struct(x: 0.5988809119, y: -0.6104853953E-01, z: 0.7985078141),
-  y_axis           : struct(x: -0.3662912573E-01, y: -0.9981347984, z: -0.4883883012E-01),
+  x_axis           : struct(x: 0.5988809119, y: -0.06104853953, z: 0.7985078141),
+  y_axis           : struct(x: -0.03662912573, y: -0.9981347984, z: -0.04883883012),
   base             : ref(front_coor_sys)
 )
  
@@ -66,9 +66,7 @@ front_PO  po_single_face_scatterer
   scatterer        : ref(front_reflector),
   method           : po,
   po_points        : struct(po1: 62, po2: 147),
-  ptd_points       : sequence
-    (    struct(edge: 1, ptd: 0)
-    ),
+  ptd_points       : sequence(struct(edge: 1, ptd: 0)),
   coor_sys         : ref(front_coor_sys),
   file_name        : front_po.cur
 )
@@ -100,17 +98,17 @@ rear_rim  elliptical_rim
  
 rear_rot_coor_sys  coor_sys  
 (
-  origin           : struct(x: 0.59999998 m, y: 0.0 m, z: 0.8846153E-01 m),
-  x_axis           : struct(x: 0.9981347984, y: -0.6104853953E-01, z: 0.0),
-  y_axis           : struct(x: 0.6104853953E-01, y: 0.9981347984, z: 0.0),
+  origin           : struct(x: 0.59999998 m, y: 0.0 m, z: 0.08846153 m),
+  x_axis           : struct(x: 0.9981347984, y: -0.06104853953, z: 0.0),
+  y_axis           : struct(x: 0.06104853953, y: 0.9981347984, z: 0.0),
   base             : ref(global_coor_sys)
 )
  
 rear_feed_coor_sys  coor_sys  
 (
   origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.65 m),
-  x_axis           : struct(x: 0.6475701314, y: 0.6104853953E-01, z: 0.75955645),
-  y_axis           : struct(x: 0.3960708597E-01, y: -0.9981347984, z: 0.4645646264E-01),
+  x_axis           : struct(x: 0.6475701314, y: 0.06104853953, z: 0.75955645),
+  y_axis           : struct(x: 0.03960708597, y: -0.9981347984, z: 0.04645646264),
   base             : ref(rear_coor_sys)
 )
  
@@ -134,9 +132,7 @@ rear_PO  po_single_face_scatterer
   scatterer        : ref(rear_reflector),
   method           : po,
   po_points        : struct(po1: 62, po2: 147),
-  ptd_points       : sequence
-    (    struct(edge: 1, ptd: 0)
-    ),
+  ptd_points       : sequence(struct(edge: 1, ptd: 0)),
   coor_sys         : ref(rear_coor_sys),
   file_name        : rear_po.cur
 )
@@ -247,8 +243,7 @@ front_PWE  plane_wave_expansion
  
 frot_strip_grid_in_dielectric_layer  strip_grid_dielectric_layer  
 (
-  strip_grid       : struct(ref_coor_sys: ref(global_coor_sys), ref_angle: 90.0, spacing: 1.25 mm, width: 
-0.25 mm),
+  strip_grid       : struct(ref_coor_sys: ref(global_coor_sys), ref_angle: 90.0, spacing: 1.25 mm, width: 0.25 mm),
   substrate_above  : struct(thickness: 0.0 mm, dielectric_constant: 1.0, loss_tangent: 0.0),
   substrate_below  : struct(thickness: 0.4 mm, dielectric_constant: 2.5, loss_tangent: 0.0),
   plot_lines       : 25
@@ -282,10 +277,7 @@ hybrid_mode_conical_horn  hybrid_mode_conical_horn
   waveguide_radius : 0.1 m,
   aperture_radius  : 0.1 m,
   semi_flare_angle : 0.0,
-  modes            : sequence
-    (    struct(type: HE11, amp: 1.0, phase: 0.0, rot: 0.0),
-    struct(type: HE21, amp: 0.1, phase: 0.0, rot: 0.0)
-    )
+  modes            : sequence(struct(type: HE11, amp: 1.0, phase: 0.0, rot: 0.0), struct(type: HE21, amp: 0.1, phase: 0.0, rot: 0.0))
 )
  
 rooftop_mirror  rooftop_mirror  
@@ -319,16 +311,8 @@ simple_lens  simple_lens
 frame  frame  
 (
   no_of_components : 2,
-  lenses           : sequence
-    (    struct(name: Lens_1, index: 1, center_x: 0.3, center_y: 0.55, orientation: 0.0, beam1_to_component: 0
-, beam1_to_port: 0, beam2_to_component: 0, beam2_to_port: 0, f_value: 0.1, refractive_index: 2.0, diameter: 
-0.2, curvature_difference: 0.0, bs1: 0.0, bs2: 0.0)
-    ),
-  reflectors       : sequence
-    (    struct(name: Reflector_2, index: 2, center_x: 0.45, center_y: 0.55, orientation: 0.0, 
-beam1_to_component: 0, beam1_to_port: 0, beam2_to_component: 0, beam2_to_port: 0, f_value: 0.1, 
-curvature_difference: 0.0, half_cone_angle: 5.0, cone_axis_angle: 0.0, cone_vertex_focal_point: P1)
-    )
+  lenses           : sequence(struct(name: Lens_1, index: 1, center_x: 0.3, center_y: 0.55, orientation: 0.0, beam1_to_component: 0, beam1_to_port: 0, beam2_to_component: 0, beam2_to_port: 0, f_value: 0.1, refractive_index: 2.0, diameter: 0.2, curvature_difference: 0.0, bs1: 0.0, bs2: 0.0)),
+  reflectors       : sequence(struct(name: Reflector_2, index: 2, center_x: 0.45, center_y: 0.55, orientation: 0.0, beam1_to_component: 0, beam1_to_port: 0, beam2_to_component: 0, beam2_to_port: 0, f_value: 0.1, curvature_difference: 0.0, half_cone_angle: 5.0, cone_axis_angle: 0.0, cone_vertex_focal_point: P1))
 )
  
 single_reflector_gtd  single_reflector_gtd  
@@ -350,8 +334,7 @@ multi_gtd  multi_gtd
 gtd_reflector  gtd_reflector  
 (
   reflectors       : sequence(ref(rear_reflector)),
-  diffraction      : struct(method: numerical, edge_index: -1, sample_points: 120, max_diffraction_points: -1
-, slope: on),
+  diffraction      : struct(method: numerical, edge_index: -1, sample_points: 120, max_diffraction_points: -1, slope: on),
   transmission     : on
 )
  
@@ -378,7 +361,7 @@ dielectric_layer  dielectric_layer
 (
   thickness        : 1.0 mm,
   dielectric_constant : 2.0,
-  loss_tangent     : 0.2E-03
+  loss_tangent     : 0.0002
 )
  
 optimisation_manager  optimisation_manager  
@@ -395,22 +378,11 @@ optimisation_setting  minmax_settings
 (
 )
  
-//DO NOT MODIFY OBJECTS BELOW THIS LINE.
-//THESE OBJECTS ARE CREATED AND MANAGED BY THE
-//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
-//MODIFIED MANUALLY!
 view_1  view  
 (
-  objects          : sequence(ref(view_1_reflector_plot),ref(view_1_coor_sys_plot),ref(view_1_feed_plot),
-ref(view_1_output_points_plot),ref(rooftop_mirror_plot_for_view_1),ref(lens_plot_for_view_1),
-ref(feed_plot_for_front_feed_def_for_view_1),ref(feed_plot_for_rear_feed_def_for_view_1),
-ref(gaussian_beam_tube)),
-  hidden_objects   : sequence(ref(hybrid_mode_conical_horn),ref(gaussian_beam_tube)),
-  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
-struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, radiating_devices: show, 
-mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: show, plane_waves: show, 
-dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: show, mom_sources: show, 
-quasi_periodic_surfaces: hide, ellipsoids: show)
+  objects          : sequence(ref(view_1_reflector_plot), ref(view_1_coor_sys_plot), ref(view_1_feed_plot), ref(view_1_output_points_plot), ref(rooftop_mirror_plot_for_view_1), ref(lens_plot_for_view_1), ref(feed_plot_for_front_feed_def_for_view_1), ref(feed_plot_for_rear_feed_def_for_view_1), ref(gaussian_beam_tube)),
+  hidden_objects   : sequence(ref(hybrid_mode_conical_horn), ref(gaussian_beam_tube)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: show, mom_sources: show, quasi_periodic_surfaces: hide, ellipsoids: show)
 )
  
 view_1_reflector_plot  reflector_plot  
@@ -452,9 +424,6 @@ feed_plot_for_rear_feed_def_for_view_1  feed_plot
  
 gaussian_beam_tube  gaussian_beam_tube  
 (
-  objects          : sequence(ref(front_feed_def),ref(rear_feed_def)),
+  objects          : sequence(ref(front_feed_def), ref(rear_feed_def)),
   beam_path_range  : struct(start: 0.0 m, end: 1.0 m, number_of_cross_sections: 3)
 )
- 
- //$$ Saved at 16:59:33 on 20.04.2022 by TICRA Tools 21.0.2 SN=009506
-  

@@ -6,19 +6,19 @@ working/project.tor
 working/project.tci
 [Project setup]
 <!DOCTYPE Project>
-<Project application="TICRA Tools" version="21.0.2">
+<Project version="21.0.2" application="TICRA Tools">
  <Results>
   <Analysis Name="Job_01" Path="Job_01">
    <Objects Path="Job_01.tor"/>
    <Commands Path="Job_01.tci"/>
    <Output Path="output_files_21688.xml"/>
-   <Job JobOutputSpec="output_files_21688.xml" JobStatus="Job Finished" JobProcessID="21688" NumCommands="0" JobHidden="false" StartTime="2022-04-20T16:59:33" Name="Job_01"/>
+   <Job Name="Job_01" JobProcessID="21688" JobStatus="Job Finished" StartTime="2022-04-20T16:59:33" JobOutputSpec="output_files_21688.xml" NumCommands="0" JobHidden="false"/>
   </Analysis>
   <Analysis Name="Job_02" Path="Job_02">
    <Objects Path="Job_02.tor"/>
    <Commands Path="Job_02.tci"/>
    <Output Path="output_files_30892.xml"/>
-   <Job JobOutputSpec="output_files_30892.xml" JobStatus="Job Finished" JobProcessID="30892" NumCommands="0" JobHidden="false" StartTime="2022-04-20T17:05:42" Name="Job_02"/>
+   <Job Name="Job_02" JobProcessID="30892" JobStatus="Job Finished" StartTime="2022-04-20T17:05:42" JobOutputSpec="output_files_30892.xml" NumCommands="0" JobHidden="false"/>
   </Analysis>
  </Results>
  <ResultWindows>
@@ -27,7 +27,7 @@ working/project.tci
  </ResultWindows>
  <WizardData/>
  <view_configuration>
-  <view scale="0.560404" size="1362x971" show_surfaces="yes" name="view_1" show_wire_grid="yes" enable_phi_slider="no" enable_theta_slider="no" pos="0x0" viewCenter="0.9257723689079285,1.172342538833618,0.3420652151107788" position="0.9847962856292725,2.108834743499756,0.6877505779266357" orientation_type="0" perspective_view="no" collapsed_view_settings_entries="" maximized="yes" enable_psi_slider="no" show_rulers="yes" locked_phi_theta="no" upVector="0.0579487532377243,-0.3489193320274353,0.9353590607643127" minimized="no"/>
+  <view enable_theta_slider="no" size="1362x971" pos="0x0" upVector="-0.3118042349815369,-0.1178508102893829,0.9428091049194336" perspective_view="no" minimized="no" collapsed_view_settings_entries="" position="0.1592916250228882,0.8592916131019592,1.745500087738037" show_surfaces="yes" locked_phi_theta="no" enable_psi_slider="no" enable_phi_slider="no" name="view_1" maximized="yes" show_rulers="yes" show_wire_grid="yes" orientation_type="0" scale="3.67267" viewCenter="-0.7226256132125854,0.5259581804275513,1.412167191505432"/>
  </view_configuration>
  <optimisation_configuration current_tab="optimisation_manager"/>
  <uq_configuration current_tab="Press 'New Manager' to create an uncertainty quantification manager"/>

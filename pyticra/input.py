@@ -4,6 +4,7 @@ import json
 from os import path
 from collections import OrderedDict
 import pyparsing as p
+from sqlalchemy import func
 
 basepath = path.dirname(__file__) + "/"
 
@@ -98,7 +99,10 @@ class CommandInterface(list):
                 f.write(str(self))
 
     def __str__(self):
-        return '\n\n'.join(['{} '.format(command) for index, command in enumerate(self)] + ['QUIT'])
+        return '\n\n'.join(['{} '.format(command) for command in self.parsed.get('command', [])] +
+                           ['{} '.format(command) for command in self.parsed.get('function_call', [])] +
+                           ['{} '.format(command) for command in self.parsed.get('function', [])] +
+                           ['QUIT'])
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__,
@@ -284,16 +288,61 @@ class Grammar(object):
                                                    tokens['command_name'],
                                                    tokens[2:])])
 
+    function = (p.Suppress('FUNCTION') +
+                ident('function_name') +
+                p.Optional(p.delimitedList(command))('command_object') +
+                p.Suppress('END'))
+    function.ignore(p.cppStyleComment)  # '// comment'
+    function.ignore(p.pythonStyleComment)  # '# comment'
+    function.ignore(p.Literal('&'))
+    function.setParseAction(lambda tokens: [Function(tokens['function_name'],
+                                                     tokens[1:])])
+
+    function_call = (ident('function_name') +
+                     p.Suppress('(') +
+                     p.Suppress(')'))
+
     # Add support for other batch commands.
-    batch_command = p.CaselessLiteral('FILES READ ALL') + other + p.LineEnd().suppress()
+    batch_command = (p.CaselessLiteral('FILES READ ALL') +
+                     other +
+                     p.LineEnd().suppress())
     batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
     quit_command = p.CaselessLiteral('QUIT')
 
+    command_group = p.Group(
+        p.ZeroOrMore(function_call)("function_call") |
+        p.ZeroOrMore(command)("command") |
+        p.ZeroOrMore(function)("function")
+    )
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(command)("command") +
+    command_interface = (p.ZeroOrMore(command)('command') +
                          p.StringEnd())
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
+
+
+class Function(OrderedDict):
+    """
+    This class is a container for GRASP functions.
+
+    It inherits from OrderedDict so that it remembers the ordering of its properties.
+    """
+
+    def __init__(self, function_name, other={}):
+        super(Function, self).__init__(other)
+        self.function_name = str(function_name)
+
+    def __str__(self):
+        lines = ['FUNCTION {}'.format(self.function_name)]
+        for k, v in self.items():
+            lines.append('\t{}'.format(Command(k, v)))
+        lines.append('END')
+        return ' &\n'.join(lines)
+
+    def __repr__(self):
+        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
+                                               self.function_name,
+                                               '\t'.join(['{}'.format(Command(k, v)) for k, v in self.items()]))
 
 
 class Command(OrderedDict):
