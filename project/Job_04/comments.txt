@@ -1,1 +1,0 @@
-Step 4: Computing the first-order reflection from the front reflector back to the rear reflector, using a plane-wave expansion of the field from the front reflector.

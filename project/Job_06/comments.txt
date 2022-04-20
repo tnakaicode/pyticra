@@ -1,1 +1,0 @@
-Step 6: Adding all the contributions from steps 1-5  to get the total far field.
