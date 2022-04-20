@@ -33,5 +33,7 @@ if __name__ == "__main__":
     tci_obj = CommandInterface()
     tci_obj.load(tci_file)
     print(tci_obj.parsed)
-    print(tci_obj)
+    #print(tci_obj)
+    for command in tci_obj.parsed:
+        print(command.__str__())
     tci_obj.save(tci_file, batch_mode=False)

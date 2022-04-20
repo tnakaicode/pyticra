@@ -99,9 +99,7 @@ class CommandInterface(list):
                 f.write(str(self))
 
     def __str__(self):
-        return '\n\n'.join(['{} '.format(command) for command in self.parsed.get('command', [])] +
-                           ['{} '.format(command) for command in self.parsed.get('function_call', [])] +
-                           ['{} '.format(command) for command in self.parsed.get('function', [])] +
+        return '\n\n'.join(['{} '.format(command[0]) for command in self.parsed] +
                            ['QUIT'])
 
     def __repr__(self):
@@ -287,6 +285,7 @@ class Grammar(object):
     command.setParseAction(lambda tokens: [Command(tokens['target_name'],
                                                    tokens['command_name'],
                                                    tokens[2:])])
+    command.set_name('command')
 
     function = (p.Suppress('FUNCTION') +
                 ident('function_name') +
@@ -297,10 +296,12 @@ class Grammar(object):
     function.ignore(p.Literal('&'))
     function.setParseAction(lambda tokens: [Function(tokens['function_name'],
                                                      tokens[1:])])
+    function.set_name('function')
 
     function_call = (ident('function_name') +
                      p.Suppress('(') +
                      p.Suppress(')'))
+    function_call.set_name('function_call')
 
     # Add support for other batch commands.
     batch_command = (p.CaselessLiteral('FILES READ ALL') +
@@ -308,14 +309,10 @@ class Grammar(object):
                      p.LineEnd().suppress())
     batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
     quit_command = p.CaselessLiteral('QUIT')
+    group_command = p.Group((command | function | function_call))
 
-    command_group = p.Group(
-        p.ZeroOrMore(function_call)("function_call") |
-        p.ZeroOrMore(command)("command") |
-        p.ZeroOrMore(function)("function")
-    )
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(command)('command') +
+    command_interface = (p.ZeroOrMore(group_command) +
                          p.StringEnd())
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
@@ -334,15 +331,15 @@ class Function(OrderedDict):
 
     def __str__(self):
         lines = ['FUNCTION {}'.format(self.function_name)]
-        for k, v in self.items():
-            lines.append('\t{}'.format(Command(k, v)))
+        for v in self.items():
+            lines.append('\t{}'.format(Command(v[0], v[1], v[2:])))
         lines.append('END')
         return ' &\n'.join(lines)
 
     def __repr__(self):
         return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
                                                self.function_name,
-                                               '\t'.join(['{}'.format(Command(k, v)) for k, v in self.items()]))
+                                               '\t'.join(['{}'.format(Command(v[0], v[1], v[2:])) for v in self.items()]))
 
 
 class Command(OrderedDict):
