@@ -10,7 +10,7 @@ class Project(object):
     It currently can only create a blank project.
     """
 
-    extensions = {9: 'g9p', 10: 'gxp'}
+    extensions = {9: 'g9p', 10: 'gxp', 20: 'gxp'}
 
     def __init__(self, name, version='10.0.1'):
         self.name = str(name)
