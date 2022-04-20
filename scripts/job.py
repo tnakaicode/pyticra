@@ -19,11 +19,11 @@ if __name__ == "__main__":
     argvs = sys.argv
     parser = argparse.ArgumentParser()
     parser.add_argument("--job", dest="job",
-                      default="../Project/Job_01/Job_01.tor")
+                        default="../Project/Job_01/Job_01.tor")
     opt = parser.parse_args()
-    print(argc, opt)
+    print(opt)
 
-    ticra_tool = r'ticra-tools.exe'
+    ticra_tool = r'C:\Program Files\TICRA\TICRA-Tools-21.0.2\bin\ticra-tools.exe'
 
     root_dir = os.getcwd()
     tor_file = root_dir + opt.job

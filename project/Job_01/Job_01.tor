@@ -143,12 +143,12 @@ global_coor_sys  coor_sys
  
 front_spline  spline_surface  
 (
-  file_name        : gr4_front02.spl
+  file_name        : ../working/gr4_front02.spl
 )
  
 rear_spline  spline_surface  
 (
-  file_name        : gr4_rear02.spl
+  file_name        : ../working/gr4_rear02.spl
 )
  
 field_1  spherical_grid  

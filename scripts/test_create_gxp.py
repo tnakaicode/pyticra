@@ -1,4 +1,3 @@
-from os import name
 import numpy as np
 import matplotlib.pyplot as plt
 import json
@@ -18,7 +17,7 @@ if __name__ == "__main__":
     parser.add_argument("--dir", dest="dir", default="./temp_000/")
     parser.add_argument("--name", dest="name",default="Project")
     opt = parser.parse_args()
-    print(argc, opt)
+    print(opt)
 
     prj = Project(name=opt.name)
     prj.create(opt.dir)

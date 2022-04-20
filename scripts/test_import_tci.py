@@ -5,19 +5,20 @@ import glob
 import sys
 import time
 import os
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import argparse
 from linecache import getline, clearcache
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from pyticra.input import CommandInterface
+from pyticra.input import ObjectRepository, CommandInterface
+from pyticra.grasp_data import GraspGrid
 
 if __name__ == "__main__":
     argvs = sys.argv
     parser = argparse.ArgumentParser()
     parser.add_argument("--tci", dest="tci",
-                      default="../project/working/project.tci")
+                        default="../project/working/project.tci")
     opt = parser.parse_args()
-    print(argc, opt)
+    print(opt)
 
     dir_name = os.path.dirname(opt.tci) + "/"
     sub_name = os.path.basename(os.path.dirname(opt.tci))
