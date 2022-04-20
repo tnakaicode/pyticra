@@ -208,27 +208,27 @@ class Grammar(object):
     s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
 
     # "ref(val_name)" mm
-    s_ref_u = (
+    s_ref_unit = (
         "ref" +
         p.Suppress("(") +
         value +
         p.Suppress(")") +
         value
     )
-    s_ref_u.setParseAction(lambda tokens: [Ref(tokens[1])])
+    s_ref_unit.setParseAction(lambda tokens: [Ref(tokens[1])])
 
     # sequence(ref(val1), ref(val2), 1.0)
-    s_seq_e = p.Combine(value + p.Optional(' ') + p.Optional(ident))
+    s_seq_element = p.Combine(value + p.Optional(' ') + p.Optional(ident))
     s_seq = (
         "sequence" +
         p.Suppress("(") +
-        p.delimitedList(s_seq_e) +
+        p.delimitedList(s_seq_element) +
         p.Suppress(")")
     )
     s_seq.setParseAction(lambda tokens: [Sequence(tokens[1:])])
 
     # struct(v1: 0.0 mm, v2:  "ref(v2)", v3:  "ref(v3_1)+ref(v3_2)")
-    s_sct_e = p.Group(
+    s_struct_element = p.Group(
         ident +
         p.Suppress(":") +
         p.Combine(
@@ -238,13 +238,13 @@ class Grammar(object):
         )
     )
 
-    s_sct = (
+    s_struct = (
         "struct" +
         p.Suppress("(") +
-        p.delimitedList(s_sct_e) +
+        p.delimitedList(s_struct_element) +
         p.Suppress(")")
     )
-    s_sct.setParseAction(
+    s_struct.setParseAction(
         lambda tokens: [Struct((dat[0], dat[1]) for dat in tokens[1:])]
     )
 
@@ -252,7 +252,7 @@ class Grammar(object):
     other = p.Word(p.alphanums + r'\/._-')
     s_val = p.Combine('"' + value + '"' + p.Optional(' ') + p.Optional(ident))
 
-    value << (quantity | s_ref | s_val | s_sct | s_seq | other | comment)
+    value << (quantity | s_ref | s_val | s_struct | s_seq | other | comment)
     member = p.Group(ident + p.Suppress(":") + value)
     physical = (
         ident + ident +
