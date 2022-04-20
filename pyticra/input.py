@@ -81,7 +81,7 @@ class CommandInterface(list):
 
     def load(self, filename):
         with open(filename, 'r') as f:
-            self.parsed = Grammar.command_interface.parseFile(f)
+            self.parsed = Grammar.command_interface.parse_string(f.read()[:-6])
             self.batch_commands.extend(self.parsed.get('batch_commands', []))
             self.extend(self.parsed.get('commands', []))
 
@@ -269,6 +269,31 @@ class Grammar(object):
     object_repository = p.ZeroOrMore(physical) + p.StringEnd()
     object_repository.ignore(p.cppStyleComment)
     object_repository.ignore(p.pythonStyleComment)
+
+    command = (p.Suppress('COMMAND') +
+               p.Suppress('OBJECT') +
+               ident('target_name') +
+               ident('command_name') +
+               p.Suppress('(') +
+               p.Optional(p.delimitedList(member)) +
+               p.Suppress(')'))
+    command.ignore(p.cppStyleComment)  # '// comment'
+    command.ignore(p.pythonStyleComment)  # '# comment'
+    command.ignore(p.Literal('&'))
+    command.setParseAction(lambda tokens: [Command(tokens['target_name'],
+                                                   tokens['command_name'],
+                                                   tokens[2:])])
+
+    # Add support for other batch commands.
+    batch_command = p.CaselessLiteral('FILES READ ALL') + other + p.LineEnd().suppress()
+    batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
+    quit_command = p.CaselessLiteral('QUIT')
+
+    # Add support for multiple QUIT statements.
+    command_interface = (p.OneOrMore(command) +
+                         p.StringEnd())
+    command_interface.ignore(p.cppStyleComment)
+    command_interface.ignore(p.pythonStyleComment)
 
 
 class Command(OrderedDict):
