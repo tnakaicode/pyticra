@@ -98,7 +98,7 @@ class CommandInterface(list):
                 f.write(str(self))
 
     def __str__(self):
-        return '\n\n'.join(['{} cmd_{}'.format(command, index + 1) for index, command in enumerate(self)] + ['QUIT'])
+        return '\n\n'.join(['{} '.format(command) for index, command in enumerate(self)] + ['QUIT'])
 
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__,
