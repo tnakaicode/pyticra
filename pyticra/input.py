@@ -4,7 +4,6 @@ import json
 from os import path
 from collections import OrderedDict
 import pyparsing as p
-from sqlalchemy import func
 
 basepath = path.dirname(__file__) + "/"
 
