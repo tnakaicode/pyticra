@@ -176,18 +176,20 @@ def save_grd(filename, meta, names=["name"], comment=[]):
 
 def save_grasp_grd(meta, filename, name="E", dir_name="./", comment=[]):
     n_xy = meta['NX'] * meta['NY']
+    nx, ny = meta["NX"], meta["NY"]
+    xs, ys = meta["XS"], meta["YS"]
+    xe, ye = meta["XE"], meta["YE"]
     comp = meta[name].shape[0]
     fp = open(dir_name + filename, "w")
     fp.write('{}\n'.format(meta["NAME"]))
     for line in comment:
         fp.write('{}\n'.format(line))
     fp.write('++++\n')
-    fp.write('{:2d}\n'.format(1))
-    fp.write('{:12d}{:12d}{:12d}{:12d}\n'.format(1, 3, 3, 3))
-    fp.write('{:12d}{:12d}\n'.format(0, 0))
-    fp.write(' {: 0.10E} {: 0.10E} {: 0.10E} {: 0.10E}\n'.format(
-        meta['XS'], meta['YS'], meta['XE'], meta['YE']))
-    fp.write('{:12d}{:12d}{:12d}\n'.format(meta['NX'], meta['NY'], 0))
+    fp.write(f'{1:2d}\n')
+    fp.write(f'{1:12d}{3:12d}{3:12d}{3:12d}\n')
+    fp.write(f'{0:12d}{0:12d}\n')
+    fp.write(f' {xs: 0.10E} {ys: 0.10E} {xe: 0.10E} {ye: 0.10E}\n')
+    fp.write(f'{nx:12d}{ny:12d}{0:12d}\n')
     data = np.empty((n_xy, 2 * comp))
     for idx in range(comp):
         i0, i1 = 2 * idx, 2 * idx + 1
@@ -195,3 +197,31 @@ def save_grasp_grd(meta, filename, name="E", dir_name="./", comment=[]):
         data[:, i1] = meta[name][idx].reshape(n_xy, order='C').imag
     for p in range(n_xy):
         fp.write(''.join([float_to_string(val) for val in data[p, :]]) + '\n')
+
+
+def save_grasp_grd_multi(meta, filename, freqs=["170.0GHz"], name="E", dir_name="./", comment=[]):
+    fp = open(dir_name + filename, "w")
+    fp.write('{}\n'.format(filename))
+    for line in comment + freqs:
+        fp.write('{}\n'.format(line))
+    fp.write('++++\n')
+    fp.write('{:2d}\n'.format(1))
+    fp.write('{:12d}{:12d}{:12d}{:12d}\n'.format(len(freqs), 3, 3, 3))
+    for i, freq in enumerate(freqs):
+        fp.write(f'{0:12d}{0:12d}\n')
+    for i, freq in enumerate(freqs):
+        nx, ny = meta[freq]["NX"], meta[freq]["NY"]
+        xs, ys = meta[freq]["XS"], meta[freq]["YS"]
+        xe, ye = meta[freq]["XE"], meta[freq]["YE"]
+        n_xy = nx * ny
+        comp = meta[freq][name].shape[0]
+        fp.write(f' {xs: 0.10E} {ys: 0.10E} {xe: 0.10E} {ye: 0.10E}\n')
+        fp.write(f'{nx:12d}{ny:12d}{0:12d}\n')
+        data = np.empty((n_xy, 2 * comp))
+        for idx in range(comp):
+            i0, i1 = 2 * idx, 2 * idx + 1
+            data[:, i0] = meta[freq][name][idx].reshape(n_xy, order='C').real
+            data[:, i1] = meta[freq][name][idx].reshape(n_xy, order='C').imag
+        for p in range(n_xy):
+            fp.write(''.join([float_to_string(val)
+                     for val in data[p, :]]) + '\n')
