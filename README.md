@@ -66,3 +66,11 @@ IGRID $\rho\phi$-grid
 ---
 
 r = $-\sin(Az)\cos(El)$, $\sin(El)$, $\cos(Az)\cos(El)$  
+
+---
+Install
+
+```bash
+python setup.py bdist_wheel
+pip install .\dist\pyticra-22.1-py3-none-any.whl --force-reinstall
+```
