@@ -133,17 +133,17 @@ class GraspGrid (GridBase):
         data = get_grd(self.filename, rows)
         if self.id == "cur":
             coef = 1 / self.knum * (np.sqrt(self.z_0 / 2))
-            #coef = 1.0
+            # coef = 1.0
             self._meta[name] = get_cur(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "e":
             coef = 1 / (self.knum * np.sqrt(2 * self.z_0))
-            #coef = 1.0
+            # coef = 1.0
             self._meta[name] = get_e(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "h":
             coef = 1 / (self.knum) * np.sqrt(self.z_0 / 2)
-            #coef = 1.0
+            # coef = 1.0
             self._meta[name] = get_h(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "pw":
@@ -155,6 +155,74 @@ class GraspGrid (GridBase):
             self._meta[name] = get_e(self._meta, data) / \
                 (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
+
+
+class TicraSlipOver(GridBase):
+
+    def __init__(self, filename, meta={}, freqs=["104.0GHz"], *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set the components dictionary (default empty)
+        self._meta = meta
+        self.filename = filename
+        self.fp = open(filename, "r")
+        self.id = filename.split("/")[-1].split(".")[-2]
+        self.freqs = freqs
+        self.split_header()
+        self.initialize()
+
+        for name, data in meta.items():
+            self.__setitem__(name, data)
+
+        for key, value in kwargs.items():
+            self.__setattr__(key, value)
+
+    def __getitem__(self, name):
+        return self._meta[name]
+
+    def __setitem__(self, name, data):
+        self._meta[name] = data
+
+    def __delitem__(self, name):
+        del self._meta[name]
+
+    def __iter__(self):
+        return iter(self._meta)
+
+    def __len__(self):
+        return len(self._meta)
+
+    def __str__(self):
+        output = str(self.keys())
+        return output
+
+    def split_header(self, contxt="++++"):
+        self._meta['header'] = []
+        self._meta['header'].append(self.fp.readline().rstrip('\n'))
+        while self._meta['header'][-1] != contxt:
+            self._meta['header'].append(self.fp.readline().rstrip('\n'))
+
+    def initialize(self):
+        key_list = self.fp.readline().split(",")
+        file_end = True
+        beam_indx = 0
+        while file_end:
+            file_line = self.fp.readline()
+            if not file_line:
+                file_end = False
+            else:
+                line_text = file_line.split(",")
+                beam_name = line_text[1]
+                beam_freq = float(line_text[2])
+                beam_powr = float(line_text[3])
+                beam_spil = float(line_text[4])
+                meta = {}
+                meta["BeamName"] = beam_name
+                meta["BeamFreq"] = beam_freq
+                meta["RelativePowerHitting"] = beam_powr
+                meta["Spill-Over"] = beam_spil
+                self._meta[self.freqs_txt[beam_indx]] = meta
+                beam_indx += 1
 
 
 def call_func(name, *arg, **args):
