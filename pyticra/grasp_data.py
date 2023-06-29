@@ -156,6 +156,7 @@ class GraspGrid (GridBase):
                 (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
 
+
 class GraspGridMulti (GridBase):
 
     def __init__(self, filename, meta={}, freqs=[100.0], unit="mm", *args, **kwargs):
@@ -207,7 +208,7 @@ class GraspGridMulti (GridBase):
         ICOMP  -  Control parameter of field components.
         NCOMP  -  Number of components.
         IGRID  -  Control parameter of field grid type
-        
+
         Grid Type
             Spherical Far  (F1, F2)
             Spherical Near (F1, F2, F3)
@@ -236,15 +237,25 @@ class GraspGridMulti (GridBase):
         self._meta['NCOMP'] = ncomp
         self._meta['IGRID'] = igrid
         for i in range(self._meta['NSET']):
-            self._meta['IX'], self._meta['IY'] = [int(s) for s in self.fp.readline().split()]
-        self._meta['XS'], self._meta['YS'], self._meta['XE'], self._meta['YE'] = [float(s) * convert(unit_in=self.unit, unit_out="mm") for s in self.fp.readline().split()]
-        self._meta['NX'], self._meta['NY'], self._meta['KLIMIT'] = [int(s) for s in self.fp.readline().split()]
+            ixy = self.fp.readline().split()
+            self._meta['IX'], self._meta['IY'] = [int(s) for s in ixy]
+        xy = self.fp.readline().split()
+        self._meta['XS'] = float(xy[0]) * convert(self.unit, "mm")
+        self._meta['YS'] = float(xy[1]) * convert(self.unit, "mm")
+        self._meta['XE'] = float(xy[2]) * convert(self.unit, "mm")
+        self._meta['YE'] = float(xy[3]) * convert(self.unit, "mm")
+        nxy = self.fp.readline().split()
+        self._meta['NX'] = int(nxy[0])
+        self._meta['NY'] = int(nxy[1])
+        self._meta['KLIMIT'] = int(nxy[2])
         if self._meta['KLIMIT'] != 0:
             raise ValueError("Not implemented.")
-        self._meta['PX'] = np.linspace(
-            self._meta['XS'], self._meta['XE'], self._meta['NX'])
-        self._meta['PY'] = np.linspace(
-            self._meta['YS'], self._meta['YE'], self._meta['NY'])
+        self._meta['PX'] = np.linspace(self._meta['XS'],
+                                       self._meta['XE'],
+                                       self._meta['NX'])
+        self._meta['PY'] = np.linspace(self._meta['YS'],
+                                       self._meta['YE'],
+                                       self._meta['NY'])
         self._meta['MESH'] = np.meshgrid(self._meta['PX'], self._meta['PY'])
         self._meta['DX'] = (self._meta['XE'] -
                             self._meta['XS']) / (self._meta['NX'] - 1)
@@ -261,30 +272,28 @@ class GraspGridMulti (GridBase):
         n1 = n0 + row
         rows = range(n0, n1)
         data = get_grd(self.filename, rows)
+        freq = self.freqs[indx]* convert("GHz", "Hz")
+        wave = wave = cnt.c / freq
+        knum = 2 * np.pi / wave
+        z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
+        freq_txt = self.freqs_txt[indx]
         if self.id == "cur":
-            coef = 1 / self.knum * (np.sqrt(self.z_0 / 2))
-            # coef = 1.0
-            self._meta[name] = get_cur(
-                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            coef = 1 / knum * (np.sqrt(z_0 / 2))
+            self._meta[freq_txt] = get_cur(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "e":
-            coef = 1 / (self.knum * np.sqrt(2 * self.z_0))
-            # coef = 1.0
-            self._meta[name] = get_e(
-                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            coef = 1 / (knum * np.sqrt(2 * z_0))
+            self._meta[freq_txt] = get_e(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "h":
-            coef = 1 / (self.knum) * np.sqrt(self.z_0 / 2)
-            # coef = 1.0
-            self._meta[name] = get_h(
-                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            coef = 1 / (knum) * np.sqrt(z_0 / 2)
+            self._meta[freq_txt] = get_h(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "pw":
             coef = 1.0
-            self._meta[name] = get_pw(
-                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_pw(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         else:
             coef = 1.0
-            self._meta[name] = get_e(self._meta, data) / \
-                (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_e(self._meta, data) / (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
+
 
 class TicraSlipOver(GridBase):
 
