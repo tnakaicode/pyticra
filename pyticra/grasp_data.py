@@ -168,6 +168,8 @@ class GraspGridMulti (GridBase):
         self.unit = unit
         self.freqs = freqs
         self.freqs_txt = [f"{f:.1f}GHz" for f in freqs]
+        for freq in self.freqs_txt:
+            self._meta[freq] = {}
         self.split_header()
         self.initialize()
 
@@ -264,7 +266,7 @@ class GraspGridMulti (GridBase):
         self._meta['XCEN'] = self._meta['DX'] * self._meta['IX']
         self._meta['YCEN'] = self._meta['DY'] * self._meta['IY']
 
-    def get_data(self, name, indx):
+    def get_data(self, name="e", indx=0):
         num = len(self._meta['header'])
         num += self._meta['NSET'] + 4
         row = self._meta['NX'] * self._meta['NY']
@@ -279,23 +281,23 @@ class GraspGridMulti (GridBase):
         freq_txt = self.freqs_txt[indx]
         if self.id == "cur":
             coef = 1 / knum * (np.sqrt(z_0 / 2))
-            self._meta[freq_txt] = get_cur(
+            self._meta[freq_txt][name] = get_cur(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "e":
             coef = 1 / (knum * np.sqrt(2 * z_0))
-            self._meta[freq_txt] = get_e(
+            self._meta[freq_txt][name] = get_e(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "h":
             coef = 1 / (knum) * np.sqrt(z_0 / 2)
-            self._meta[freq_txt] = get_h(
+            self._meta[freq_txt][name] = get_h(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "pw":
             coef = 1.0
-            self._meta[freq_txt] = get_pw(
+            self._meta[freq_txt][name] = get_pw(
                 self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         else:
             coef = 1.0
-            self._meta[freq_txt] = get_e(
+            self._meta[freq_txt][name] = get_e(
                 self._meta, data) / (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
 
