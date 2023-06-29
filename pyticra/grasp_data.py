@@ -272,26 +272,31 @@ class GraspGridMulti (GridBase):
         n1 = n0 + row
         rows = range(n0, n1)
         data = get_grd(self.filename, rows)
-        freq = self.freqs[indx]* convert("GHz", "Hz")
+        freq = self.freqs[indx] * convert("GHz", "Hz")
         wave = wave = cnt.c / freq
         knum = 2 * np.pi / wave
         z_0 = np.sqrt(cnt.mu_0 / cnt.epsilon_0)
         freq_txt = self.freqs_txt[indx]
         if self.id == "cur":
             coef = 1 / knum * (np.sqrt(z_0 / 2))
-            self._meta[freq_txt] = get_cur(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_cur(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "e":
             coef = 1 / (knum * np.sqrt(2 * z_0))
-            self._meta[freq_txt] = get_e(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_e(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "h":
             coef = 1 / (knum) * np.sqrt(z_0 / 2)
-            self._meta[freq_txt] = get_h(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_h(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         elif self.id == "pw":
             coef = 1.0
-            self._meta[freq_txt] = get_pw(self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_pw(
+                self._meta, data, coef=1 / coef) / (convert("m", self.unit)**2)
         else:
             coef = 1.0
-            self._meta[freq_txt] = get_e(self._meta, data) / (convert("m", self.unit)**2)
+            self._meta[freq_txt] = get_e(
+                self._meta, data) / (convert("m", self.unit)**2)
         print(self.filename, n0, n1)
 
 
