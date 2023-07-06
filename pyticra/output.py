@@ -199,7 +199,28 @@ def save_grasp_grd(meta, filename, name="E", dir_name="./", comment=[]):
         fp.write(''.join([float_to_string(val) for val in data[p, :]]) + '\n')
 
 
-def save_grasp_grd_multi(meta, filename, freqs=["170.0GHz"], name="E", dir_name="./", comment=[]):
+def save_grasp_grd_multi(meta, filename, freqs=["100.0GHz"], name="e", dir_name="./", comment=[]):
+    """Save *grd file
+
+    Args:
+        meta (dict): meta   - NX,NY
+                            - XS,XE, YS,YE
+                            - "100.0GHz" - e = e[0], e[1], e[2]
+                                         - h = h[0], h[1], h[2]
+                                         - SpillOver = 0.9
+                                         ...
+                            - "101.0GHz" - e = e[0], e[1], e[2]
+        filename (str): filename (not contain directroy name)
+        freqs (list, optional): Saved freqs name. Defaults to ["100.0GHz"].
+        name (str, optional): Saved component's name. Defaults to "e".
+        dir_name (str, optional): Defaults to "./".
+        comment (list, optional): Defaults to [].
+    """
+    nx, ny = meta["NX"], meta["NY"]
+    xs, ys = meta["XS"], meta["YS"]
+    xe, ye = meta["XE"], meta["YE"]
+    n_xy = nx * ny
+
     fp = open(dir_name + filename, "w")
     fp.write('{}\n'.format(filename))
     for line in comment + freqs:
@@ -210,10 +231,6 @@ def save_grasp_grd_multi(meta, filename, freqs=["170.0GHz"], name="E", dir_name=
     for i, freq in enumerate(freqs):
         fp.write(f'{0:12d}{0:12d}\n')
     for i, freq in enumerate(freqs):
-        nx, ny = meta[freq]["NX"], meta[freq]["NY"]
-        xs, ys = meta[freq]["XS"], meta[freq]["YS"]
-        xe, ye = meta[freq]["XE"], meta[freq]["YE"]
-        n_xy = nx * ny
         comp = meta[freq][name].shape[0]
         fp.write(f' {xs: 0.10E} {ys: 0.10E} {xe: 0.10E} {ye: 0.10E}\n')
         fp.write(f'{nx:12d}{ny:12d}{0:12d}\n')

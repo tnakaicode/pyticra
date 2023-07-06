@@ -314,6 +314,9 @@ class TicraSlipOver(GridBase):
         self.fp = open(filename, "r")
         self.freqs = freqs
         self.freqs_txt = [f"{f:.1f}GHz" for f in freqs]
+        for freq in self.freqs_txt:
+            if freq not in self._meta.keys():
+                self._meta[freq] = {}
         self.split_header()
         self.initialize()
 
