@@ -303,7 +303,7 @@ class GraspGridMulti (GridBase):
         print(self.filename, n0, n1)
 
 
-class TicraSlipOver(GridBase):
+class TicraSpilOver(GridBase):
 
     def __init__(self, filename, meta={}, freqs=[100.0], *args, **kwargs):
         super().__init__(*args, **kwargs)
