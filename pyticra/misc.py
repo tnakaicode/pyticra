@@ -47,7 +47,7 @@ def mirror_x(half):
     full.y = half.y
     full.map = np.empty((full.shape[0], full.shape[1],
                          full.x.size, full.y.size),
-                        dtype=np.complex)
+                        dtype=complex)
     full.map[:, :, :half.x.size, :] = half.map[:, :, ::-1, :]
     full.map[:, :, half.x.size:, :] = half.map[:, :, 1:, :]
     return full
@@ -74,7 +74,7 @@ def combine_and_normalize(co, cx):
     both = GridMap()
     both.x = co.x
     both.y = cx.y
-    both.map = np.empty((co.map.shape), dtype=np.complex)
+    both.map = np.empty((co.map.shape), dtype=complex)
     maximum = np.max(np.abs(co.map[0]))
     both.map[0, 0] = co.map[0, 0] / maximum
     both.map[1, 0] = cx.map[0, 0] / maximum

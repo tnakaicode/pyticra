@@ -338,7 +338,7 @@ class GridMap(FlatMap):
     files.  It currently cannot load elliptically truncated
     grids. Implement subclasses if necessary.
     """
-    data_type = np.complex
+    data_type = complex
     # Subclasses should define the key to the map indices.
 
     def __init__(self, filename=None):
@@ -395,7 +395,7 @@ class UVNearGrid(GridMap):
 class JonesMap(FlatMap):
 
     shape = (2, 2)
-    data_type = np.complex
+    data_type = complex
     keys = {'co': 0,
             'cx': 1}
 

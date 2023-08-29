@@ -11,7 +11,7 @@ class Grid(Map):
     # This is the shape of the matrix at each pixel.
     shape = (2, 1)
     # This is the map data type.
-    data_type = np.complex
+    data_type = complex
 
     # This is the mapping between array indices and Jones vector components.
     jones = {0: 'co', 'co': 0,

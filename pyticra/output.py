@@ -83,7 +83,7 @@ def get_grd(filename, rows):
 
 
 def get_cur(meta, data):
-    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=complex)
     for comp in range(meta['NCOMP']):
         col = data[:, 2 * comp] + 1j * data[:, 2 * comp + 1]
         func[comp] = col.reshape(meta['NY'], meta['NX'], order='C')
@@ -91,7 +91,7 @@ def get_cur(meta, data):
 
 
 def get_pw(meta, data):
-    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=complex)
     func[0] = data[:, 0].reshape(meta['NY'], meta['NX'], order='C')
     func[1] = (data[:, 2] + 1j * data[:, 3]
                ).reshape(meta['NY'], meta['NX'], order='C')

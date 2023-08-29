@@ -399,7 +399,7 @@ def get_grd(filename, rows):
 
 
 def get_cur(meta, data, coef=1.0):
-    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=complex)
     for comp in range(meta['NCOMP']):
         col = data[:, 2 * comp] + 1j * data[:, 2 * comp + 1]
         func[comp] = col.reshape(meta['NY'], meta['NX'], order='C') * coef
@@ -417,7 +417,7 @@ def get_pw(meta, data, coef=1.0):
 
 
 def get_eh(meta, data, coef=1.0):
-    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=np.complex)
+    func = np.empty((meta['NCOMP'], meta['NY'], meta['NX']), dtype=complex)
     for i in range(meta['NCOMP']):
         i0, i1 = i * 2, i * 2 + 1
         func[i] = (data[:, i0] + 1j * data[:, i1]

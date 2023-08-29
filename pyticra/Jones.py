@@ -11,7 +11,7 @@ class JonesMap(Map):
     # This is the shape of the matrix at each pixel.
     shape = (2, 2)
     # This is the map data type.
-    data_type = np.complex
+    data_type = complex
 
     # This is the mapping between array indices and Jones vector components.
     jones = {0: 'co', 'co': 0,
@@ -59,7 +59,7 @@ class JonesMap(Map):
                                 JonesMap.shape[1],
                                 coadded.X.size,
                                 coadded.Y.size),
-                               dtype=np.complex)
+                               dtype=complex)
         for j in jones_maps:
             i_x, i_y, within = coadded.indices(j.X, j.Y)
             coadded.map[:, :, i_x[0]:i_x[-1] + 1, i_y[0]:i_y[-1] + 1] += j.map
