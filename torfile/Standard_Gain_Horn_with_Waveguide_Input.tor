@@ -1,0 +1,272 @@
+WR_75  box  
+(
+  x_length         : 19.05 mm,
+  y_length         : 9.525 mm,
+  z_length         : 50.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: -275.0 mm),
+  exclude_faces    : sequence(z_max,z_min)
+)
+ 
+excitation_cwg  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(port_cwg), waveguide_mode: ref(TEM), amplitude: 1.0, phase: 0.0)
+    ),
+  s_parameter_file : " "
+)
+ 
+port_cwg  coaxial_waveguide_port  
+(
+  radius           : 2.3 mm,
+  inner_radius     : 1.0 mm,
+  port_expansion_settings : ref(mes_cwg)
+)
+ 
+TEM  coaxial_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 2
+)
+ 
+mom_cwg  mom  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(SGH_ML),
+  expansion_accuracy : high,
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(port_cwg), coor_sys: ref(coor_sys_coax_port), x: 0.0 m, y: 0.0 m, z: 0.0 m
+, normal: Z-axis)
+    )
+)
+ 
+frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 12.0 GHz, end_frequency: 12.0 GHz, number_of_frequencies: 1)
+)
+ 
+SGH  scatterer_cluster  
+(
+  scatterers       : sequence(ref(WR_75),ref(rwg_port_backing),ref(Pyramidal_section))
+)
+ 
+cut_rwg  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_output),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 361),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " "
+)
+ 
+Mode_launcher_box  box  
+(
+  coor_sys         : ref(coor_sys_ML),
+  x_length         : 19.05 mm,
+  y_length         : 9.525 mm,
+  z_length         : 16.565 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm),
+  exclude_faces    : sequence(z_max,y_min)
+)
+ 
+ML_plate  arbitrary_plate  
+(
+  coor_sys         : ref(coor_sys_coax_port),
+  rim              : ref(ML_rim),
+  holes            : sequence(ref(central_hole))
+)
+ 
+ML_rim  rectangular_rim  
+(
+  centre           : struct(x: 0.0 m, y: 0.0 mm),
+  side_lengths     : struct(x: 19.05 mm, y: 16.565 mm)
+)
+ 
+central_hole  elliptical_rim  
+(
+  centre           : struct(x: 0.0 m, y: 0.0 mm),
+  half_axis        : struct(x: 2.3 mm, y: 2.3 mm)
+)
+ 
+coor_sys_coax_port  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: -4.7625 mm, z: 0.0 mm),
+  theta            : 90.0,
+  phi              : 90.0,
+  base             : ref(coor_sys_ML)
+)
+ 
+coor_sys_ML  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -308.2825 mm)
+)
+ 
+mes_cwg  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 2,
+  m_max            : 2
+)
+ 
+coor_sys_output  coor_sys_grasp_angles  
+(
+  psi              : 90.0
+)
+ 
+excitation_rwg  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(port_rwg), waveguide_mode: ref(TE10), amplitude: 1.0, phase: 0.0)
+    ),
+  s_parameter_file : " "
+)
+ 
+port_rwg  rectangular_waveguide_port  
+(
+  x_dimension      : 19.05 mm,
+  y_dimension      : 9.525 mm,
+  port_expansion_settings : ref(mes_rwg)
+)
+ 
+TE10  rectangular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 0
+)
+ 
+mes_rwg  rectangular_waveguide_port_modal_expansion_settings  
+(
+  m_max            : 1,
+  n_max            : 0
+)
+ 
+SGH_ML  scatterer_cluster  
+(
+  scatterers       : sequence(ref(WR_75),ref(Mode_launcher),ref(Pyramidal_section))
+)
+ 
+mom_rwg  mom  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(SGH),
+  expansion_accuracy : high,
+  iterative_solution : struct(use_mlfmm: off, relative_error: 0.1E-02, mlfmm_use_disk: off, mlfmm_precision: 
+normal, preconditioner_accuracy: normal, obsolete_group_size: 4.0, rhs_compression: on),
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(port_rwg), coor_sys: ref(coor_sys_rwg_port), x: 0.0 m, y: 0.0 m, z: 0.0 m
+, normal: Z-axis)
+    )
+)
+ 
+cut_cwg  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_output),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 361),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " "
+)
+ 
+coor_sys_rwg_port  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -300.0 mm)
+)
+ 
+rwg_port_backing  box  
+(
+  x_length         : 19.05 mm,
+  y_length         : 9.525 mm,
+  z_length         : 4.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: -302.0 mm),
+  exclude_faces    : sequence(z_max)
+)
+ 
+cwg_backing  piecewise_linear_bor  
+(
+  coor_sys         : ref(coor_sys_coax_port),
+  length_unit      : mm,
+  nodes            : table
+    (
+     -2.00000E+00    0.00000E+00  
+     -2.00000E+00    2.30000E+00  
+      0.00000E+00    2.30000E+00  
+    )
+)
+ 
+coax_pin  piecewise_linear_bor  
+(
+  coor_sys         : ref(coor_sys_coax_port),
+  length_unit      : mm,
+  nodes            : table
+    (
+      5.00000E+00    0.00000E+00  
+      5.00000E+00    1.00000E+00  
+      0.00000E+00    1.00000E+00  
+    )
+)
+ 
+Mode_launcher  scatterer_cluster  
+(
+  scatterers       : sequence(ref(Mode_launcher_box),ref(ML_plate),ref(cwg_backing),ref(coax_pin))
+)
+ 
+Pyramidal_section  cad_file  
+(
+  file_name        : Pyramidalhorn.stp,
+  tolerance        : 0.1E-01 cm,
+  mom_material_regions : table
+    (
+    ),
+  mom_material_parts : table
+    (
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_box_plot),ref(view_1_mom_source_plot),ref(view_1_mom_plot),
+ref(view_1_coor_sys_plot),ref(view_1_output_points_plot),ref(view_1_bor_plot),ref(view_1_cad_file_plot),
+ref(arbitrary_plate_plot_for_view_1)),
+  resolution_index : 3,
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: hide, wires: hide, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: show, rooftop_mirrors: hide, loads: hide, bors: 
+show, mom_sources: hide, quasi_periodic_surfaces: hide, ellipsoids: show)
+)
+ 
+view_1_box_plot  box_plot  
+(
+)
+ 
+view_1_mom_source_plot  mom_source_plot  
+(
+)
+ 
+view_1_mom_plot  mom_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_bor_plot  bor_plot  
+(
+)
+ 
+view_1_cad_file_plot  cad_file_plot  
+(
+)
+ 
+arbitrary_plate_plot_for_view_1  arbitrary_plate_plot  
+(
+)
+ 
+ //$$ Saved at 11:07:27 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+  

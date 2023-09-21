@@ -1,0 +1,86 @@
+frequency  frequency  
+(
+  frequency_list   : sequence(35.75 GHz)
+)
+ 
+Rogers6002  isotropic_dielectric  
+(
+  relative_permittivity : 2.97,
+  loss_tangent     : 0.12E-02
+)
+ 
+periodic_mom_settings_layered_media  periodic_mom_settings_layered_media  
+(
+  expansion_accuracy : extreme
+)
+ 
+periodic_unit_cell_triple_dipoles  periodic_unit_cell_triple_dipoles  
+(
+  frequency        : ref(frequency),
+  unit_cell_size   : struct(x: 3.816 mm, y: 3.816 mm, skew_angle: 90.0, baseline: x),
+  element_parameters : sequence
+    (    struct(l: 2.0 mm, w: 0.2 mm, b: 0.75, d: 1.0 mm, rotation: 0.0),
+    struct(l: 2.0 mm, w: 0.2 mm, b: 0.75, d: 1.0 mm, rotation: 90.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: 0.127 mm, substrate: ref(Rogers6002), el_par_index: 0),
+    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 2),
+    struct(thickness: 0.762 mm, substrate: ref(Rogers6002), el_par_index: 0)
+    ),
+  analysis_settings : ref(periodic_mom_settings_layered_media)
+)
+ 
+periodic_unit_cell_planar_mesh  periodic_unit_cell_planar_mesh  
+(
+  frequency        : ref(frequency),
+  unit_cell_size   : struct(x: 3.816 mm, y: 3.816 mm, skew_angle: 90.0, baseline: x),
+  element_parameters : sequence
+    (    struct(file_name: triple_dipoles_ratio.msh, unit: m),
+    struct(file_name: triple_dipoles_ratio.msh, unit: m)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: 0.127 mm, substrate: ref(Rogers6002), el_par_index: 0),
+    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 2),
+    struct(thickness: 0.762 mm, substrate: ref(Rogers6002), el_par_index: 0)
+    ),
+  parameter_assignments : table
+    (
+    rot  "pi()/2"      1  
+    L2    2.00000E-03      1  
+    L2    2.00000E-03      2  
+    ),
+  analysis_settings : ref(periodic_mom_settings_layered_media)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+)
+ 
+puc_plot  puc_plot  
+(
+  objects          : sequence(ref(periodic_unit_cell_triple_dipoles))
+)
+ 
+puc_view  puc_view  
+(
+  objects          : sequence(ref(puc_plot))
+)
+ 
+puc_plot_01  puc_plot  
+(
+  objects          : sequence(ref(periodic_unit_cell_planar_mesh))
+)
+ 
+puc_view_01  puc_view  
+(
+  objects          : sequence(ref(puc_plot_01))
+)
+ 
+ //$$ Saved at 09:03:15 on 17.05.2021 by TICRA Tools 21.0 SN=008782
+  

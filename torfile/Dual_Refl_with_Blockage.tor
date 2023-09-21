@@ -1,0 +1,134 @@
+main_reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(main_surface)),
+  rim              : ref(main_rim)
+)
+ 
+global_coor  coor_sys  
+(
+)
+ 
+main_surface  paraboloid  
+(
+  focal_length     : 0.25 m
+)
+ 
+main_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 0.25 m, y: 0.25 m)
+)
+ 
+sub_reflector  reflector  
+(
+  coor_sys         : ref(sub_coor),
+  surfaces         : sequence(ref(sub_surface)),
+  rim              : ref(sub_rim)
+)
+ 
+sub_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.25 m),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+sub_surface  hyperboloid  
+(
+  vertex_distance  : 0.5E-01 m,
+  foci_distance    : 0.15 m
+)
+ 
+sub_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 0.5714285779E-01 m, y: 0.5714285779E-01 m)
+)
+ 
+feed  gaussian_beam_pattern  
+(
+  frequency        : ref(wavelengths),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 28.07248717,
+  taper            : -12.0
+)
+ 
+wavelengths  wavelength  
+(
+  wavelength_list  : sequence(0.1E-01 m)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.15 m),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(sub_coor)
+)
+ 
+cut  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: 0.0, end: 45.0, np: 451),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  file_name        : " ",
+  frequency        : ref(wavelengths)
+)
+ 
+cut_coor  coor_sys  
+(
+  base             : ref(global_coor)
+)
+ 
+main_po  po_single_face_scatterer  
+(
+  frequency        : ref(wavelengths),
+  scatterer        : ref(main_reflector),
+  coor_sys         : ref(global_coor),
+  file_name        : ""
+)
+ 
+sub_po  po_single_face_scatterer  
+(
+  frequency        : ref(wavelengths),
+  scatterer        : ref(sub_reflector),
+  coor_sys         : ref(global_coor),
+  file_name        : ""
+)
+ 
+single_reflector_gtd  single_reflector_gtd  
+(
+  frequency        : ref(wavelengths),
+  source           : ref(feed),
+  reflector        : ref(sub_reflector),
+  go               : on,
+  go_warning       : on,
+  gtd              : on
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_reflector_plot),ref(view_1_coor_sys_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot))
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 13:58:51 on 07.11.2022 by TICRA Tools 22.1 SN=009627
+  

@@ -1,0 +1,789 @@
+frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 14.0 GHz, end_frequency: 14.5 GHz, number_of_frequencies: 3)
+)
+ 
+mode_launcher_phasing_and_corrugations  combined_device  
+(
+  devices          : sequence(ref(corrugated_horn_interior),ref(mode_launcher),ref(phasing_section))
+)
+ 
+reflector_surface  paraboloid  
+(
+  focal_length     : 0.6 m
+)
+ 
+reflector_rim  elliptical_rim  
+(
+  centre           : struct(x: 60.0 cm, y: 0.0 m),
+  half_axis        : struct(x: 50.0 cm, y: 50.0 cm)
+)
+ 
+reflector  reflector  
+(
+  coor_sys         : ref(coor_sys_global),
+  surfaces         : sequence(ref(reflector_surface)),
+  rim              : ref(reflector_rim)
+)
+ 
+coor_sys_feed  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 60.0 cm),
+  x_axis           : struct(x: 0.600000006304359, y: 0.0, z: 0.799999995271731),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(coor_sys_global)
+)
+ 
+coor_sys_cut  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm),
+  base             : ref(coor_sys_global)
+)
+ 
+reflector_far_field_unmatched  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_cut),
+  theta_range      : struct(start: -30.0, end: 30.0, np: 601),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+po  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(reflector),
+  po_points        : struct(po1: 35, po2: 120),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 120)
+    ),
+  coor_sys         : ref(coor_sys_global)
+)
+ 
+corrugated_horn_interior  circular_symmetric_horn  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_horn_input),
+  port_2           : ref(port_horn_aperture),
+  horn_section     : ref(combined_horn_sections),
+  analysis_settings : ref(mode_matching_settings)
+)
+ 
+port_horn_input  circular_waveguide_port  
+(
+  radius           : "ref(horn_r0)" mm,
+  port_expansion_settings : ref(circular_modal_expansions)
+)
+ 
+circular_modal_expansions  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 7,
+  m_max            : 7
+)
+ 
+port_horn_aperture  circular_waveguide_port  
+(
+  radius           : "ref(horn_r7)" mm,
+  port_expansion_settings : ref(circular_modal_expansions)
+)
+ 
+combined_horn_sections  combined_horn_section  
+(
+  horn_sections    : sequence(ref(circular_waveguide_section),ref(simple_axial_corrugated_section_1),
+ref(simple_axial_corrugated_section_2),ref(simple_axial_corrugated_section_3),
+ref(simple_axial_corrugated_section_4),ref(simple_axial_corrugated_section_5),
+ref(simple_axial_corrugated_section_6),ref(simple_axial_corrugated_section_7))
+)
+ 
+circular_waveguide_section  circular_waveguide_section  
+(
+  radius           : "ref(horn_r0)" mm,
+  length           : 8.0 mm,
+  conductivity     : 33333333330.0 S/m
+)
+ 
+simple_axial_corrugated_section_1  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r0)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_1)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_1)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_2  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r1)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_2)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_2)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_3  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r2)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_3)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_3)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_4  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r3)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_4)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_4)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_5  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r4)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_5)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_5)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_6  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r5)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_6)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_6)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+simple_axial_corrugated_section_7  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(horn_r6)" mm,
+  slot_width       : "ref(horn_slot_width)" mm,
+  slot_depth       : "ref(horn_depth_7)" mm,
+  ridge_thickness  : "ref(horn_ridge_thickness)" mm,
+  axial_distance   : "ref(horn_axdist_7)" mm,
+  number_of_axial_slots : 1,
+  conductivity     : 33333333.0 S/m
+)
+ 
+mode_matching_settings  mode_matching_settings  
+(
+  additional_modes : 50
+)
+ 
+mode_launcher  circular_waveguide_grooved_step  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_mode_launcher_input),
+  port_2           : ref(port_phasing_section_input),
+  length_1         : "ref(ml_l1)" mm,
+  length_2         : "ref(ml_l3)+ref(ml_l2)" mm,
+  grooves          : sequence
+    (    struct(centre: "360-ref(ml_slot_offset)", width: "ref(ml_slot_width)", length: "ref(ml_l2)" mm),
+    struct(centre: "ref(ml_slot_offset)", width: "ref(ml_slot_width)", length: "ref(ml_l2)" mm)
+    ),
+  analysis_settings : ref(mom_settings)
+)
+ 
+mom_settings  mom_settings  
+(
+  expansion_accuracy : high,
+  relative_max_mesh_length : 0.6,
+  floating_point_precision : double
+)
+ 
+port_mode_launcher_input  circular_waveguide_port  
+(
+  radius           : "ref(ml_rad_in)" mm,
+  port_expansion_settings : ref(circular_modal_expansions)
+)
+ 
+Return_Loss_goal  goal_scattering_parameter  
+(
+  device           : ref(mode_launcher),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_mode_launcher_input), input_mode: ref(TE11_1), 
+output_port: ref(port_mode_launcher_input), output_mode: ref(TE11_1), type: amplitude, goal: -20.0, weight: 
+1.0, action: minimise)
+    )
+)
+ 
+TE11_1  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+TE21_1  circular_waveguide_mode  
+(
+  m_index          : 2,
+  n_index          : 1
+)
+ 
+TE11_2  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1,
+  mode_set         : 2nd
+)
+ 
+TE21_2  circular_waveguide_mode  
+(
+  m_index          : 2,
+  n_index          : 1,
+  mode_set         : 2nd
+)
+ 
+coor_sys_global  coor_sys  
+(
+)
+ 
+corrugations_and_exterior  combined_device  
+(
+  devices          : sequence(ref(corrugated_horn_interior),ref(circular_symmetric_aperture))
+)
+ 
+radiating_feed_without_mode_converter  radiating_device  
+(
+  device           : ref(corrugations_and_exterior),
+  port_excitation  : sequence
+    (    struct(port: ref(port_horn_input), waveguide_mode: ref(TE11_1), amplitude: 1.0, phase: 0.0)
+    ),
+  coor_sys         : ref(coor_sys_feed)
+)
+ 
+circular_symmetric_aperture  circular_symmetric_open_waveguide  
+(
+  frequency        : ref(frequency),
+  waveguide_port   : ref(port_horn_aperture),
+  wall_thickness   : "ref(horn_ridge_thickness)" mm,
+  exterior_length  : "ref(horn_exterior_length)" mm,
+  analysis_settings : ref(mom_settings)
+)
+ 
+total_matched_feed  combined_device  
+(
+  devices          : sequence(ref(mode_launcher_phasing_and_corrugations),ref(circular_symmetric_aperture))
+)
+ 
+radiating_matched_feed  radiating_device  
+(
+  device           : ref(total_matched_feed),
+  port_excitation  : sequence
+    (    struct(port: ref(port_mode_launcher_input), waveguide_mode: ref(TE11_1), amplitude: 1.0, phase: 0.0)
+    ),
+  coor_sys         : ref(coor_sys_feed)
+)
+ 
+TE21_amplitude_ml  goal_scattering_parameter_ratio  
+(
+  device           : ref(mode_launcher_phasing_and_corrugations),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_mode_launcher_input), input_mode: ref(TE11_1), 
+output_port: ref(port_horn_aperture), output_mode: ref(TE21_1), type: amplitude, goal: -20.0, weight: 1.0, 
+action: target)
+    ),
+  denominator      : struct(input_port: ref(port_mode_launcher_input), input_mode: ref(TE11_1), output_port: 
+ref(port_horn_aperture), output_mode: ref(TE11_1))
+)
+ 
+cross_pol_horn  goal_far_field_angular_region  
+(
+  source           : sequence(ref(radiating_feed_without_mode_converter)),
+  coor_sys         : ref(coor_sys_feed),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, theta_max: 40.0, component: linear_y, goal: -40.0, 
+weight: 1.0, action: minimise)
+    ),
+  normalise_to_peak : struct(normalise: yes, theta_max: 10.0, theta_resolution: 0.5, phi_resolution: 2.0, 
+component: linear_x)
+)
+ 
+horn_far_field_no_mode_converter  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_feed),
+  theta_range      : struct(start: -90.0, end: 90.0, np: 601),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+Return_Loss_axial_corru  goal_scattering_parameter  
+(
+  device           : ref(corrugations_and_exterior),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_horn_input), input_mode: ref(TE11_1), output_port: 
+ref(port_horn_input), output_mode: ref(TE11_1), type: amplitude, goal: -25.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+port_phasing_section_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_horn_input)
+)
+ 
+phasing_section  straight_waveguide_section  
+(
+  frequency        : ref(frequency),
+  length           : "ref(ml_phasing_length)" mm,
+  port_1           : ref(port_phasing_section_input),
+  port_2           : ref(port_horn_input),
+  analysis_settings : ref(mode_matching_settings)
+)
+ 
+TE21_phase_ml  goal_scattering_parameter_ratio  
+(
+  device           : ref(mode_launcher_phasing_and_corrugations),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_mode_launcher_input), input_mode: ref(TE11_1), 
+output_port: ref(port_horn_aperture), output_mode: ref(TE21_1), type: phase, goal: -90.0, weight: 1.0, 
+action: target)
+    ),
+  denominator      : struct(input_port: ref(port_mode_launcher_input), input_mode: ref(TE11_1), output_port: 
+ref(port_horn_aperture), output_mode: ref(TE11_1))
+)
+ 
+cross_pol_PO  goal_far_field_angular_region  
+(
+  source           : sequence(ref(po),ref(radiating_matched_feed)),
+  coor_sys         : ref(coor_sys_cut),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, theta_max: 1.0, component: linear_y, goal: -35.0, weight: 
+1.0, action: minimise)
+    ),
+  theta_resolution : 0.1,
+  normalise_to_peak : struct(normalise: yes, theta_max: 5.0, theta_resolution: 0.1, phi_resolution: 2.0, 
+component: linear_x)
+)
+ 
+on_axis_directivity  goal_far_field_specific_direction  
+(
+  source           : sequence(ref(po)),
+  coor_sys         : ref(coor_sys_cut),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, coor_1: 0.0, coor_2: 0.0, component: linear_x, goal: 41.5
+, weight: 1.0, action: maximise)
+    )
+)
+ 
+optim_initial_horn  optimisation_manager  
+(
+  variables        : sequence(ref(optim_initial_horn_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(cross_pol_horn), weight: 1.0),
+    struct(goal: ref(taper_horn), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_initial_horn)
+)
+ 
+optim_initial_horn_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(horn_axdist_1), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_3), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_4), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_5), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_6), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_axdist_7), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_1), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_3), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_4), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_5), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_6), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_7), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100)
+    )
+)
+ 
+min_max_settings_initial_horn  minmax_settings  
+(
+  max_iterations   : 30,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+horn_far_field_no_mode_converter_init  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_feed),
+  theta_range      : struct(start: -90.0, end: 90.0, np: 601),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+taper_horn  goal_far_field_specific_direction  
+(
+  source           : sequence(ref(radiating_feed_without_mode_converter)),
+  coor_sys         : ref(coor_sys_feed),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, coor_1: 37.7, coor_2: 0.0, component: linear_x, goal: 
+-12.0, weight: 1.0, action: target),
+    struct(frequency_index: -1, beam_index: 1, coor_1: 37.7, coor_2: 45.0, component: linear_x, goal: -12.0, 
+weight: 1.0, action: target),
+    struct(frequency_index: -1, beam_index: 1, coor_1: 37.7, coor_2: 90.0, component: linear_x, goal: -12.0, 
+weight: 1.0, action: target)
+    ),
+  normalise_to_peak : struct(normalise: yes, theta_max: 3.0, theta_resolution: 0.5, phi_resolution: 2.0, 
+component: linear_x)
+)
+ 
+optim_ml_amplitude  optimisation_manager  
+(
+  variables        : sequence(ref(optim_ml_amplitude_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(TE21_amplitude_ml), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_ml_amplitude)
+)
+ 
+optim_ml_amplitude_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(ml_l2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100
+)
+    )
+)
+ 
+optim_phasing_section  optimisation_manager  
+(
+  variables        : sequence(ref(optim_phasing_section_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(TE21_phase_ml), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_phasing_section)
+)
+ 
+optim_phasing_section_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(ml_phasing_length), min_enabled: off, min: -0.1E+100, max_enabled: off, 
+max: 0.1E+100)
+    )
+)
+ 
+mcs_settings  mcs_settings  
+(
+)
+ 
+reflector_far_field_matched  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_cut),
+  theta_range      : struct(start: -30.0, end: 30.0, np: 601),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+optim_on_far_field  optimisation_manager  
+(
+  variables        : sequence(ref(optim_on_far_field_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(on_axis_directivity), weight: 1.0),
+    struct(goal: ref(cross_pol_PO), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_far_field),
+  object_func_analysis : po_on_reflector
+)
+ 
+optim_on_far_field_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(ml_l2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100
+),
+    struct(variable_object: ref(ml_phasing_length), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100)
+    )
+)
+ 
+evauate_initial_cross_pol  optimisation_manager  
+(
+  variables        : sequence(ref(evauate_initial_cross_pol_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(cross_pol_PO_unmatched), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_initial_horn),
+  object_func_analysis : po_on_reflector_unmatched
+)
+ 
+evauate_initial_cross_pol_variables_default  real_optimisation_variables  
+(
+)
+ 
+cross_pol_PO_unmatched  goal_far_field_angular_region  
+(
+  source           : sequence(ref(po),ref(radiating_feed_without_mode_converter)),
+  coor_sys         : ref(coor_sys_cut),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, theta_max: 1.0, component: linear_y, goal: -35.0, weight: 
+1.0, action: minimise)
+    ),
+  theta_resolution : 0.1,
+  normalise_to_peak : struct(normalise: yes, theta_max: 5.0, theta_resolution: 0.1, phi_resolution: 2.0, 
+component: linear_x)
+)
+ 
+optim_on_far_field_5var  optimisation_manager  
+(
+  variables        : sequence(ref(optim_on_far_field_variables_5var)),
+  goals            : sequence
+    (    struct(goal: ref(on_axis_directivity), weight: 1.0),
+    struct(goal: ref(cross_pol_PO), weight: 1.0)
+    ),
+  optimisation_settings : ref(min_max_settings_far_field_5var),
+  object_func_analysis : po_on_reflector
+)
+ 
+optim_on_far_field_variables_5var  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(ml_l2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100
+),
+    struct(variable_object: ref(ml_phasing_length), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_1), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(horn_depth_3), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100)
+    )
+)
+ 
+min_max_settings_ml_amplitude  minmax_settings  
+(
+  max_iterations   : 6,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+min_max_settings_phasing_section  minmax_settings  
+(
+  max_iterations   : 20,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+min_max_settings_far_field  minmax_settings  
+(
+  max_iterations   : 10,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+min_max_settings_far_field_5var  minmax_settings  
+(
+  max_iterations   : 10,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+horn_r0  real_variable  
+(
+  value            : 11.0
+)
+ 
+horn_slot_width  real_variable  
+(
+  value            : 1.3
+)
+ 
+horn_ridge_thickness  real_variable  
+(
+  value            : 0.6
+)
+ 
+horn_depth_1  real_variable  
+(
+  value            : 9.58948384669363
+)
+ 
+horn_axdist_1  real_variable  
+(
+  value            : 3.88673696291237
+)
+ 
+horn_r1  real_variable  
+(
+  value            : "ref(horn_r0)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_2  real_variable  
+(
+  value            : 8.61435089761299
+)
+ 
+horn_axdist_2  real_variable  
+(
+  value            : 3.05020493333918
+)
+ 
+horn_r2  real_variable  
+(
+  value            : "ref(horn_r1)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_3  real_variable  
+(
+  value            : 5.12732078742342
+)
+ 
+horn_axdist_3  real_variable  
+(
+  value            : 2.3783833539509
+)
+ 
+horn_r3  real_variable  
+(
+  value            : "ref(horn_r2)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_4  real_variable  
+(
+  value            : 6.34460556967095
+)
+ 
+horn_axdist_4  real_variable  
+(
+  value            : 2.38374871040904
+)
+ 
+horn_r4  real_variable  
+(
+  value            : "ref(horn_r3)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_5  real_variable  
+(
+  value            : 6.60609580232323
+)
+ 
+horn_axdist_5  real_variable  
+(
+  value            : 2.37367889660096
+)
+ 
+horn_r5  real_variable  
+(
+  value            : "ref(horn_r4)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_6  real_variable  
+(
+  value            : 5.86136784432586
+)
+ 
+horn_axdist_6  real_variable  
+(
+  value            : 2.48508210296846
+)
+ 
+horn_r6  real_variable  
+(
+  value            : "ref(horn_r5)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+horn_depth_7  real_variable  
+(
+  value            : 5.95955753491631
+)
+ 
+horn_axdist_7  real_variable  
+(
+  value            : 2.73008336619304
+)
+ 
+horn_aperture_radius  real_variable  
+(
+  value            : "ref(horn_r7)"
+)
+ 
+horn_r7  real_variable  
+(
+  value            : "ref(horn_r6)+ref(horn_slot_width)+ref(horn_ridge_thickness)"
+)
+ 
+ml_slot_width  real_variable  
+(
+  value            : 22.0
+)
+ 
+ml_l1  real_variable  
+(
+  value            : 10.0
+)
+ 
+ml_l2  real_variable  
+(
+  value            : 3.64592717753307
+)
+ 
+ml_l3  real_variable  
+(
+  value            : 6.0
+)
+ 
+ml_rad_in  real_variable  
+(
+  value            : 7.5
+)
+ 
+ml_slot_offset  real_variable  
+(
+  value            : 45.0
+)
+ 
+ml_phasing_length  real_variable  
+(
+  value            : 17.1714043364346
+)
+ 
+horn_exterior_length  real_variable  
+(
+  value            : 15.0
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(radiating_device_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(coor_sys_plot_for_view_1),ref(reflector_plot_for_view_1))
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+ //$$ Saved at 11:28:35 on 06.10.2022 by TICRA Tools 22.1 SN=009627
+  

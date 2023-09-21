@@ -1,0 +1,428 @@
+frequency_20GHz  frequency  
+(
+  frequency_list   : sequence(19.0 GHz,19.5 GHz,20.0 GHz)
+)
+ 
+frequency_30GHz  frequency  
+(
+  frequency_list   : sequence(29.0 GHz,29.5 GHz,30.0 GHz)
+)
+ 
+frequency_range  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 17.0 GHz, end_frequency: 35.0 GHz, number_of_frequencies: 51)
+)
+ 
+pmom_settings_layered_media  periodic_mom_settings_layered_media  
+(
+  expansion_accuracy : enhanced
+)
+ 
+loop_range  periodic_unit_cell_rectangular_loop  
+(
+  frequency        : ref(frequency_range),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0),
+    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 2)
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+free_space  isotropic_dielectric  
+(
+)
+ 
+Lx  real_variable  
+(
+  value            : 3.48893527040035
+)
+ 
+d  real_variable  
+(
+  value            : 2.000000001
+)
+ 
+Ly  real_variable  
+(
+  value            : 2.63276674457794
+)
+ 
+optimisation_manager  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_puc_mesh_amplitude_20GHz), weight: 1.0),
+    struct(goal: ref(goal_puc_mesh_amplitude_30GHz), weight: 1.0),
+    struct(goal: ref(goal_puc_mesh_axial_ratio_20GHz), weight: 1.0),
+    struct(goal: ref(goal_puc_mesh_axial_ratio_30GHz), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting)
+)
+ 
+optimisation_manager_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(Lx), min_enabled: on, min: 2.0, max_enabled: on, max: 4.9),
+    struct(variable_object: ref(Ly), min_enabled: on, min: 2.0, max_enabled: on, max: 4.9),
+    struct(variable_object: ref(d), min_enabled: on, min: 2.0, max_enabled: on, max: 5.0),
+    struct(variable_object: ref(Wx), min_enabled: on, min: 0.2, max_enabled: on, max: 0.5)
+    )
+)
+ 
+loop_20GHz  periodic_unit_cell_rectangular_loop  
+(
+  frequency        : ref(frequency_20GHz),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0),
+    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 2)
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+loop_30GHz  periodic_unit_cell_rectangular_loop  
+(
+  frequency        : ref(frequency_30GHz),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0),
+    struct(lx: "ref(Lx)" mm, ly: "ref(Ly)" mm, y_x_ratio: -1.0, w: 0.2 mm, rotation: 0.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 2)
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+optimisation_setting  minmax_settings  
+(
+  max_iterations   : 11
+)
+ 
+goal_puc_amplitude_20GHz_35  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(loop_20GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_amplitude_30GHz_35  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(loop_30GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_axial_ratio_20GHz_35  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(loop_20GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, 
+goal: 1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+goal_puc_axial_ratio_30GHz_35  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(loop_30GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, 
+goal: 1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+goal_puc_amplitude_20GHz  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(loop_20GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_amplitude_30GHz  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(loop_30GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_axial_ratio_20GHz  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(loop_20GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, 
+goal: 1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, goal: 
+1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, goal: 
+1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+goal_puc_axial_ratio_30GHz  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(loop_30GHz),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, 
+goal: 1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, goal: 
+1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, goal: 
+1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+Wx  real_variable  
+(
+  value            : 0.2
+)
+ 
+Wy  real_variable  
+(
+  value            : 0.2
+)
+ 
+FSS_mesh_range  periodic_unit_cell_planar_mesh  
+(
+  frequency        : ref(frequency_range),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(file_name: rectangular_loop.msh, unit: mm),
+    struct(file_name: rectangular_loop.msh, unit: mm)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 2)
+    ),
+  parameter_assignments : table
+    (
+    Lx  "ref(Lx)"      1  
+    Ly  "ref(Ly)"      1  
+    Wx  "ref(Wx)"      1  
+    Wy  "ref(Wy)"      1  
+    Lx  "ref(Lx)"      2  
+    Ly  "ref(Ly)"      2  
+    Wx  "ref(Wx)"      2  
+    Wy  "ref(Wy)"      2  
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+FSS_mesh_20  periodic_unit_cell_planar_mesh  
+(
+  frequency        : ref(frequency_20GHz),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(file_name: rectangular_loop.msh, unit: mm),
+    struct(file_name: rectangular_loop.msh, unit: mm)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 2)
+    ),
+  parameter_assignments : table
+    (
+    Lx  "ref(Lx)"      1  
+    Ly  "ref(Ly)"      1  
+    Wx  "ref(Wx)"      1  
+    Wy  "ref(Wy)"      1  
+    Lx  "ref(Lx)"      2  
+    Ly  "ref(Ly)"      2  
+    Wx  "ref(Wx)"      2  
+    Wy  "ref(Wy)"      2  
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+FSS_mesh_30  periodic_unit_cell_planar_mesh  
+(
+  frequency        : ref(frequency_30GHz),
+  unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
+  invert_metallization : yes,
+  element_parameters : sequence
+    (    struct(file_name: rectangular_loop.msh, unit: mm),
+    struct(file_name: rectangular_loop.msh, unit: mm)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
+    struct(thickness: "ref(d)" mm, substrate: ref(free_space), el_par_index: 0),
+    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 2)
+    ),
+  parameter_assignments : table
+    (
+    Lx  "ref(Lx)"      1  
+    Ly  "ref(Ly)"      1  
+    Wx  "ref(Wx)"      1  
+    Wy  "ref(Wy)"      1  
+    Lx  "ref(Lx)"      2  
+    Ly  "ref(Ly)"      2  
+    Wx  "ref(Wx)"      2  
+    Wy  "ref(Wy)"      2  
+    ),
+  ground_plane     : no,
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+goal_puc_mesh_amplitude_20GHz  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(FSS_mesh_20),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp_in: rhc, comp_out: lhc, front_rear: front, 
+refl_trans: refl, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_mesh_amplitude_30GHz  goal_puc_amplitude  
+(
+  periodic_unit_cell : ref(FSS_mesh_30),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp_in: rhc, comp_out: rhc, front_rear: front, 
+refl_trans: trans, goal: -0.5, weight: 1.0, action: maximise)
+    )
+)
+ 
+goal_puc_mesh_axial_ratio_20GHz  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(FSS_mesh_20),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, 
+goal: 1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, goal: 
+1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp: lhc, front_rear: front, refl_trans: refl, goal: 
+1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+goal_puc_mesh_axial_ratio_30GHz  goal_puc_axial_ratio  
+(
+  periodic_unit_cell : ref(FSS_mesh_30),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 15.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, 
+goal: 1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 35.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, goal: 
+1.0, weight: 1.0, action: minimise),
+    struct(frequency_index: -1, theta: 55.0, phi: 0.0, comp: rhc, front_rear: front, refl_trans: trans, goal: 
+1.0, weight: 1.0, action: minimise)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+)
+ 
+puc_plot  puc_plot  
+(
+  objects          : sequence(ref(loop_range)),
+  transparent_neighbours : no
+)
+ 
+puc_view  puc_view  
+(
+  objects          : sequence(ref(puc_plot))
+)
+ 
+puc_plot_01  puc_plot  
+(
+  objects          : sequence(ref(loop_30GHz))
+)
+ 
+puc_view_01  puc_view  
+(
+  objects          : sequence(ref(puc_plot_01))
+)
+ 
+puc_plot_02  puc_plot  
+(
+  objects          : sequence(ref(loop_20GHz))
+)
+ 
+puc_view_02  puc_view  
+(
+  objects          : sequence(ref(puc_plot_02))
+)
+ 
+puc_plot_03  puc_plot  
+(
+  objects          : sequence(ref(FSS_mesh_20))
+)
+ 
+puc_view_03  puc_view  
+(
+  objects          : sequence(ref(puc_plot_03))
+)
+ 
+puc_plot_04  puc_plot  
+(
+  objects          : sequence(ref(FSS_mesh_30))
+)
+ 
+puc_view_04  puc_view  
+(
+  objects          : sequence(ref(puc_plot_04))
+)
+ 
+puc_plot_05  puc_plot  
+(
+  objects          : sequence(ref(FSS_mesh_range))
+)
+ 
+puc_view_05  puc_view  
+(
+  objects          : sequence(ref(puc_plot_05))
+)
+ 
+ //$$ Saved at 11:41:34 on 17.05.2021 by TICRA Tools 21.0 SN=008782
+  

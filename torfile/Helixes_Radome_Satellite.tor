@@ -1,0 +1,510 @@
+global_sys  coor_sys  
+(
+)
+ 
+helix_1_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(helix_heigth)" mm),
+  base             : ref(centre_sys_CAD)
+)
+ 
+helix_2_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(helix_heigth)" mm),
+  x_axis           : struct(x: 0.0, y: 1.0, z: 0.0),
+  y_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  base             : ref(centre_sys_CAD)
+)
+ 
+helix_3_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(helix_heigth)" mm),
+  x_axis           : struct(x: -1.0, y: 0.1224646799E-15, z: 0.0),
+  y_axis           : struct(x: -0.1224646799E-15, y: -1.0, z: 0.0),
+  base             : ref(centre_sys_CAD)
+)
+ 
+helix_4_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(helix_heigth)" mm),
+  x_axis           : struct(x: 0.6123233996E-16, y: -1.0, z: 0.0),
+  y_axis           : struct(x: 1.0, y: 0.6123233996E-16, z: 0.0),
+  base             : ref(centre_sys_CAD)
+)
+ 
+helix_1  tabulated_mesh  
+(
+  coor_sys         : ref(helix_1_sys),
+  file_name        : cylindricalhelix.msh,
+  unit             : mm
+)
+ 
+helix_2  tabulated_mesh  
+(
+  coor_sys         : ref(helix_2_sys),
+  file_name        : cylindricalhelix.msh,
+  unit             : mm
+)
+ 
+helix_3  tabulated_mesh  
+(
+  coor_sys         : ref(helix_3_sys),
+  file_name        : cylindricalhelix.msh,
+  unit             : mm
+)
+ 
+helix_4  tabulated_mesh  
+(
+  coor_sys         : ref(helix_4_sys),
+  file_name        : cylindricalhelix.msh,
+  unit             : mm
+)
+ 
+frequency  frequency  
+(
+  frequency_list   : sequence(400.0 MHz)
+)
+ 
+MoM_cluster_total  mom  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(Final_satellite),
+  expansion_accuracy : high,
+  iterative_solution : struct(use_mlfmm: off, relative_error: 0.1E-02, mlfmm_use_disk: off, mlfmm_precision: 
+normal, preconditioner_accuracy: normal, obsolete_group_size: 4.0, rhs_compression: on),
+  file_name        : " ",
+  colour_plot_file : cluster.cpf
+)
+ 
+pin_sys  coor_sys  
+(
+  origin           : struct(x: 277.0 mm, y: 286.0 mm, z: "ref(helix_heigth)" mm),
+  base             : ref(global_sys)
+)
+ 
+pin_1  piecewise_straight_wire  
+(
+  coor_sys         : ref(pin_sys),
+  nodes            : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm, z: -1.5 mm),
+    struct(x: "ref(helix_radius)" mm, y: 0.0 mm, z: 0.0 mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_3  piecewise_straight_wire  
+(
+  coor_sys         : ref(pin_sys),
+  nodes            : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm, z: -1.5 mm),
+    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: 0.0 mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_2  piecewise_straight_wire  
+(
+  coor_sys         : ref(pin_sys),
+  nodes            : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm, z: 1.5 mm),
+    struct(x: 0.0 mm, y: "ref(helix_radius)" mm, z: 0.0 mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_4  piecewise_straight_wire  
+(
+  coor_sys         : ref(pin_sys),
+  nodes            : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm, z: 1.5 mm),
+    struct(x: 0.0 mm, y: "-ref(helix_radius)" mm, z: 0.0 mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+helix_far_field  spherical_cut  
+(
+  coor_sys         : ref(centre_sys_CAD),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 1501),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  polarisation     : circular,
+  file_name        : field.cut,
+  frequency        : ref(frequency)
+)
+ 
+pin_1_base  piecewise_straight_wire  
+(
+  coor_sys         : ref(helix_1_sys),
+  nodes            : sequence
+    (    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)+ref(pin_base_heigth)" mm),
+    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)" mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_2_base  piecewise_straight_wire  
+(
+  coor_sys         : ref(helix_2_sys),
+  nodes            : sequence
+    (    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)+ref(pin_base_heigth)" mm),
+    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)" mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_3_base  piecewise_straight_wire  
+(
+  coor_sys         : ref(helix_3_sys),
+  nodes            : sequence
+    (    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)+ref(pin_base_heigth)" mm),
+    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)" mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+pin_4_base  piecewise_straight_wire  
+(
+  coor_sys         : ref(helix_4_sys),
+  nodes            : sequence
+    (    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)+ref(pin_base_heigth)" mm),
+    struct(x: "-ref(helix_radius)" mm, y: 0.0 mm, z: "-ref(helix_heigth)" mm)
+    ),
+  radius           : 2.0 mm
+)
+ 
+innerbase_coorsyst  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 4.0 mm),
+  x_axis           : struct(x: 0.999999999935482, y: 0.0, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.999999999935482, z: 0.0),
+  base             : ref(centre_sys_CAD)
+)
+ 
+centre_sys_CAD  coor_sys  
+(
+  origin           : struct(x: 277.0 mm, y: 286.0 mm, z: 0.111022302462516E-12 mm),
+  base             : ref(global_sys)
+)
+ 
+excitations  voltage_generator  
+(
+  generators       : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm, z: -1.5 mm, amplitude: 1.0 V, phase: 0.0),
+    struct(x: 0.0 mm, y: 0.0 mm, z: 1.5 mm, amplitude: 1.0 V, phase: 90.0)
+    ),
+  coor_sys         : ref(pin_sys)
+)
+ 
+outerring_CS  coor_sys  
+(
+  x_axis           : struct(x: 0.965925826289068, y: 0.258819045102521, z: 0.0),
+  y_axis           : struct(x: -0.258819045102521, y: 0.965925826289068, z: 0.0),
+  base             : ref(centre_sys_CAD)
+)
+ 
+plate_rim  rectangular_rim  
+(
+  centre           : struct(x: 0.0 mm, y: 0.0 mm),
+  side_lengths     : struct(x: 1790.0 mm, y: 1790.0 mm)
+)
+ 
+hole_rim  elliptical_rim  
+(
+  centre           : struct(x: 277.0 mm, y: 286.0 mm),
+  half_axis        : struct(x: 123.0 mm, y: 123.0 mm)
+)
+ 
+inner_base_plate  circular_plate  
+(
+  coor_sys         : ref(innerbase_coorsyst),
+  radius           : 120.0 mm,
+  centre           : struct(x: 0.0 mm, y: 0.0 mm, z: -4.0 mm)
+)
+ 
+radome_outside  bor_mesh  
+(
+  coor_sys         : ref(innerbase_coorsyst),
+  regions          : table
+    (
+    ),
+  nodes            : table
+    (
+        1   -4.00000E+00    1.23000E+02  
+        2    2.00000E+02    1.23000E+02  
+        3    2.00000E+02    0.00000E+00  
+    ),
+  linear_segments  : table
+    (
+        3      1      2      0      0    0.00000E+00    0.00000E+00  
+        4      2      3      0      0    0.00000E+00    0.00000E+00  
+    ),
+  cubic_segments   : table
+    (
+    ),
+  length_unit      : mm,
+  advanced_regions : table
+    (
+    )
+)
+ 
+helixes_cluster  scatterer_cluster  
+(
+  scatterers       : sequence(ref(helix_1),ref(helix_2),ref(helix_3),ref(helix_4),ref(pin_1),ref(pin_1_base),
+ref(pin_2),ref(pin_2_base),ref(pin_3),ref(pin_3_base),ref(pin_4),ref(pin_4_base))
+)
+ 
+radome_bottom  bor_mesh  
+(
+  coor_sys         : ref(innerbase_coorsyst),
+  regions          : table
+    (
+    ),
+  nodes            : table
+    (
+        1   -4.00000E+00    1.20000E+02  
+        2   -4.00000E+00    1.23000E+02  
+    ),
+  linear_segments  : table
+    (
+        1      1      2      0      0    0.00000E+00    0.00000E+00  
+    ),
+  cubic_segments   : table
+    (
+    ),
+  length_unit      : mm,
+  advanced_regions : table
+    (
+    )
+)
+ 
+composite_mom_scatterer  composite_mom_scatterer  
+(
+  regions          : table
+    (
+        1  "ref(radome_dielectric)"    1.00000E+00    0.00000E+00    0.00000E+00  
+        2    1.00000E+00    1.00000E+00    0.00000E+00    0.00000E+00  
+    ),
+  geometrical_parts : sequence
+    (    struct(scatterer: ref(helixes_cluster), region_1: 2, region_2: 2, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(inner_base_plate), region_1: 2, region_2: -1, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(plate_with_hole), region_1: 0, region_2: -1, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(radome_inside), region_1: 1, region_2: 2, zs_real: -1.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(radome_outside), region_1: 0, region_2: 1, zs_real: -1.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(radome_bottom), region_1: 1, region_2: -1, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none)
+    )
+)
+ 
+radome_inside  bor_mesh  
+(
+  coor_sys         : ref(innerbase_coorsyst),
+  regions          : table
+    (
+    ),
+  nodes            : table
+    (
+        1    1.98000E+02    0.00000E+00  
+        2    1.98000E+02    1.20000E+02  
+        3   -4.00000E+00    1.20000E+02  
+    ),
+  linear_segments  : table
+    (
+        1      1      2      0      0    0.00000E+00    0.00000E+00  
+        2      2      3      0      0    0.00000E+00    0.00000E+00  
+    ),
+  cubic_segments   : table
+    (
+    ),
+  length_unit      : mm,
+  advanced_regions : table
+    (
+    )
+)
+ 
+Final_satellite  scatterer_cluster  
+(
+  scatterers       : sequence(ref(composite_mom_scatterer),ref(composite_mom_scatterer_satellite))
+)
+ 
+helix_heigth  real_variable  
+(
+  value            : "189+ref(pin_base_heigth)"
+)
+ 
+helix_radius  real_variable  
+(
+  value            : 107.0
+)
+ 
+pin_base_heigth  real_variable  
+(
+  value            : 4.0
+)
+ 
+radome_dielectric  real_variable  
+(
+  value            : 4.2
+)
+ 
+satellite_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: -1100.0 mm),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(global_sys)
+)
+ 
+plate_with_hole  arbitrary_plate  
+(
+  coor_sys         : ref(global_sys),
+  rim              : ref(plate_rim),
+  holes            : sequence(ref(hole_rim))
+)
+ 
+circular_plate_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 300.0 mm, y: 300.0 mm)
+)
+ 
+Satellite  cad_file  
+(
+  coor_sys         : ref(satellite_coor_sys),
+  file_name        : Satellite.stp,
+  tolerance        : 0.1E-01 m
+)
+ 
+composite_mom_scatterer_satellite  composite_mom_scatterer  
+(
+  regions          : table
+    (
+    ),
+  geometrical_parts : sequence
+    (    struct(scatterer: ref(Satellite), region_1: 0, region_2: -1, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: reduced_accuracy)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(mom_plot_for_view_1),ref(mom_source_plot_for_view_1),
+ref(bor_plot_for_view_1),ref(wires_plot_for_view_1),ref(plate_plot_for_view_1),ref(coor_sys_plot_for_view_1),
+ref(tabulated_mesh_plot_for_view_1),ref(output_points_plot_for_view_1),ref(arbitrary_plate_plot_for_view_1),
+ref(cad_file_plot_for_view_1)),
+  resolution_index : 5,
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+mom_plot_for_view_1  mom_plot  
+(
+)
+ 
+mom_source_plot_for_view_1  mom_source_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+wires_plot_for_view_1  wires_plot  
+(
+)
+ 
+plate_plot_for_view_1  plate_plot  
+(
+  surface_colour   : struct(r: 0.827450980392157, g: 0.819607843137255, b: 0.819607843137255)
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+  relative_arrow_length : 0.1E-01
+)
+ 
+tabulated_mesh_plot_for_view_1  tabulated_mesh_plot  
+(
+  surface_colour   : struct(r: 0.827450980392157, g: 0.819607843137255, b: 0.819607843137255)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+view_2  view  
+(
+  objects          : sequence(ref(mom_plot_for_view_2),ref(mom_source_plot_for_view_2),
+ref(bor_plot_for_view_2),ref(wires_plot_for_view_2),ref(plate_plot_for_view_2),ref(coor_sys_plot_for_view_2),
+ref(tabulated_mesh_plot_for_view_2),ref(output_points_plot_for_view_2),ref(arbitrary_plate_plot_for_view_2),
+ref(cad_file_plot_for_view_2)),
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: hide, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: hide, lenses: show, tabulated_planar_sources: 
+hide, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: hide, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+mom_plot_for_view_2  mom_plot  
+(
+)
+ 
+mom_source_plot_for_view_2  mom_source_plot  
+(
+)
+ 
+bor_plot_for_view_2  bor_plot  
+(
+)
+ 
+wires_plot_for_view_2  wires_plot  
+(
+)
+ 
+plate_plot_for_view_2  plate_plot  
+(
+  surface_colour   : struct(r: 0.827450980392157, g: 0.819607843137255, b: 0.819607843137255)
+)
+ 
+coor_sys_plot_for_view_2  coor_sys_plot  
+(
+)
+ 
+tabulated_mesh_plot_for_view_2  tabulated_mesh_plot  
+(
+  surface_colour   : struct(r: 0.827450980392157, g: 0.819607843137255, b: 0.819607843137255)
+)
+ 
+output_points_plot_for_view_2  output_points_plot  
+(
+)
+ 
+arbitrary_plate_plot_for_view_1  arbitrary_plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+arbitrary_plate_plot_for_view_2  arbitrary_plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+cad_file_plot_for_view_2  cad_file_plot  
+(
+)
+ 
+cad_file_plot_for_view_1  cad_file_plot  
+(
+)
+ 
+ //$$ Saved at 16:15:50 on 20.04.2023 by TICRA Tools 23.0 SN=010211
+  

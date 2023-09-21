@@ -1,0 +1,455 @@
+Frame_1  frame  
+(
+  no_of_components : 9,
+  size             : struct(x_min: -0.4, x_max: 2.0, y_min: -0.4, y_max: 2.5),
+  grid             : struct(show: on, snap_to: on, x_spacing: 0.125, y_spacing: 0.125),
+  connection       : fixed,
+  feeds            : sequence
+    (    struct(name: Feed_1, index: 2, center_x: 0.25, center_y: -0.125, orientation: 90.0, 
+beam1_to_component: 9, beam1_to_port: 2, beam_radius: 0.2495E-01, phase_curvature: 0.0, polarization_angle: 
+0.0, wavelength: 0.99930833E-02),
+    struct(name: Feed_2, index: 10, center_x: -0.125, center_y: 0.25, orientation: 0.0, beam1_to_component: 9
+, beam1_to_port: 0, beam_radius: 0.34809E-01, phase_curvature: 0.0, polarization_angle: 0.0, wavelength: 
+0.14989625E-01)
+    ),
+  loads            : sequence
+    (    struct(name: Load_2, index: 11, center_x: 0.75, center_y: 0.25, orientation: 180.0, 
+beam1_to_component: 9, beam1_to_port: 1, load_size_x: 0.346917, load_size_y: 0.346917)
+    ),
+  plane_mirrors    : sequence
+    (    struct(name: Mirror_4, index: 3, center_x: 0.25, center_y: 0.75, orientation: -45.0, 
+beam1_to_component: 9, beam1_to_port: 3, beam2_to_component: 5, beam2_to_port: 0, height: 0.346917, rim: 
+square),
+    struct(name: Mirror_7, index: 6, center_x: 0.25, center_y: 1.75, orientation: 45.0, beam1_to_component: 8
+, beam1_to_port: 1, beam2_to_component: 12, beam2_to_port: 0, height: 0.223386, rim: square)
+    ),
+  reflectors       : sequence
+    (    struct(name: Reflector_5, index: 5, center_x: 1.5, center_y: 0.75, orientation: 135.0, 
+beam1_to_component: 3, beam1_to_port: 1, beam2_to_component: 8, beam2_to_port: 0, f_value: 1.919192, 
+curvature_difference: -0.4122085451, half_cone_angle: 1.374742, cone_axis_angle: -0.54746E-01, 
+cone_vertex_focal_point: P1),
+    struct(name: Reflector_6, index: 8, center_x: 1.5, center_y: 1.75, orientation: -135.0, 
+beam1_to_component: 5, beam1_to_port: 1, beam2_to_component: 6, beam2_to_port: 0, f_value: 1.919192, 
+curvature_difference: 0.6318014459, half_cone_angle: 14.128834, cone_axis_angle: 2.702061, 
+cone_vertex_focal_point: P1)
+    ),
+  beam_splitters   : sequence
+    (    struct(name: Beam_splitter_3, index: 9, center_x: 0.25, center_y: 0.25, orientation: -45.0, 
+beam1_to_component: 10, beam1_to_port: 0, beam2_to_component: 11, beam2_to_port: 0, beam3_to_component: 2, 
+beam3_to_port: 0, beam4_to_component: 3, beam4_to_port: 0, type: power_splitter, frequency1_lower: 19.0, 
+frequency1_upper: 21.0, frequency2_lower: 29.0, frequency2_upper: 31.0, reflection1: 100.0, transmission1: 0.0
+, reflection2: 0.0, transmission2: 100.0, grid_type: strip, direction: 0.0, distance: 0.0, width: 0.2, 
+height: 0.163664, rim: square)
+    ),
+  connectors       : sequence
+    (    struct(name: Connector_12, index: 12, center_x: 0.25, center_y: 2.25, orientation: -90.0, 
+beam1_to_component: 6, beam1_to_port: 1, connected_frame: ref(Frame_2), adjoining_connector: Connector_1, 
+connector_angle: 90.0, conn_coor_sys: ref())
+    )
+)
+ 
+Frame_1.Feed_1  gaussian_beam  
+(
+  frequency        : ref(Frame_1.Feed_1.wln),
+  coor_sys         : ref(Frame_1.Feed_1.csy),
+  beam_radius      : 0.2495E-01 m,
+  phase_front_radius : 0.0 m
+)
+ 
+Frame_1.Feed_2  gaussian_beam  
+(
+  frequency        : ref(Frame_1.Feed_2.wln),
+  coor_sys         : ref(Frame_1.Feed_2.csy),
+  beam_radius      : 0.34809E-01 m,
+  phase_front_radius : 0.0 m
+)
+ 
+Frame_2  frame  
+(
+  no_of_components : 3,
+  reflectors       : sequence
+    (    struct(name: Reflector_2, index: 2, center_x: 0.6, center_y: 0.25, orientation: 152.7688389, 
+beam1_to_component: 1, beam1_to_port: 0, beam2_to_component: 4, beam2_to_port: 0, f_value: 0.2061892358, 
+curvature_difference: 1.005114752, half_cone_angle: 21.110782, cone_axis_angle: 2.377587, 
+cone_vertex_focal_point: P1)
+    ),
+  connectors       : sequence
+    (    struct(name: Connector_1, index: 1, center_x: 0.15, center_y: 0.25, orientation: 0.0, 
+beam1_to_component: 2, beam1_to_port: 0, connected_frame: ref(Frame_1), adjoining_connector: Connector_12, 
+connector_angle: 0.0, conn_coor_sys: ref())
+    ),
+  far_fields       : sequence
+    (    struct(name: FF_grid_4, index: 4, center_x: 0.35, center_y: 0.6, orientation: 125.5376778, 
+beam1_to_component: 2, beam1_to_port: 1, sampling_type: spherical_cut, polarisation: linear, number_of_cuts: 4
+, np: 101, theta_end: 20.0, width: 0.0)
+    )
+)
+ 
+Frame_1.csy  coor_sys  
+(
+)
+ 
+Frame_1.Feed_1.csy  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: -0.125 m, z: 0.0 m),
+  x_axis           : struct(x: -1.0, y: 0.6123031769E-16, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Feed_1.wln  wavelength  
+(
+  wavelength_list  : sequence(0.9993083333E-02 m)
+)
+ 
+Frame_1.Feed_2.csy  coor_sys  
+(
+  origin           : struct(x: -0.125 m, y: 0.25 m, z: 0.0 m),
+  x_axis           : struct(x: 0.0, y: 1.0, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Feed_2.wln  wavelength  
+(
+  wavelength_list  : sequence(0.14989625E-01 m)
+)
+ 
+Frame_1.Load_2.csy  coor_sys  
+(
+  origin           : struct(x: 0.75 m, y: 0.25 m, z: 0.0 m),
+  x_axis           : struct(x: -0.1224606354E-15, y: -1.0, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Load_2  load  
+(
+  coor_sys         : ref(Frame_1.Load_2.csy),
+  load_size_x      : 0.346917 m,
+  load_size_y      : 0.346917 m
+)
+ 
+Frame_1.Mirror_4.csy  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: 0.75 m, z: 0.0 m),
+  x_axis           : struct(x: 0.7071067812, y: 0.7071067812, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Mirror_4.rim  rectangular_rim  
+(
+  side_lengths     : struct(x: 0.4906147264 m, y: 0.346917 m)
+)
+ 
+Frame_1.Mirror_4.pla  plane  
+(
+)
+ 
+Frame_1.Mirror_4  reflector  
+(
+  coor_sys         : ref(Frame_1.Mirror_4.csy),
+  surfaces         : sequence(ref(Frame_1.Mirror_4.pla)),
+  rim              : ref(Frame_1.Mirror_4.rim)
+)
+ 
+Frame_1.Initial.wln  wavelength  
+(
+  wavelength_list  : sequence(1.0 m)
+)
+ 
+Frame_1.Mirror_4.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_1.Initial.wln),
+  scatterer        : ref(Frame_1.Mirror_4),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_1.Mirror_4.csy),
+  file_name        : " "
+)
+ 
+Frame_1.Mirror_7.csy  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: 1.75 m, z: 0.0 m),
+  x_axis           : struct(x: -0.7071067812, y: 0.7071067812, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Mirror_7.rim  rectangular_rim  
+(
+  side_lengths     : struct(x: 0.3159155108 m, y: 0.223386 m)
+)
+ 
+Frame_1.Mirror_7.pla  plane  
+(
+)
+ 
+Frame_1.Mirror_7  reflector  
+(
+  coor_sys         : ref(Frame_1.Mirror_7.csy),
+  surfaces         : sequence(ref(Frame_1.Mirror_7.pla)),
+  rim              : ref(Frame_1.Mirror_7.rim)
+)
+ 
+Frame_1.Mirror_7.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_1.Initial.wln),
+  scatterer        : ref(Frame_1.Mirror_7),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_1.Mirror_7.csy),
+  file_name        : " "
+)
+ 
+Frame_1.Reflector_5.csy  coor_sys  
+(
+  origin           : struct(x: 1.5 m, y: 0.75 m, z: 0.0 m),
+  x_axis           : struct(x: -0.7113159939, y: -0.7028723617, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Reflector_5.srf  conical_surface  
+(
+  r1               : 18.37491101 m,
+  r2               : 2.143022872 m,
+  theta_i          : 45.0,
+  theta_n          : 0.3420893267
+)
+ 
+Frame_1.Reflector_5.rim  elliptical_rim  
+(
+  centre           : struct(x: 0.3914365073E-02 m, y: 0.0 m),
+  half_axis        : struct(x: 0.6197507098 m, y: 0.4402978475 m)
+)
+ 
+Frame_1.Reflector_5  reflector  
+(
+  coor_sys         : ref(Frame_1.Reflector_5.csy),
+  surfaces         : sequence(ref(Frame_1.Reflector_5.srf)),
+  rim              : ref(Frame_1.Reflector_5.rim)
+)
+ 
+Frame_1.Reflector_5.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_1.Initial.wln),
+  scatterer        : ref(Frame_1.Reflector_5),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_1.Reflector_5.csy),
+  file_name        : " "
+)
+ 
+Frame_1.Reflector_6.csy  coor_sys  
+(
+  origin           : struct(x: 1.5 m, y: 1.75 m, z: 0.0 m),
+  x_axis           : struct(x: 0.712812894, y: -0.7013542458, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Reflector_6.srf  conical_surface  
+(
+  r1               : 1.734824968 m,
+  r2               : -18.0588805 m,
+  theta_i          : 45.0,
+  theta_n          : -0.4642434377
+)
+ 
+Frame_1.Reflector_6.rim  elliptical_rim  
+(
+  centre           : struct(x: -0.4999783656E-02 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5848719521 m, y: 0.4176038566 m)
+)
+ 
+Frame_1.Reflector_6  reflector  
+(
+  coor_sys         : ref(Frame_1.Reflector_6.csy),
+  surfaces         : sequence(ref(Frame_1.Reflector_6.srf)),
+  rim              : ref(Frame_1.Reflector_6.rim)
+)
+ 
+Frame_1.Reflector_6.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_1.Initial.wln),
+  scatterer        : ref(Frame_1.Reflector_6),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_1.Reflector_6.csy),
+  file_name        : " "
+)
+ 
+Frame_1.Beam_splitter_3.csy  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: 0.25 m, z: 0.0 m),
+  x_axis           : struct(x: 0.7071067812, y: 0.7071067812, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_1.Beam_splitter_3.rim  rectangular_rim  
+(
+  side_lengths     : struct(x: 0.2314558485 m, y: 0.163664 m)
+)
+ 
+Frame_1.Beam_splitter_3.pla  plane  
+(
+)
+ 
+Frame_1.Beam_splitter_3.elp  power_splitting  
+(
+  characteristics  : sequence
+    (    struct(power_reflection: 100.0, power_transmission: 0.0, f_min: 19.0 GHz, f_max: 21.0 GHz),
+    struct(power_reflection: 0.0, power_transmission: 100.0, f_min: 29.0 GHz, f_max: 31.0 GHz)
+    )
+)
+ 
+Frame_1.Beam_splitter_3  reflector  
+(
+  coor_sys         : ref(Frame_1.Beam_splitter_3.csy),
+  surfaces         : sequence(ref(Frame_1.Beam_splitter_3.pla)),
+  rim              : ref(Frame_1.Beam_splitter_3.rim),
+  el_prop          : sequence(ref(Frame_1.Beam_splitter_3.elp))
+)
+ 
+Frame_1.Beam_splitter_3.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_1.Initial.wln),
+  scatterer        : ref(Frame_1.Beam_splitter_3),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_1.Beam_splitter_3.csy),
+  file_name        : " "
+)
+ 
+Frame_1.Connector_12  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: 2.25 m, z: 0.0 m),
+  x_axis           : struct(x: -1.0, y: 0.6123031769E-16, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_1.csy)
+)
+ 
+Frame_2.csy  coor_sys  
+(
+  origin           : struct(x: 0.25 m, y: 0.0 m, z: 0.15 m),
+  x_axis           : struct(x: 0.1224606354E-15, y: 0.0, z: -1.0),
+  y_axis           : struct(x: -1.0, y: 0.0, z: -0.1224606354E-15),
+  base             : ref(Frame_2.Connector_1)
+)
+ 
+Frame_2.Reflector_2.csy  coor_sys  
+(
+  origin           : struct(x: 0.6 m, y: 0.25 m, z: 0.0 m),
+  x_axis           : struct(x: -0.4521600264, y: -0.891936831, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_2.csy)
+)
+ 
+Frame_2.Reflector_2.srf  conical_surface  
+(
+  r1               : 0.3415867259 m,
+  r2               : 0.5201832465 m,
+  theta_i          : 27.2311611,
+  theta_n          : -0.3488074241
+)
+ 
+Frame_2.Reflector_2.rim  elliptical_rim  
+(
+  centre           : struct(x: -0.5582240809E-03 m, y: 0.0 m),
+  half_axis        : struct(x: 0.1374333858 m, y: 0.1222811365 m)
+)
+ 
+Frame_2.Reflector_2  reflector  
+(
+  coor_sys         : ref(Frame_2.Reflector_2.csy),
+  surfaces         : sequence(ref(Frame_2.Reflector_2.srf)),
+  rim              : ref(Frame_2.Reflector_2.rim)
+)
+ 
+Frame_2.Initial.wln  wavelength  
+(
+  wavelength_list  : sequence(1.0 m)
+)
+ 
+Frame_2.Reflector_2.po  po_single_face_scatterer  
+(
+  frequency        : ref(Frame_2.Initial.wln),
+  scatterer        : ref(Frame_2.Reflector_2),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(Frame_2.Reflector_2.csy),
+  file_name        : " "
+)
+ 
+Frame_2.Connector_1  coor_sys  
+(
+  x_axis           : struct(x: -0.6123031769E-16, y: -1.0, z: 0.0),
+  y_axis           : struct(x: -1.0, y: 0.6123031769E-16, z: 0.0),
+  base             : ref(Frame_1.Connector_12)
+)
+ 
+Frame_2.FF_grid_4.csy  coor_sys  
+(
+  origin           : struct(x: 0.35 m, y: 0.6 m, z: 0.0 m),
+  x_axis           : struct(x: -0.8137334712, y: -0.5812381937, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(Frame_2.csy)
+)
+ 
+Frame_2.FF_grid_4  spherical_cut  
+(
+  coor_sys         : ref(Frame_2.FF_grid_4.csy),
+  theta_range      : struct(start: -20.0, end: 20.0, np: 101),
+  phi_range        : struct(start: 0.0, end: 135.0, np: 4),
+  file_name        : Frame_2_FF_grid_4.cut,
+  comment          : "Object Frame_2.FF_grid_4 data"
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_feed_plot),ref(view_1_coor_sys_plot),ref(view_1_load_plot),
+ref(view_1_reflector_plot),ref(view_1_output_points_plot),ref(gaussian_beam_tube)),
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_load_plot  load_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+gaussian_beam_tube  gaussian_beam_tube  
+(
+  objects          : sequence(ref(Frame_1.Feed_1)),
+  beam_path_range  : struct(start: 0.0 m, end: 6.0 m, number_of_cross_sections: 101),
+  phase_front_cuts : 1,
+  power_level      : -8.0
+)
+ 
+ //$$ Saved at 11:45:32 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

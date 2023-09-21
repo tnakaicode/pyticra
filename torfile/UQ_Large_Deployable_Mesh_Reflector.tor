@@ -1,0 +1,507 @@
+main_focal_length_over_diameter  real_variable  
+(
+  value            : 0.7
+)
+ 
+focal_length  real_variable  
+(
+  value            : "ref(main_focal_length_over_diameter)*ref(D)"
+)
+ 
+D  real_variable  
+(
+  value            : 12.0
+)
+ 
+offset  real_variable  
+(
+  value            : "ref(offset_over_diameter)*ref(D)"
+)
+ 
+offset_over_diameter  real_variable  
+(
+  value            : 0.625
+)
+ 
+clearance  real_variable  
+(
+  value            : "ref(offset)-ref(D)/2.00"
+)
+ 
+feed_taper  real_variable  
+(
+  value            : -12.0
+)
+ 
+feed_taper_angle  real_variable  
+(
+  value            : 
+"atand((ref(offset)+ref(D)/2)/(2*ref(focal_length)))-atand((ref(offset)-ref(D)/2)/(2*ref(focal_length)))"
+)
+ 
+feed_tf  real_variable  
+(
+  value            : "2.0*atand(ref(offset)/(2.0*ref(focal_length)))"
+)
+ 
+z0  real_variable  
+(
+  value            : "ref(offset)^2.0/(4.0*ref(focal_length))"
+)
+ 
+single_global_coor  coor_sys  
+(
+)
+ 
+single_frequencies  frequency  
+(
+  frequency_list   : sequence(1.4 GHz)
+)
+ 
+single_surface  paraboloid  
+(
+  focal_length     : "ref(focal_length)" m
+)
+ 
+outer_rim  elliptical_rim  
+(
+  centre           : struct(x: "ref(offset)" m, y: 0.0 m),
+  half_axis        : struct(x: "ref(D)/2.0" m, y: "ref(D)/2.0" m)
+)
+ 
+single_reflector  reflector  
+(
+  coor_sys         : ref(ref_coor_sys),
+  surfaces         : sequence(ref(irregular_xy_grid_table_triangulation)),
+  rim              : ref(outer_rim),
+  distortions      : sequence(ref(bulk_uq_variables_random_surface_random_surface))
+)
+ 
+single_feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(focal_length)" m),
+  x_axis           : struct(x: "cosd(ref(feed_tf))", y: 0.0, z: "sind(ref(feed_tf))"),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(single_global_coor)
+)
+ 
+single_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(single_frequencies),
+  coor_sys         : ref(single_feed_disp_coor),
+  taper_angle      : "ref(feed_taper_angle)",
+  taper            : "ref(feed_taper)"
+)
+ 
+single_po  po_single_face_scatterer  
+(
+  frequency        : ref(single_frequencies),
+  scatterer        : ref(single_reflector),
+  coor_sys         : ref(single_global_coor)
+)
+ 
+single_cut_coor  coor_sys  
+(
+  origin           : struct(x: "ref(offset)" m, y: 0.0 m, z: "ref(z0)" m),
+  base             : ref(single_global_coor)
+)
+ 
+single_cut  spherical_cut  
+(
+  coor_sys         : ref(single_cut_coor),
+  theta_range      : struct(start: -15.0, end: 15.0, np: 201),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(single_frequencies)
+)
+ 
+irregular_xy_grid_table_triangulation  irregular_xy_grid_table_triangulation  
+(
+  coordinates      : table
+    (
+      7.50000E+00    0.00000E+00    1.674107000000000E+00  
+      7.083362000000000E+00    7.21637E-01    1.508773000000000E+00  
+      6.666725000000000E+00    0.00000E+00    1.322774000000000E+00  
+      7.083362000000000E+00   -7.21637E-01    1.508773000000000E+00  
+      7.916638000000000E+00   -7.21637E-01    1.880771000000000E+00  
+      8.333275000000000E+00    0.00000E+00    2.06677E+00  
+      7.916638000000000E+00    7.21637E-01    1.880771000000000E+00  
+      6.583398000000000E+00    1.587602000000000E+00    1.364929000000000E+00  
+      5.666795000000000E+00    0.00000E+00    9.55731E-01  
+      6.583398000000000E+00   -1.587602000000000E+00    1.364929000000000E+00  
+      8.416601999999999E+00   -1.587602000000000E+00    2.183324000000000E+00  
+      9.333205000000000E+00    0.00000E+00    2.592521000000000E+00  
+      8.416601999999999E+00    1.587602000000000E+00    2.183324000000000E+00  
+      7.50000E+00    1.587602000000000E+00    1.749121000000000E+00  
+      6.125096000000000E+00    7.93801E-01    1.135325000000000E+00  
+      6.125096000000000E+00   -7.93801E-01    1.135325000000000E+00  
+      7.50000E+00   -1.587602000000000E+00    1.749121000000000E+00  
+      8.874904000000001E+00   -7.93801E-01    2.362918000000000E+00  
+      8.874904000000001E+00    7.93801E-01    2.362918000000000E+00  
+      6.000105000000000E+00    2.597894000000000E+00    1.272331000000000E+00  
+      4.50021E+00    0.00000E+00    6.02735E-01  
+      6.000105000000000E+00   -2.597894000000000E+00    1.272331000000000E+00  
+      8.999895000000000E+00   -2.597894000000000E+00    2.611523000000000E+00  
+      1.049979000000000E+01    0.00000E+00    3.281119000000000E+00  
+      8.999895000000000E+00    2.597894000000000E+00    2.611523000000000E+00  
+      7.000035000000000E+00    2.597894000000000E+00    1.659213000000000E+00  
+      5.000175000000000E+00    8.65965E-01    7.66418E-01  
+      5.50014E+00   -1.73193E+00    9.89617E-01  
+      7.999965000000000E+00   -2.597894000000000E+00    2.10561E+00  
+      9.999825000000000E+00   -8.65965E-01    2.998405000000000E+00  
+      9.49986E+00    1.73193E+00    2.775206000000000E+00  
+      7.999965000000000E+00    2.597894000000000E+00    2.10561E+00  
+      5.50014E+00    1.73193E+00    9.89617E-01  
+      5.000175000000000E+00   -8.65965E-01    7.66418E-01  
+      7.000035000000000E+00   -2.597894000000000E+00    1.659213000000000E+00  
+      9.49986E+00   -1.73193E+00    2.775206000000000E+00  
+      9.999825000000000E+00    8.65965E-01    2.998405000000000E+00  
+      5.333485000000000E+00    3.752514000000000E+00    1.265697000000000E+00  
+      3.16697E+00    0.00000E+00    2.98503E-01  
+      5.333485000000000E+00   -3.752514000000000E+00    1.265697000000000E+00  
+      9.666515000000000E+00   -3.752514000000000E+00    3.200086000000000E+00  
+      1.183303000000000E+01    0.00000E+00    4.16728E+00  
+      9.666515000000000E+00    3.752514000000000E+00    3.200086000000000E+00  
+      6.416742000000000E+00    3.752514000000000E+00    1.644522000000000E+00  
+      3.708599000000000E+00    9.38129E-01    4.35529E-01  
+      4.791856000000000E+00   -2.814386000000000E+00    9.19127E-01  
+      8.583257000000000E+00   -3.752514000000000E+00    2.611716000000000E+00  
+      1.129140100000000E+01   -9.38129E-01    3.820709000000000E+00  
+      1.020814400000000E+01    2.814386000000000E+00    3.337112000000000E+00  
+      7.50000E+00    3.752514000000000E+00    2.093195000000000E+00  
+      4.250228000000000E+00    1.876257000000000E+00    6.42404E-01  
+      4.250228000000000E+00   -1.876257000000000E+00    6.42404E-01  
+      7.50000E+00   -3.752514000000000E+00    2.093195000000000E+00  
+      1.074977200000000E+01   -1.876257000000000E+00    3.543987000000000E+00  
+      1.074977200000000E+01    1.876257000000000E+00    3.543987000000000E+00  
+      8.583258000000001E+00    3.752514000000000E+00    2.611716000000000E+00  
+      4.791856000000000E+00    2.814386000000000E+00    9.19127E-01  
+      3.708599000000000E+00   -9.38129E-01    4.35529E-01  
+      6.416742000000000E+00   -3.752514000000000E+00    1.644522000000000E+00  
+      1.020814400000000E+01   -2.814386000000000E+00    3.337112000000000E+00  
+      1.129140100000000E+01    9.38129E-01    3.820709000000000E+00  
+      4.583538000000000E+00    5.051461000000000E+00    1.384705000000000E+00  
+      1.667075000000000E+00    0.00000E+00    8.271199999999999E-02  
+      4.583537000000000E+00   -5.051461000000000E+00    1.384705000000000E+00  
+      1.041646200000000E+01   -5.051461000000000E+00    3.988689000000000E+00  
+      1.333292500000000E+01    0.00000E+00    5.290681000000000E+00  
+      1.041646200000000E+01    5.051461000000000E+00    3.988689000000000E+00  
+      5.750122000000000E+00    5.051461000000000E+00    1.743487000000000E+00  
+      2.250368000000000E+00    1.010292000000000E+00    1.81097E-01  
+      4.000245000000000E+00   -4.041169000000000E+00    9.62292E-01  
+      9.249877000000000E+00   -5.051461000000000E+00    3.305878000000000E+00  
+      1.274963200000000E+01   -1.010292000000000E+00    4.868268000000000E+00  
+      1.099975500000000E+01    4.041169000000000E+00    4.087073000000000E+00  
+      6.916708000000000E+00    5.051461000000000E+00    2.183277000000000E+00  
+      2.83366E+00    2.020584000000000E+00    3.60488E-01  
+      3.416952000000000E+00   -3.030877000000000E+00    6.20886E-01  
+      8.083292000000000E+00   -5.051461000000000E+00    2.704074000000000E+00  
+      1.216634000000000E+01   -2.020584000000000E+00    4.526863000000000E+00  
+      1.158304700000000E+01    3.030877000000000E+00    4.266464000000000E+00  
+      8.083292000000000E+00    5.051461000000000E+00    2.704074000000000E+00  
+      3.416953000000000E+00    3.030877000000000E+00    6.20886E-01  
+      2.83366E+00   -2.020584000000000E+00    3.60488E-01  
+      6.916707000000000E+00   -5.051461000000000E+00    2.183277000000000E+00  
+      1.158304700000000E+01   -3.030877000000000E+00    4.266464000000000E+00  
+      1.216634000000000E+01    2.020584000000000E+00    4.526863000000000E+00  
+      9.249878000000001E+00    5.051461000000000E+00    3.305878000000000E+00  
+      4.000245000000000E+00    4.041169000000000E+00    9.62292E-01  
+      2.250368000000000E+00   -1.010292000000000E+00    1.81097E-01  
+      5.750122000000000E+00   -5.051461000000000E+00    1.743487000000000E+00  
+      1.099975500000000E+01   -4.041169000000000E+00    4.087073000000000E+00  
+      1.274963300000000E+01    1.010292000000000E+00    4.868268000000000E+00  
+      3.750263000000000E+00    6.494736000000000E+00    1.67399E+00  
+      5.25000E-04    0.00000E+00    0.00000E+00  
+      3.750262000000000E+00   -6.494736000000000E+00    1.67399E+00  
+      1.124973700000000E+01   -6.494736000000000E+00    5.02197E+00  
+      1.499947500000000E+01    0.00000E+00    6.69596E+00  
+      1.124973700000000E+01    6.494736000000000E+00    5.02197E+00  
+      5.000175000000000E+00    6.494736000000000E+00    1.999504000000000E+00  
+      6.25481E-01    1.082456000000000E+00    4.65160E-02  
+      3.125306000000000E+00   -5.41228E+00    1.162509000000000E+00  
+      9.999825000000000E+00   -6.494736000000000E+00    4.231491000000000E+00  
+      1.437451900000000E+01   -1.082456000000000E+00    6.184479000000000E+00  
+      1.187469400000000E+01    5.41228E+00    5.068486000000000E+00  
+      6.250088000000000E+00    6.494736000000000E+00    2.418012000000000E+00  
+      1.250438000000000E+00    2.164912000000000E+00    1.86025E-01  
+      2.50035E+00   -4.329824000000000E+00    7.44022E-01  
+      8.749912000000000E+00   -6.494736000000000E+00    3.534005000000000E+00  
+      1.374956200000000E+01   -2.164912000000000E+00    5.765991000000000E+00  
+      1.249965000000000E+01    4.329824000000000E+00    5.207995000000000E+00  
+      7.50000E+00    6.494736000000000E+00    2.929512000000000E+00  
+      1.875394000000000E+00    3.247368000000000E+00    4.18527E-01  
+      1.875394000000000E+00   -3.247368000000000E+00    4.18527E-01  
+      7.50000E+00   -6.494736000000000E+00    2.929512000000000E+00  
+      1.312460600000000E+01   -3.247368000000000E+00    5.440497000000000E+00  
+      1.312460600000000E+01    3.247368000000000E+00    5.440497000000000E+00  
+      8.749912999999999E+00    6.494736000000000E+00    3.534005000000000E+00  
+      2.50035E+00    4.329824000000000E+00    7.44022E-01  
+      1.250438000000000E+00   -2.164912000000000E+00    1.86025E-01  
+      6.250087000000000E+00   -6.494736000000000E+00    2.418012000000000E+00  
+      1.249965000000000E+01   -4.329824000000000E+00    5.207995000000000E+00  
+      1.374956200000000E+01    2.164912000000000E+00    5.765991000000000E+00  
+      9.999825000000000E+00    6.494736000000000E+00    4.231491000000000E+00  
+      3.125306000000000E+00    5.41228E+00    1.162509000000000E+00  
+      6.25481E-01   -1.082456000000000E+00    4.65160E-02  
+      5.000175000000000E+00   -6.494736000000000E+00    1.999504000000000E+00  
+      1.187469400000000E+01   -5.41228E+00    5.068486000000000E+00  
+      1.437451900000000E+01    1.082456000000000E+00    6.184479000000000E+00  
+    ),
+  interpolation    : linear,
+  plot_triangles   : on
+)
+ 
+region_visualisation_inner  reflector  
+(
+  coor_sys         : ref(ref_coor_sys),
+  surfaces         : sequence(ref(single_surface)),
+  rim              : ref(inner_rim)
+)
+ 
+inner_rim  elliptical_rim  
+(
+  centre           : struct(x: "ref(offset)" m, y: 0.0 m),
+  half_axis        : struct(x: 4.5 m, y: 4.5 m)
+)
+ 
+region_visualisation_outer  reflector  
+(
+  coor_sys         : ref(ref_coor_sys),
+  surfaces         : sequence(ref(single_surface)),
+  rim              : ref(outer_rim),
+  holes            : sequence(ref(inner_rim))
+)
+ 
+single_antenna_coor_elevation  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 5.4 in),
+  theta            : "ref(UQ_pointing_elevation_error)",
+  base             : ref(single_antenna_coor_azimuth)
+)
+ 
+UQ_pointing_elevation_error  real_variable  
+(
+  value            : 0.0
+)
+ 
+single_antenna_coor_azimuth  coor_sys_grasp_angles  
+(
+  theta            : 90.0,
+  psi              : "ref(UQ_pointing_azimuth_error)",
+  base             : ref(single_antenna_coor)
+)
+ 
+UQ_pointing_azimuth_error  real_variable  
+(
+  value            : 0.0
+)
+ 
+single_antenna_coor  coor_sys_grasp_angles  
+(
+  base             : ref(single_global_coor)
+)
+ 
+single_feed_disp_coor  coor_sys  
+(
+  origin           : struct(x: "ref(UQ_feed_displacement_x)" mm, y: "ref(UQ_feed_displacement_y)" mm, z: 
+"ref(UQ_feed_displacement_z)" mm),
+  base             : ref(single_feed_coor)
+)
+ 
+UQ_feed_displacement_z  real_variable  
+(
+  value            : 0.0
+)
+ 
+ProbDist_surface_z_position_stdev_inner  real_variable  
+(
+  value            : 0.5E-03
+)
+ 
+ProbDist_feed_position_tol  real_variable  
+(
+  value            : 5.0
+)
+ 
+ProbDist_azim_elev_angle_tol  real_variable  
+(
+  value            : 0.1
+)
+ 
+ProbDist_surface_z_position_stdev_outer  real_variable  
+(
+  value            : 0.8E-03
+)
+ 
+UQ_feed_displacement_x  real_variable  
+(
+  value            : 0.0
+)
+ 
+UQ_feed_displacement_y  real_variable  
+(
+  value            : 0.0
+)
+ 
+ref_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -0.13716 m),
+  x_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(single_antenna_coor_elevation)
+)
+ 
+uq_feed_position_displacement  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut)),
+  object_func_analysis : uq_eval,
+  variables        : sequence(ref(uq_feed_position_displacement_variables_default)),
+  uq_settings      : ref(uq_setting)
+)
+ 
+uq_feed_position_displacement_variables_default  real_uq_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(UQ_feed_displacement_x), distribution: ref(uniform_distribution_feed_pos)
+, uncertainty_format: deviation_absolute),
+    struct(variable_object: ref(UQ_feed_displacement_y), distribution: ref(uniform_distribution_feed_pos), 
+uncertainty_format: deviation_absolute),
+    struct(variable_object: ref(UQ_feed_displacement_z), distribution: ref(uniform_distribution_feed_pos), 
+uncertainty_format: deviation_absolute)
+    )
+)
+ 
+uniform_distribution_feed_pos  uniform_distribution  
+(
+  a                : "-ref(ProbDist_feed_position_tol)",
+  b                : "ref(ProbDist_feed_position_tol)"
+)
+ 
+owu_far_field_spherical_cut  owu_far_field_spherical_cut  
+(
+  sources          : sequence(ref(single_feed),ref(single_po)),
+  coor_sys         : ref(single_cut_coor),
+  theta_range      : struct(start: -15.0, end: 15.0, np: 201)
+)
+ 
+uq_setting  sc_settings  
+(
+)
+ 
+uq_antenna_pointing  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut)),
+  object_func_analysis : uq_eval,
+  variables        : sequence(ref(uq_antenna_pointing_variables_default)),
+  uq_settings      : ref(uq_setting)
+)
+ 
+uq_antenna_pointing_variables_default  real_uq_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(UQ_pointing_elevation_error), distribution: ref(uniform_distribution_ang)
+, uncertainty_format: deviation_absolute),
+    struct(variable_object: ref(UQ_pointing_azimuth_error), distribution: ref(uniform_distribution_ang), 
+uncertainty_format: deviation_absolute)
+    )
+)
+ 
+uniform_distribution_ang  uniform_distribution  
+(
+  a                : "-ref(ProbDist_azim_elev_angle_tol)",
+  b                : "ref(ProbDist_azim_elev_angle_tol)"
+)
+ 
+uniform_distribution_random_surface  uniform_distribution  
+(
+  a                : -0.1E-02,
+  b                : 0.1E-02
+)
+ 
+bulk_uq_variables_random_surface_random_surface  random_surface  
+(
+  x_range          : struct(start: "-ref(D)*0.5+ref(offset)" m, end: "ref(D)*0.5+ref(offset)" m, np: 51),
+  y_range          : struct(start: "-ref(D)*0.5" m, end: "ref(D)*0.5" m, np: 51),
+  z_factor         : 1.0 m,
+  z_distribution   : ref(uniform_distribution_random_surface)
+)
+ 
+bulk_uq_variables_random_surface  bulk_uq_variables_random_surface  
+(
+  target           : ref(bulk_uq_variables_random_surface_random_surface)
+)
+ 
+truncated_normal_distribution_tab_surf_inner_region  truncated_normal_distribution  
+(
+  three_sigma      : "ref(ProbDist_surface_z_position_stdev_inner)"
+)
+ 
+truncated_normal_distribution_tab_surf_outer_region  truncated_normal_distribution  
+(
+  three_sigma      : "ref(ProbDist_surface_z_position_stdev_outer)"
+)
+ 
+bulk_uq_variables_tabulated_surface_inner  bulk_uq_variables_tabulated_surface  
+(
+  target           : ref(irregular_xy_grid_table_triangulation),
+  z_uncertainty    : ref(truncated_normal_distribution_tab_surf_inner_region),
+  exclude_points   : struct(outside_rim: ref(inner_rim), inside_rim: ref())
+)
+ 
+bulk_uq_variables_tabulated_surface_outer  bulk_uq_variables_tabulated_surface  
+(
+  target           : ref(irregular_xy_grid_table_triangulation),
+  z_uncertainty    : ref(truncated_normal_distribution_tab_surf_outer_region),
+  exclude_points   : struct(outside_rim: ref(), inside_rim: ref(inner_rim))
+)
+ 
+uq_random_surface_distortions  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut)),
+  object_func_analysis : uq_eval,
+  variables        : sequence(ref(bulk_uq_variables_random_surface)),
+  uq_settings      : ref(uq_setting)
+)
+ 
+uq_tabulated_surface_distortions  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut)),
+  object_func_analysis : uq_eval,
+  variables        : sequence(ref(bulk_uq_variables_tabulated_surface_inner),
+ref(bulk_uq_variables_tabulated_surface_outer)),
+  uq_settings      : ref(uq_setting)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(feed_plot_for_view_1),
+ref(output_points_plot_for_view_1),ref(reflector_plot_for_view_1)),
+  hidden_objects   : sequence(ref(region_visualisation_outer),ref(region_visualisation_inner),
+ref(single_antenna_coor_azimuth),ref(single_antenna_coor_elevation),ref(single_antenna_coor),
+ref(single_feed_coor),ref(single_global_coor))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2),
+  x_lines          : 0,
+  y_lines          : 0
+)
+ 
+ //$$ Saved at 16:47:36 on 23.03.2023 by TICRA Tools 23.0 SN=010211
+  

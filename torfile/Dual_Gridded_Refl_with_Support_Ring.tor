@@ -1,0 +1,252 @@
+front_reflector  reflector  
+(
+  coor_sys         : ref(front_coor_sys),
+  surfaces         : sequence(ref(front_surface)),
+  rim              : ref(front_rim),
+  distortions      : sequence(ref(front_spline)),
+  el_prop          : sequence(ref(front_strip_grid_dielectric_layer))
+)
+ 
+front_coor_sys  coor_sys  
+(
+  origin           : struct(x: -0.59999998 m, y: 0.0 m, z: -0.14999999 m),
+  base             : ref(front_rot_coor_sys)
+)
+ 
+front_surface  paraboloid  
+(
+  focal_length     : 0.6 m
+)
+ 
+front_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.6 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5 m, y: 0.5 m)
+)
+ 
+front_rot_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.59999998 m, y: 0.0 m, z: 0.14999999 m),
+  x_axis           : struct(x: 0.9981347984, y: 0.6104853953E-01, z: 0.0),
+  y_axis           : struct(x: -0.6104853953E-01, y: 0.9981347984, z: 0.0),
+  base             : ref(global_coor_sys)
+)
+ 
+Frequency_1  frequency  
+(
+  frequency_list   : sequence(12.0 GHz)
+)
+ 
+front_feed_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.6 m),
+  x_axis           : struct(x: 0.5988809119, y: -0.6104853953E-01, z: 0.7985078141),
+  y_axis           : struct(x: -0.3662912573E-01, y: -0.9981347984, z: -0.4883883012E-01),
+  base             : ref(front_coor_sys)
+)
+ 
+front_feed_def  gaussian_beam_pattern  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(front_feed_coor_sys),
+  taper_angle      : 37.74680606,
+  taper            : -12.0,
+  polarisation     : linear_y
+)
+ 
+front_PO  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(front_reflector),
+  method           : po,
+  po_points        : struct(po1: 68, po2: 210),
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 0)
+    ),
+  coor_sys         : ref(front_coor_sys)
+)
+ 
+rear_reflector  reflector  
+(
+  coor_sys         : ref(rear_coor_sys),
+  surfaces         : sequence(ref(rear_surface)),
+  rim              : ref(rear_rim),
+  distortions      : sequence(ref(rear_spline))
+)
+ 
+rear_coor_sys  coor_sys  
+(
+  origin           : struct(x: -0.59999998 m, y: 0.0 m, z: -0.13846153 m),
+  base             : ref(rear_rot_coor_sys)
+)
+ 
+rear_surface  paraboloid  
+(
+  focal_length     : 0.65 m
+)
+ 
+rear_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.6 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5 m, y: 0.5 m)
+)
+ 
+rear_rot_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.59999998 m, y: 0.0 m, z: 0.8846153E-01 m),
+  x_axis           : struct(x: 0.9981347984, y: -0.6104853953E-01, z: 0.0),
+  y_axis           : struct(x: 0.6104853953E-01, y: 0.9981347984, z: 0.0),
+  base             : ref(global_coor_sys)
+)
+ 
+rear_feed_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.65 m),
+  x_axis           : struct(x: 0.6475701314, y: 0.6104853953E-01, z: 0.75955645),
+  y_axis           : struct(x: 0.3960708597E-01, y: -0.9981347984, z: 0.4645646264E-01),
+  base             : ref(rear_coor_sys)
+)
+ 
+rear_feed_def  gaussian_beam_pattern  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(rear_feed_coor_sys),
+  taper_angle      : 35.83765355,
+  taper            : -12.0
+)
+ 
+rear_PO  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(rear_reflector),
+  method           : po,
+  po_points        : struct(po1: 64, po2: 200),
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 0)
+    ),
+  coor_sys         : ref(rear_coor_sys)
+)
+ 
+PWE  plane_wave_expansion  
+(
+  frequency        : ref(Frequency_1),
+  beam_coor_sys    : ref(global_coor_sys),
+  beam_cone_angle  : 15.0,
+  file_name        : " "
+)
+ 
+global_coor_sys  coor_sys  
+(
+)
+ 
+front_spline  spline_surface  
+(
+  file_name        : gr4_front02.spl
+)
+ 
+rear_spline  spline_surface  
+(
+  file_name        : gr4_rear02.spl
+)
+ 
+rear_w_ring  spherical_grid  
+(
+  coor_sys         : ref(global_coor_sys),
+  grid_type        : elevation_and_azimuth,
+  x_range          : struct(start: -10.0, end: 10.0, np: 121),
+  y_range          : struct(start: -10.0, end: 10.0, np: 131),
+  file_name        : rear_w_support_ring.grd,
+  comment          : "Dual gridded reflector, support ting",
+  frequency        : ref(Frequency_1)
+)
+ 
+MoM_support_ring  mom  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(support_ring),
+  iterative_solution : struct(use_mlfmm: off, relative_error: 0.1E-02, mlfmm_use_disk: off, mlfmm_precision: 
+normal, preconditioner_accuracy: normal, obsolete_group_size: 4.0, rhs_compression: on),
+  integration_precision : 1
+)
+ 
+front_PO_to_ring  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(front_reflector),
+  method           : po,
+  po_points        : struct(po1: 630, po2: 660),
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 0)
+    ),
+  coor_sys         : ref(front_coor_sys)
+)
+ 
+support_ring  support_ring  
+(
+  front_reflector  : ref(front_reflector),
+  rear_reflector   : ref(rear_reflector),
+  coor_sys         : ref(rear_coor_sys),
+  computational_domains : 20,
+  centre           : struct(x: 0.6 m, y: 0.0 m),
+  outer_radius     : 0.4 m,
+  wall_thickness   : 10.0 mm,
+  dielectric_constant : 2.0
+)
+ 
+front_strip_grid_dielectric_layer  strip_grid_dielectric_layer  
+(
+  strip_grid       : struct(ref_coor_sys: ref(global_coor_sys), ref_angle: 90.0, spacing: 1.25 mm, width: 
+0.25 mm),
+  substrate_above  : struct(thickness: 0.0 mm, dielectric_constant: 1.0, loss_tangent: 0.0),
+  substrate_below  : struct(thickness: 0.4 mm, dielectric_constant: 2.5, loss_tangent: 0.0),
+  plot_lines       : 25
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_reflector_plot),ref(view_1_coor_sys_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(view_1_mom_plot),ref(view_1_dgr_intercostals_plot),
+ref(front_reflector_plot)),
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_mom_plot  mom_plot  
+(
+)
+ 
+view_1_dgr_intercostals_plot  dgr_intercostals_plot  
+(
+)
+ 
+front_reflector_plot  reflector_plot  
+(
+  objects          : sequence(ref(front_reflector)),
+  surface_plot     : off
+)
+ 
+ //$$ Saved at 16:20:57 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

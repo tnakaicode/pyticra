@@ -1,0 +1,168 @@
+frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 600.0 GHz, end_frequency: 800.0 GHz, number_of_frequencies: 11)
+)
+ 
+template_throat_port_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+template_throat_port  circular_waveguide_port  
+(
+  radius           : 0.1752E-03 m,
+  port_expansion_settings : ref(template_throat_port_expansion_settings)
+)
+ 
+template_aperture_port_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+template_aperture_port  circular_waveguide_port  
+(
+  radius           : 0.15E-02 m,
+  port_expansion_settings : ref(template_aperture_port_expansion_settings)
+)
+ 
+template_combined_horn_section  combined_horn_section  
+(
+  horn_sections    : sequence(ref(circular_waveguide_section),ref(smooth_walled_section),
+ref(smooth_walled_section_01))
+)
+ 
+template_mode_matching_settings  mode_matching_settings  
+(
+)
+ 
+template_horn_interior  circular_symmetric_horn  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(template_throat_port),
+  port_2           : ref(template_aperture_port),
+  horn_section     : ref(template_combined_horn_section),
+  analysis_settings : ref(template_mode_matching_settings)
+)
+ 
+template_circular_waveguide_mode  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+template_MoM_settings  mom_settings  
+(
+)
+ 
+template_horn_aperture  circular_symmetric_aperture  
+(
+  frequency        : ref(frequency),
+  waveguide_port   : ref(template_aperture_port),
+  exterior         : ref(scatterer_cluster),
+  analysis_settings : ref(template_MoM_settings)
+)
+ 
+template_combined_device  combined_device  
+(
+  devices          : sequence(ref(template_horn_interior),ref(template_horn_aperture))
+)
+ 
+template_radiating_device  radiating_device  
+(
+  device           : ref(template_combined_device),
+  port_excitation  : sequence
+    (    struct(port: ref(template_throat_port), waveguide_mode: ref(template_circular_waveguide_mode), 
+amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+template_Band1_cut  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 761),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(frequency)
+)
+ 
+linear_profile  linear_profile  
+(
+  input_radius     : 0.1752 mm,
+  output_radius    : 0.6145 mm,
+  length           : 0.7163 mm
+)
+ 
+smooth_walled_section  smooth_walled_section  
+(
+  profile          : ref(linear_profile)
+)
+ 
+linear_profile_01  linear_profile  
+(
+  input_radius     : 0.6145 mm,
+  output_radius    : 1.5 mm,
+  length           : 11.256 mm
+)
+ 
+smooth_walled_section_01  smooth_walled_section  
+(
+  profile          : ref(linear_profile_01)
+)
+ 
+circular_waveguide_section  circular_waveguide_section  
+(
+  radius           : 0.1752 mm,
+  length           : 1.0 mm
+)
+ 
+circular_symmetric_horn_exterior  circular_symmetric_horn_exterior  
+(
+  nodes            : table
+    (
+      0.00000E+00    1.75000E-03  
+     -1.12560E-02    8.64500E-04  
+    )
+)
+ 
+scatterer_cluster  scatterer_cluster  
+(
+  scatterers       : sequence(ref(circular_symmetric_horn_exterior))
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(radiating_device_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(bor_plot_for_view_1))
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+device_plot  device_plot  
+(
+  objects          : sequence(ref(template_combined_device)),
+  root_device      : ref(template_combined_device)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot))
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+ //$$ Saved at 11:19:00 on 18.05.2022 by TICRA Tools 22.0 SN=009627
+  

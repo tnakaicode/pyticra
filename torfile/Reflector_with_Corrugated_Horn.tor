@@ -1,0 +1,207 @@
+horn_section_profile  linear_profile  
+(
+  input_radius     : 150.0 mm,
+  output_radius    : 653.6535743 mm,
+  length           : 1700.0 mm
+)
+ 
+corrugated_horn_section  single_depth_mode_converter  
+(
+  profile          : ref(horn_section_profile),
+  width_to_pitch_ratio : 0.8,
+  number_of_slots  : 40,
+  number_of_slots_mode_converter : 16,
+  design_frequency : 0.965137814 GHz,
+  output_frequency : 0.9 GHz,
+  percentage_factor : 50.0,
+  conductivity     : 33000000.0 S/m
+)
+ 
+freq_band  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 0.8 GHz, end_frequency: 1.0 GHz, number_of_frequencies: 3)
+)
+ 
+horn_outer_surface  circular_symmetric_horn_exterior  
+(
+  length_unit      : mm,
+  nodes            : table
+    (
+      0.00000E+00    7.50000E+02  
+     -1.429644313700000E+02    7.50000E+02  
+     -1.472194883000000E+03    3.975417714600000E+02  
+     -1.724230903600000E+03    3.595160237500000E+02  
+    )
+)
+ 
+global_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm)
+)
+ 
+throat_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+horn_throat_port  circular_waveguide_port  
+(
+  radius           : 0.15 m,
+  port_expansion_settings : ref(throat_expansion_settings)
+)
+ 
+aperture_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+horn_aperture_port  circular_waveguide_port  
+(
+  radius           : 0.6536535743 m,
+  port_expansion_settings : ref(aperture_expansion_settings)
+)
+ 
+mm_settings  mode_matching_settings  
+(
+)
+ 
+horn_interior  circular_symmetric_horn  
+(
+  frequency        : ref(freq_band),
+  port_1           : ref(horn_throat_port),
+  port_2           : ref(horn_aperture_port),
+  horn_section     : ref(corrugated_horn_section),
+  analysis_settings : ref(mm_settings)
+)
+ 
+mom_settings  mom_settings  
+(
+  relative_max_mesh_length : 0.75
+)
+ 
+horn_exterior  circular_symmetric_aperture  
+(
+  frequency        : ref(freq_band),
+  waveguide_port   : ref(horn_aperture_port),
+  exterior         : ref(horn_outer_surface),
+  analysis_settings : ref(mom_settings)
+)
+ 
+excitation_mode_x  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+pattern_cut  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 723),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+radiating_device  radiating_device  
+(
+  device           : ref(horn),
+  port_excitation  : sequence
+    (    struct(port: ref(horn_throat_port), waveguide_mode: ref(excitation_mode_x), amplitude: 1.0, phase: 
+180.0)
+    )
+)
+ 
+horn  combined_device  
+(
+  devices          : sequence(ref(horn_exterior),ref(horn_interior))
+)
+ 
+reflectorsystem  circular_symmetric_aperture  
+(
+  frequency        : ref(freq_band),
+  waveguide_port   : ref(horn_aperture_port),
+  exterior         : ref(exterior_cluster),
+  analysis_settings : ref(mom_settings)
+)
+ 
+main_reflector  tabulated_circ_sym_reflector  
+(
+  file_name        : main.rsf,
+  z_offset         : -2.98 m
+)
+ 
+sub_reflector  tabulated_circ_sym_reflector  
+(
+  file_name        : subr.rsf,
+  z_offset         : -2.98 m
+)
+ 
+exterior_cluster  scatterer_cluster  
+(
+  scatterers       : sequence(ref(horn_outer_surface),ref(main_reflector),ref(sub_reflector))
+)
+ 
+horn_and_reflectors  combined_device  
+(
+  devices          : sequence(ref(horn_interior),ref(reflectorsystem))
+)
+ 
+pattern_cut_zoom  spherical_cut  
+(
+  theta_range      : struct(start: -30.0, end: 30.0, np: 1001),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+po_sub  po_multi_face_scatterer  
+(
+  frequency        : ref(freq_band),
+  scatterer        : ref(sub_reflector)
+)
+ 
+po_main  po_multi_face_scatterer  
+(
+  frequency        : ref(freq_band),
+  scatterer        : ref(main_reflector)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(output_points_plot_for_view_1),ref(bor_plot_for_view_1),
+ref(radiating_device_plot_for_view_1),ref(coor_sys_plot_for_view_1))
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+device_plot  device_plot  
+(
+  objects          : sequence(ref(horn_and_reflectors)),
+  root_device      : ref(horn_and_reflectors)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot)),
+  dimension        : 2D
+)
+ 
+ //$$ Saved at 17:39:41 on 15.06.2022 by TICRA Tools 22.1 SN=009627
+  

@@ -1,0 +1,820 @@
+frequency_range  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 18.0 GHz, end_frequency: 25.0 GHz, number_of_frequencies: 8)
+)
+ 
+port_rwg1_master  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg1_adim)" mm,
+  y_dimension      : "ref(rwg1_bdim)" mm,
+  port_expansion_settings : ref(port_exp_settings_rwg)
+)
+ 
+port_rwg2_master  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg2_adim)" mm,
+  y_dimension      : "ref(rwg2_bdim)" mm,
+  port_expansion_settings : ref(port_exp_settings_rwg)
+)
+ 
+port_OMT_input  circular_waveguide_port  
+(
+  radius           : "ref(cwg_rad)" mm,
+  port_expansion_settings : ref(port_expansion_settings_cwg)
+)
+ 
+port_rwg1_master_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_rwg2_master_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg2_master)
+)
+ 
+port_power_comb_int_master  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg1_adim)" mm,
+  y_dimension      : "ref(power_comb_int_bdim)" mm,
+  port_expansion_settings : ref(port_exp_settings_rwg)
+)
+ 
+port_branch_1_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_2_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_3_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_4_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_1_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_2_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_3_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_4_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_1_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_2_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_3_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_4_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_1_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_2_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_3_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_4_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_1_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_2_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_3_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_4_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_13_6  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_13_7  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_13_8  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg1_master)
+)
+ 
+port_branch_13_9  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg2_master)
+)
+ 
+port_OMT_output_y  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg2_master)
+)
+ 
+port_OMT_output_x  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_rwg2_master)
+)
+ 
+port_exp_settings_rwg  rectangular_waveguide_port_modal_expansion_settings  
+(
+  m_max            : 4,
+  n_max            : 4
+)
+ 
+port_expansion_settings_cwg  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 4,
+  m_max            : 4
+)
+ 
+rwg_mode_TE10  rectangular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 0
+)
+ 
+cwg_mode_TE11y  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1,
+  mode_set         : 2nd
+)
+ 
+rwg1_bdim  real_variable  
+(
+  value            : 5.3
+)
+ 
+rwg1_adim  real_variable  
+(
+  value            : 10.7
+)
+ 
+turnstile_rwg_lengths  real_variable  
+(
+  value            : 10.0
+)
+ 
+mom_settings  mom_settings  
+(
+  expansion_accuracy : enhanced,
+  iterative_solution : struct(use_mlfmm: off, relative_error: 0.1E-02, mlfmm_use_disk: off, mlfmm_precision: 
+normal)
+)
+ 
+mm_settings  mode_matching_settings  
+(
+  additional_modes : 300
+)
+ 
+cwg_rad  real_variable  
+(
+  value            : 5.8
+)
+ 
+rwg_bend_inner_radius_1  real_variable  
+(
+  value            : 10.0
+)
+ 
+rwg_bend_inner_radius_2  real_variable  
+(
+  value            : 6.2
+)
+ 
+power_comb_l1  real_variable  
+(
+  value            : 5.0
+)
+ 
+power_comb_l2  real_variable  
+(
+  value            : 4.2173967890527
+)
+ 
+power_comb_l3  real_variable  
+(
+  value            : 6.33417319463866
+)
+ 
+power_comb_l4  real_variable  
+(
+  value            : 5.23375397919265
+)
+ 
+power_comb_l5  real_variable  
+(
+  value            : 1.30183223021557
+)
+ 
+power_comb_junction_length  real_variable  
+(
+  value            : 1.30166185704614
+)
+ 
+power_comb_int_bdim  real_variable  
+(
+  value            : "2*ref(rwg1_bdim)+ref(power_comb_port_separation)"
+)
+ 
+power_comb_port_separation  real_variable  
+(
+  value            : 0.13
+)
+ 
+turnstile  general_waveguide_device  
+(
+  frequency        : ref(frequency_group),
+  waveguide_geometry : ref(cad_file),
+  waveguide_ports  : sequence
+    (    struct(port: ref(port_branch_1_1), location_x: "-ref(rwg1_adim)/2-ref(turnstile_rwg_lengths)" mm, 
+location_y: 0.0 mm, location_z: "ref(rwg1_bdim)/2" mm, x_axis_x: 0.0, x_axis_y: 1.0, x_axis_z: 0.0, y_axis_x: 
+0.0, y_axis_y: 0.0, y_axis_z: -1.0),
+    struct(port: ref(port_branch_3_1), location_x: "ref(rwg1_adim)/2+ref(turnstile_rwg_lengths)" mm, 
+location_y: 0.0 mm, location_z: "ref(rwg1_bdim)/2" mm, x_axis_x: 0.0, x_axis_y: 1.0, x_axis_z: 0.0, y_axis_x: 
+0.0, y_axis_y: 0.0, y_axis_z: -1.0),
+    struct(port: ref(port_branch_2_1), location_x: 0.0 mm, location_y: 
+"-ref(rwg1_adim)/2-ref(turnstile_rwg_lengths)" mm, location_z: "ref(rwg1_bdim)/2" mm, x_axis_x: 1.0, 
+x_axis_y: 0.0, x_axis_z: 0.0, y_axis_x: 0.0, y_axis_y: 0.0, y_axis_z: -1.0),
+    struct(port: ref(port_branch_4_1), location_x: 0.0 mm, location_y: 
+"ref(rwg1_adim)/2+ref(turnstile_rwg_lengths)" mm, location_z: "ref(rwg1_bdim)/2" mm, x_axis_x: 1.0, x_axis_y: 
+0.0, x_axis_z: 0.0, y_axis_x: 0.0, y_axis_y: 0.0, y_axis_z: -1.0),
+    struct(port: ref(port_OMT_input), location_x: 0.0 mm, location_y: 0.0 mm, location_z: 
+"ref(rwg1_bdim)+ref(turnstile_rwg_lengths)" mm, x_axis_x: 0.0, x_axis_y: 1.0, x_axis_z: 0.0, y_axis_x: 1.0, 
+y_axis_y: 0.0, y_axis_z: 0.0)
+    ),
+  analysis_settings : ref(mom_settings)
+)
+ 
+cad_file  cad_file  
+(
+  file_name        : Turnstile_tuning_stub_curved.stp,
+  tolerance        : 0.5 mm,
+  mom_material_regions : table
+    (
+    )
+)
+ 
+rwg_section_5mm_master  straight_waveguide_section  
+(
+  frequency        : ref(frequency_group),
+  length           : 5.0 mm,
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+rwg_section_20mm_master  straight_waveguide_section  
+(
+  frequency        : ref(frequency_group),
+  length           : 20.0 mm,
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+rwg_section_23mm785_master  straight_waveguide_section  
+(
+  frequency        : ref(frequency_group),
+  length           : 23.785 mm,
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+rwg_section_8mm785_master  straight_waveguide_section  
+(
+  frequency        : ref(frequency_group),
+  length           : 8.785 mm,
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+rwg_section_1_1  device_replica  
+(
+  master_device    : ref(rwg_section_5mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_1_1), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_1_2), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_2_1  device_replica  
+(
+  master_device    : ref(rwg_section_20mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_2_1), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_2_2), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_3_1  device_replica  
+(
+  master_device    : ref(rwg_section_20mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_3_1), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_3_2), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_4_1  device_replica  
+(
+  master_device    : ref(rwg_section_5mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_4_1), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_4_2), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_13_3  device_replica  
+(
+  master_device    : ref(rwg_section_20mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_13_7), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_13_8), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_1_2  device_replica  
+(
+  master_device    : ref(rwg_section_23mm785_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_1_3), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_1_4), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_2_2  device_replica  
+(
+  master_device    : ref(rwg_section_8mm785_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_2_3), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_2_4), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_3_2  device_replica  
+(
+  master_device    : ref(rwg_section_8mm785_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_3_3), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_3_4), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_4_2  device_replica  
+(
+  master_device    : ref(rwg_section_23mm785_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_4_3), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_4_4), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_section_13_4  device_replica  
+(
+  master_device    : ref(rwg_section_10mm_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_13_9), master_device_port: ref(port_rwg2_master)),
+    struct(local_device_port: ref(port_OMT_output_y), master_device_port: ref(port_rwg2_master_2))
+    )
+)
+ 
+rwg_bend180r1_master  waveguide_radius_bend  
+(
+  frequency        : ref(frequency_group),
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  angle            : 180.0,
+  radius           : "ref(rwg_bend_inner_radius_1)+ref(rwg1_bdim)/2" mm,
+  analysis_settings : ref(mom_settings)
+)
+ 
+rwg_bend180r2_master  waveguide_radius_bend  
+(
+  frequency        : ref(frequency_group),
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  angle            : 180.0,
+  radius           : "ref(rwg_bend_inner_radius_2)+ref(rwg1_bdim)/2" mm,
+  analysis_settings : ref(mom_settings)
+)
+ 
+rwg_bend180_1  device_replica  
+(
+  master_device    : ref(rwg_bend180r2_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_1_2), master_device_port: ref(port_rwg1_master_2)),
+    struct(local_device_port: ref(port_branch_1_3), master_device_port: ref(port_rwg1_master))
+    )
+)
+ 
+rwg_bend180_2  device_replica  
+(
+  master_device    : ref(rwg_bend180r1_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_2_2), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_2_3), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_bend180_3  device_replica  
+(
+  master_device    : ref(rwg_bend180r2_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_3_2), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_3_3), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_bend180_4  device_replica  
+(
+  master_device    : ref(rwg_bend180r1_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_4_2), master_device_port: ref(port_rwg1_master_2)),
+    struct(local_device_port: ref(port_branch_4_3), master_device_port: ref(port_rwg1_master))
+    )
+)
+ 
+rwg_bend_90_master  waveguide_radius_bend  
+(
+  frequency        : ref(frequency_group),
+  port_1           : ref(port_rwg1_master),
+  port_2           : ref(port_rwg1_master_2),
+  angle            : -90.0,
+  radius           : "ref(rwg_bend_inner_radius_2)+ref(rwg1_bdim)/2" mm,
+  analysis_settings : ref(mom_settings)
+)
+ 
+rwg_bend90_1  device_replica  
+(
+  master_device    : ref(rwg_bend_90_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_1_4), master_device_port: ref(port_rwg1_master_2)),
+    struct(local_device_port: ref(port_branch_1_5), master_device_port: ref(port_rwg1_master))
+    )
+)
+ 
+rwg_bend90_2  device_replica  
+(
+  master_device    : ref(rwg_bend_90_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_2_4), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_2_5), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_bend90_3  device_replica  
+(
+  master_device    : ref(rwg_bend_90_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_3_4), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_3_5), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+rwg_bend90_4  device_replica  
+(
+  master_device    : ref(rwg_bend_90_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_4_4), master_device_port: ref(port_rwg1_master_2)),
+    struct(local_device_port: ref(port_branch_4_5), master_device_port: ref(port_rwg1_master))
+    )
+)
+ 
+rwg_bend90_5  device_replica  
+(
+  master_device    : ref(rwg_bend_90_master),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_13_6), master_device_port: ref(port_rwg1_master)),
+    struct(local_device_port: ref(port_branch_13_7), master_device_port: ref(port_rwg1_master_2))
+    )
+)
+ 
+Power_comb_steps  stepped_rectangular_waveguide  
+(
+  frequency        : ref(frequency_group),
+  port_1           : ref(port_branch_13_6),
+  port_2           : ref(port_power_comb_int_master),
+  segments         : sequence
+    (    struct(x_dim: "ref(rwg1_adim)" mm, y_dim: "ref(rwg1_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, 
+length: "ref(power_comb_l1)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg1_adim)" mm, y_dim: 
+"ref(rwg1_bdim)+0.25*(ref(power_comb_int_bdim)-ref(rwg1_bdim))" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(power_comb_l2)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg1_adim)" mm, y_dim: 
+"ref(rwg1_bdim)+0.5*(ref(power_comb_int_bdim)-ref(rwg1_bdim))" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(power_comb_l3)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg1_adim)" mm, y_dim: 
+"ref(rwg1_bdim)+0.75*(ref(power_comb_int_bdim)-ref(rwg1_bdim))" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(power_comb_l4)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg1_adim)" mm, y_dim: "ref(power_comb_int_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m
+, length: "ref(power_comb_l5)" mm, eps_r: 1.0, tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_settings)
+)
+ 
+Power_comb_junction  rectangular_waveguide_y_junction  
+(
+  frequency        : ref(frequency_group),
+  port_1           : ref(port_power_comb_int_master),
+  port_2           : ref(port_branch_3_5),
+  port_3           : ref(port_branch_1_5),
+  junction_length  : "ref(power_comb_junction_length)" mm,
+  wg_length_2      : "ref(power_comb_junction_wg_length)" mm,
+  wg_length_3      : "ref(power_comb_junction_wg_length)" mm,
+  port23_separation : "ref(power_comb_port_separation)" mm,
+  analysis_settings : ref(mm_settings)
+)
+ 
+cd_branch_1  combined_device  
+(
+  devices          : sequence(ref(rwg_section_1_2),ref(rwg_bend90_1),ref(rwg_section_1_1),ref(rwg_bend180_1))
+)
+ 
+cd_branch_2  combined_device  
+(
+  devices          : sequence(ref(rwg_bend180_2),ref(rwg_bend90_2),ref(rwg_section_2_1),ref(rwg_section_2_2))
+)
+ 
+cd_branch_3  combined_device  
+(
+  devices          : sequence(ref(rwg_bend180_3),ref(rwg_bend90_3),ref(rwg_section_3_1),ref(rwg_section_3_2))
+)
+ 
+cd_branch_4  combined_device  
+(
+  devices          : sequence(ref(rwg_bend180_4),ref(rwg_bend90_4),ref(rwg_section_4_1),ref(rwg_section_4_2))
+)
+ 
+cd_turnstile_branch_1234  combined_device  
+(
+  devices          : sequence(ref(cd_branch_1),ref(cd_branch_2),ref(cd_branch_3),ref(cd_branch_4),
+ref(turnstile))
+)
+ 
+cd_branch_24  device_replica  
+(
+  master_device    : ref(cd_branch_13),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_branch_4_5), master_device_port: ref(port_branch_1_5)),
+    struct(local_device_port: ref(port_branch_2_5), master_device_port: ref(port_branch_3_5)),
+    struct(local_device_port: ref(port_OMT_output_x), master_device_port: ref(port_OMT_output_y))
+    )
+)
+ 
+cd_omt  combined_device  
+(
+  devices          : sequence(ref(cd_branch_13),ref(cd_branch_24),ref(cd_turnstile_branch_1234))
+)
+ 
+rwg2_adim  real_variable  
+(
+  value            : 10.668
+)
+ 
+rwg2_bdim  real_variable  
+(
+  value            : 4.318
+)
+ 
+waveguide_taper  rectangular_waveguide_linear_transition  
+(
+  frequency        : ref(frequency_group),
+  length           : 10.0 mm,
+  port_1           : ref(port_branch_13_8),
+  port_2           : ref(port_branch_13_9),
+  analysis_settings : ref(mom_settings)
+)
+ 
+rwg_section_10mm_master  straight_waveguide_section  
+(
+  frequency        : ref(frequency_group),
+  length           : 10.0 mm,
+  port_1           : ref(port_rwg2_master),
+  port_2           : ref(port_rwg2_master_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+cwg_mode_TE11x  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+power_comb_junction_wg_length  real_variable  
+(
+  value            : 1.00001649170206
+)
+ 
+cd_branch_13  combined_device  
+(
+  devices          : sequence(ref(waveguide_taper),ref(rwg_bend90_5),ref(Power_comb_steps),
+ref(Power_comb_junction),ref(rwg_section_13_3),ref(rwg_section_13_4))
+)
+ 
+optimisation_manager  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goals_omt_scat_par_s11), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s14), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s15), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s22), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s24), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s25), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s44), weight: 1.0),
+    struct(goal: ref(goals_omt_scat_par_s55), weight: 1.0)
+    ),
+  optimisation_settings : ref(minmax_settings)
+)
+ 
+optimisation_manager_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(power_comb_junction_length), min_enabled: on, min: 1.0, max_enabled: on, 
+max: 12.0),
+    struct(variable_object: ref(power_comb_junction_wg_length), min_enabled: on, min: 1.0, max_enabled: on, 
+max: 12.0),
+    struct(variable_object: ref(power_comb_l2), min_enabled: on, min: 1.0, max_enabled: on, max: 12.0),
+    struct(variable_object: ref(power_comb_l3), min_enabled: on, min: 1.0, max_enabled: on, max: 12.0),
+    struct(variable_object: ref(power_comb_l4), min_enabled: on, min: 1.0, max_enabled: on, max: 12.0),
+    struct(variable_object: ref(power_comb_l5), min_enabled: on, min: 1.0, max_enabled: on, max: 12.0)
+    )
+)
+ 
+minmax_settings  minmax_settings  
+(
+  accuracy         : 0.1E-03
+)
+ 
+goals_omt_scat_par_s11  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_output_y), input_mode: ref(rwg_mode_TE10), 
+output_port: ref(port_OMT_output_y), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: -20.0, weight: 
+1.0, action: minimise)
+    )
+)
+ 
+goals_omt_scat_par_s14  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11x), 
+output_port: ref(port_OMT_output_y), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: -20.0, weight: 
+1.0, action: minimise)
+    )
+)
+ 
+goals_omt_scat_par_s15  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11y), 
+output_port: ref(port_OMT_output_y), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: 0.0, weight: 1.0
+, action: maximise)
+    )
+)
+ 
+goals_omt_scat_par_s22  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_output_x), input_mode: ref(rwg_mode_TE10), 
+output_port: ref(port_OMT_output_x), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: -20.0, weight: 
+1.0, action: minimise)
+    )
+)
+ 
+goals_omt_scat_par_s24  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11x), 
+output_port: ref(port_OMT_output_x), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: 0.0, weight: 1.0
+, action: maximise)
+    )
+)
+ 
+goals_omt_scat_par_s25  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11y), 
+output_port: ref(port_OMT_output_x), output_mode: ref(rwg_mode_TE10), type: amplitude, goal: -20.0, weight: 
+1.0, action: minimise)
+    )
+)
+ 
+goals_omt_scat_par_s44  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11x), 
+output_port: ref(port_OMT_input), output_mode: ref(cwg_mode_TE11x), type: amplitude, goal: -20.0, weight: 1.0
+, action: minimise)
+    )
+)
+ 
+goals_omt_scat_par_s55  goal_scattering_parameter  
+(
+  device           : ref(cd_omt),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, input_port: ref(port_OMT_input), input_mode: ref(cwg_mode_TE11y), 
+output_port: ref(port_OMT_input), output_mode: ref(cwg_mode_TE11y), type: amplitude, goal: -20.0, weight: 1.0
+, action: minimise)
+    )
+)
+ 
+frequency_group  frequency_group  
+(
+  frequencies      : sequence
+    (    struct(frequency: ref(frequency_range), enable: yes)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(cad_file_plot_for_view_1))
+)
+ 
+cad_file_plot_for_view_1  cad_file_plot  
+(
+)
+ 
+device_plot_04  device_plot  
+(
+  objects          : sequence(ref(cd_omt)),
+  root_device      : ref(cd_omt)
+)
+ 
+device_view_04  device_view  
+(
+  objects          : sequence(ref(device_plot_04))
+)
+ 
+ //$$ Saved at 14:49:56 on 30.01.2023 by TICRA Tools 23.0 SN=010211
+  

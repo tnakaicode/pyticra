@@ -1,0 +1,1068 @@
+global_coor  coor_sys  
+(
+)
+ 
+frequencies  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+surface  paraboloid  
+(
+  focal_length     : 520.0 mm
+)
+ 
+rim  elliptical_rim  
+(
+  centre           : struct(x: 370.0 mm, y: 0.0 m),
+  half_axis        : struct(x: 305.0 mm, y: 305.0 mm)
+)
+ 
+reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(surface)),
+  rim              : ref(rim)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 520.0 mm),
+  x_axis           : struct(x: 0.775297500591727, y: 0.0, z: 0.63159622036252),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+feed  gaussian_beam_pattern  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 29.4087874022007,
+  taper            : -12.0
+)
+ 
+po  po_single_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(reflector),
+  po_points        : struct(po1: 20, po2: 40),
+  coor_sys         : ref(global_coor)
+)
+ 
+cut_coor  coor_sys  
+(
+  origin           : struct(x: 369.999996596673 mm, y: 0.0 mm, z: 65.8173064815085 mm),
+  base             : ref(global_coor)
+)
+ 
+cut  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: -4.69312642601837, end: 4.69312642601837, np: 161),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(frequencies)
+)
+ 
+conical_horn  conical_horn  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_coor),
+  aperture_radius  : 6.0 mm,
+  modes            : sequence
+    (    struct(type: TE11, amp: 1.0, phase: 0.0, rot: 90.0)
+    )
+)
+ 
+complete_array  planar_grid_array  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_coor),
+  grid_position    : struct(grid_cenx: 0.0 m, grid_ceny: 0.0 m, grid_rot: 0.0, grid_spac: 10.5 mm),
+  elements         : sequence
+    (    struct(id: elem001, mx: 3, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), 
+beam_id: " "),
+    struct(id: elem002, mx: 2, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem003, mx: 1, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem004, mx: 0, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem005, mx: 3, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem006, mx: 2, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem007, mx: 1, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem008, mx: 0, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem009, mx: -1, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: 
+" "),
+    struct(id: elem010, mx: 3, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem011, mx: 2, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem012, mx: 1, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem013, mx: 0, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem014, mx: -1, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: 
+" "),
+    struct(id: elem015, mx: -2, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: 
+" "),
+    struct(id: elem016, mx: 3, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem017, mx: 2, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem018, mx: 1, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem019, mx: 0, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem020, mx: -1, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem021, mx: -2, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem022, mx: -3, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem023, mx: 2, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem024, mx: 1, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem025, mx: 0, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem026, mx: -1, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem027, mx: -2, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem028, mx: -3, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem029, mx: 1, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem030, mx: 0, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem031, mx: -1, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem032, mx: -2, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem033, mx: -3, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem034, mx: 0, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " ")
+,
+    struct(id: elem035, mx: -1, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem036, mx: -2, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+),
+    struct(id: elem037, mx: -3, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: ref(conical_horn), beam_id: " "
+)
+    ),
+  exc              : sequence
+    (    struct(id: elem001, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem002, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem003, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem004, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem005, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem006, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem007, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem008, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem009, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem010, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem011, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem012, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem013, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem014, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem015, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem016, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem017, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem018, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem019, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem020, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem021, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem022, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem023, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem024, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem025, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem026, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem027, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem028, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem029, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem030, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem031, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem032, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem033, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem034, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem035, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem036, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem037, db: 0.0, deg: 0.0, beam: " ")
+    )
+)
+ 
+spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(cut_coor),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -4.0, end: 4.0, np: 101),
+  y_range          : struct(start: -4.0, end: 4.0, np: 101)
+)
+ 
+F1_LinX_Red_Feed_Spacing  real_variable  
+(
+  value            : 12.0605
+)
+ 
+optimisation_manager_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(F1_LinX_Red_Feed_Spacing), min_enabled: off, min: -0.1E+100, 
+max_enabled: off, max: 0.1E+100),
+    struct(variable_object: ref(F2_LinX_Blue_Feed_Spacing), min_enabled: off, min: -0.1E+100, max_enabled: off
+, max: 0.1E+100)
+    )
+)
+ 
+F1_LinX_Red_Goal  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F1_LinX_Red_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : ci,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.3E-01, beam_coor_2: -0.5196E-01, 
+component: linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.1E-01, beam_coor_2: -0.5196E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.5E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: -0.1E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.3E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.3E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.1E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: 0.5E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: -0.1E-01, beam_coor_2: 0.5196E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.3E-01, beam_coor_2: 0.5196E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise)
+    ),
+  additional_interferers : sequence(ref(F1_LinY_Green_po))
+)
+ 
+F1_LinY_Green_Goal  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F1_LinY_Green_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : ci,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.1E-01, beam_coor_2: -0.5196E-01, 
+component: linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.3E-01, beam_coor_2: -0.5196E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.3E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: 0.1E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.5E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.5E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: -0.1E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: 0.3E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: -0.3E-01, beam_coor_2: 0.5196E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.1E-01, beam_coor_2: 0.5196E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise)
+    ),
+  additional_interferers : sequence(ref(F1_LinX_Red_po))
+)
+ 
+F2_LinX_Blue_Goal  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F2_LinX_Blue_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : ci,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.4E-01, beam_coor_2: -0.3464E-01, 
+component: linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.0, beam_coor_2: -0.3464E-01, component: linear_x
+, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: 0.4E-01, beam_coor_2: -0.3464E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: -0.6E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: -0.2E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: 0.2E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.6E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: -0.4E-01, beam_coor_2: 0.3464E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: 0.0, beam_coor_2: 0.3464E-01, component: linear_x, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.4E-01, beam_coor_2: 0.3464E-01, component: 
+linear_x, goal: 15.0, weight: 1.0, action: maximise)
+    ),
+  additional_interferers : sequence(ref(F2_LinY_Yellow_po))
+)
+ 
+F2_LinY_Yellow_Goal  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F2_LinY_Yellow_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : ci,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.2E-01, beam_coor_2: -0.3464E-01, 
+component: linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.2E-01, beam_coor_2: -0.3464E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.4E-01, beam_coor_2: 0.0, component: linear_y, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: 0.0, beam_coor_2: 0.0, component: linear_y, goal: 
+15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.4E-01, beam_coor_2: 0.0, component: linear_y, 
+goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.2E-01, beam_coor_2: 0.3464E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.2E-01, beam_coor_2: 0.3464E-01, component: 
+linear_y, goal: 15.0, weight: 1.0, action: maximise)
+    ),
+  additional_interferers : sequence(ref(F2_LinX_Blue_po))
+)
+ 
+optimisation_setting  minmax_settings  
+(
+)
+ 
+F1_LinX_Red_refl_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.1 m, y: 0.0 m, z: 0.0 m),
+  base             : ref(global_coor)
+)
+ 
+F1_LinY_Green_refl_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: 0.1 m, z: 0.0 m),
+  psi              : 90.0,
+  base             : ref(global_coor)
+)
+ 
+F2_LinX_Blue_refl_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: -0.1 m, y: 0.0 m, z: 0.0 m),
+  psi              : 180.0,
+  base             : ref(global_coor)
+)
+ 
+F2_LinY_Yellow_refl_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: -0.1 m, z: 0.0 m),
+  psi              : -90.0,
+  base             : ref(global_coor)
+)
+ 
+F1_LinX_Red_reflector  reflector  
+(
+  coor_sys         : ref(F1_LinX_Red_refl_coor),
+  surfaces         : sequence(ref(surface)),
+  rim              : ref(F1_LinX_Red_rim)
+)
+ 
+F1_LinY_Green_reflector  reflector  
+(
+  coor_sys         : ref(F1_LinY_Green_refl_coor),
+  surfaces         : sequence(ref(surface)),
+  rim              : ref(F1_LinY_Green_rim)
+)
+ 
+F2_LinX_Blue_reflector  reflector  
+(
+  coor_sys         : ref(F2_LinX_Blue_refl_coor),
+  surfaces         : sequence(ref(surface)),
+  rim              : ref(F2_LinX_Blue_rim)
+)
+ 
+F2_LinY_Yellow_reflector  reflector  
+(
+  coor_sys         : ref(F2_LinY_Yellow_refl_coor),
+  surfaces         : sequence(ref(surface)),
+  rim              : ref(F2_LinY_Yellow_rim)
+)
+ 
+F1_LinX_Red_feed_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 520.0 mm),
+  theta            : 140.832012792366,
+  psi              : 180.0,
+  base             : ref(F1_LinX_Red_refl_coor)
+)
+ 
+F1_LinY_Green_feed_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 520.0 mm),
+  theta            : 140.832012792366,
+  psi              : -90.0,
+  base             : ref(F1_LinY_Green_refl_coor)
+)
+ 
+F2_LinX_Blue_feed_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 520.0 mm),
+  theta            : 140.832012792366,
+  base             : ref(F2_LinX_Blue_refl_coor)
+)
+ 
+F2_LinY_Yellow_feed_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 520.0 mm),
+  theta            : 140.832012792366,
+  psi              : 90.0,
+  base             : ref(F2_LinY_Yellow_refl_coor)
+)
+ 
+F1_LinX_Red_po  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(F1_LinX_Red_reflector),
+  po_points        : struct(po1: 20, po2: 40),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 40)
+    ),
+  coor_sys         : ref(global_coor)
+)
+ 
+F1_LinY_Green_po  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_1),
+  scatterer        : ref(F1_LinY_Green_reflector),
+  po_points        : struct(po1: 20, po2: 40),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 40)
+    ),
+  coor_sys         : ref(global_coor)
+)
+ 
+F2_LinX_Blue_po  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_2),
+  scatterer        : ref(F2_LinX_Blue_reflector),
+  po_points        : struct(po1: 20, po2: 40),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 40)
+    ),
+  coor_sys         : ref(global_coor)
+)
+ 
+F2_LinY_Yellow_po  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency_2),
+  scatterer        : ref(F2_LinY_Yellow_reflector),
+  po_points        : struct(po1: 20, po2: 40),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 40)
+    ),
+  coor_sys         : ref(global_coor)
+)
+ 
+F1_LinX_Red_spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(F1_LinX_Red_cut_coor),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -4.0, end: 4.0, np: 101),
+  y_range          : struct(start: -4.0, end: 4.0, np: 101),
+  frequency        : ref(Frequency_1)
+)
+ 
+F1_LinY_Green_spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(F1_LinY_Green_cut_coor),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -4.0, end: 4.0, np: 101),
+  y_range          : struct(start: -4.0, end: 4.0, np: 101),
+  frequency        : ref(Frequency_1)
+)
+ 
+F2_LinX_Blue_spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(F2_LinX_Blue_cut_coor),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -4.0, end: 4.0, np: 101),
+  y_range          : struct(start: -4.0, end: 4.0, np: 101),
+  frequency        : ref(Frequency_2)
+)
+ 
+F2_LinY_Yellow_spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(F2_LinY_Yellow_cut_coor),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -4.0, end: 4.0, np: 101),
+  y_range          : struct(start: -4.0, end: 4.0, np: 101),
+  frequency        : ref(Frequency_2)
+)
+ 
+F1_LinX_Red_array  planar_grid_array  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(F1_LinX_Red_feed_coor),
+  grid_position    : struct(grid_cenx: 0.0 m, grid_ceny: 0.0 m, grid_rot: 0.0, grid_spac: 
+"ref(F1_LinX_Red_Feed_Spacing)" mm),
+  elements         : sequence
+    (    struct(id: elem001, mx: 3, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem002, mx: 1, my: -3, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem003, mx: 3, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem004, mx: 1, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem005, mx: -1, my: -1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem006, mx: 1, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem007, mx: -1, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem008, mx: -3, my: 1, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem009, mx: -1, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " "),
+    struct(id: elem010, mx: -3, my: 3, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F1_LinX_Red_big_conical_horn), beam_id: " ")
+    ),
+  exc              : sequence
+    (    struct(id: elem001, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem002, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem003, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem004, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem005, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem006, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem007, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem008, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem009, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem010, db: 0.0, deg: 0.0, beam: " ")
+    )
+)
+ 
+F1_LinY_Green_array  planar_grid_array  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(F1_LinY_Green_feed_coor),
+  grid_position    : struct(grid_cenx: 0.0 m, grid_ceny: 0.0 m, grid_rot: 0.0, grid_spac: 
+"ref(F1_LinY_Green_Feed_Spacing)" mm),
+  elements         : sequence
+    (    struct(id: elem001, mx: 2, my: -3, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem002, mx: 0, my: -3, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem003, mx: 2, my: -1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem004, mx: 0, my: -1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem005, mx: -2, my: -1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem006, mx: 2, my: 1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem007, mx: 0, my: 1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem008, mx: -2, my: 1, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem009, mx: 0, my: 3, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " "),
+    struct(id: elem010, mx: -2, my: 3, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F1_LinY_Green_big_conical_horn), beam_id: " ")
+    ),
+  exc              : sequence
+    (    struct(id: elem001, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem002, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem003, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem004, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem005, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem006, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem007, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem008, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem009, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem010, db: 0.0, deg: 0.0, beam: " ")
+    )
+)
+ 
+F2_LinX_Blue_array  planar_grid_array  
+(
+  frequency        : ref(Frequency_2),
+  coor_sys         : ref(F2_LinX_Blue_feed_coor),
+  grid_position    : struct(grid_cenx: 0.0 m, grid_ceny: 0.0 m, grid_rot: 0.0, grid_spac: 
+"ref(F2_LinX_Blue_Feed_Spacing)" mm),
+  elements         : sequence
+    (    struct(id: elem001, mx: 3, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem002, mx: 1, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem003, mx: -1, my: -2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem004, mx: 3, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem005, mx: 1, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem006, mx: -1, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem007, mx: -3, my: 0, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem008, mx: 1, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem009, mx: -1, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " "),
+    struct(id: elem010, mx: -3, my: 2, theta: 0.0, phi: 0.0, psi: 0.0, source: 
+ref(F2_LinX_Blue_big_conical_horn), beam_id: " ")
+    ),
+  exc              : sequence
+    (    struct(id: elem001, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem002, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem003, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem004, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem005, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem006, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem007, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem008, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem009, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem010, db: 0.0, deg: 0.0, beam: " ")
+    )
+)
+ 
+F2_LinY_Yellow_array  planar_grid_array  
+(
+  frequency        : ref(Frequency_2),
+  coor_sys         : ref(F2_LinY_Yellow_feed_coor),
+  grid_position    : struct(grid_cenx: 0.0 m, grid_ceny: 0.0 m, grid_rot: 0.0, grid_spac: 
+"ref(F2_LinY_Yellow_Feed_Spacing)" mm),
+  elements         : sequence
+    (    struct(id: elem001, mx: 2, my: -2, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem002, mx: 0, my: -2, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem003, mx: 2, my: 0, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem004, mx: 0, my: 0, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem005, mx: -2, my: 0, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem006, mx: 0, my: 2, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " "),
+    struct(id: elem007, mx: -2, my: 2, theta: 0.0, phi: 0.0, psi: 90.0, source: 
+ref(F2_LinY_Yellow_big_conical_horn), beam_id: " ")
+    ),
+  exc              : sequence
+    (    struct(id: elem001, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem002, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem003, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem004, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem005, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem006, db: 0.0, deg: 0.0, beam: " "),
+    struct(id: elem007, db: 0.0, deg: 0.0, beam: " ")
+    )
+)
+ 
+Frequency_1  frequency  
+(
+  frequency_list   : sequence(29.5 GHz)
+)
+ 
+Frequency_2  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+F1_LinX_Red_big_conical_horn  conical_horn  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(feed_coor),
+  aperture_radius  : "ref(F1_LinX_Red_Feed_Radius)" mm,
+  modes            : sequence
+    (    struct(type: TE11, amp: 1.0, phase: 0.0, rot: 90.0)
+    )
+)
+ 
+F2_LinX_Blue_big_conical_horn  conical_horn  
+(
+  frequency        : ref(Frequency_2),
+  coor_sys         : ref(feed_coor),
+  aperture_radius  : "ref(F2_LinX_Blue_Feed_Radius)" mm,
+  modes            : sequence
+    (    struct(type: TE11, amp: 1.0, phase: 0.0, rot: 90.0)
+    )
+)
+ 
+F1_LinX_Red_cut_coor  coor_sys  
+(
+  origin           : struct(x: 369.9999966 mm, y: 0.0 mm, z: 65.8173064815085 mm),
+  base             : ref(F1_LinX_Red_refl_coor)
+)
+ 
+F1_LinY_Green_cut_coor  coor_sys  
+(
+  origin           : struct(x: 370.0 mm, y: 0.165327317884893E-13 mm, z: 65.8173064815085 mm),
+  x_axis           : struct(x: 0.612323399573677E-16, y: -1.0, z: 0.0),
+  y_axis           : struct(x: 1.0, y: 0.612323399573677E-16, z: 0.0),
+  base             : ref(F1_LinY_Green_refl_coor)
+)
+ 
+F2_LinX_Blue_cut_coor  coor_sys  
+(
+  origin           : struct(x: 370.0 mm, y: 0.330654635769785E-13 mm, z: 65.8173064815085 mm),
+  x_axis           : struct(x: -1.0, y: -0.122464679914735E-15, z: 0.0),
+  y_axis           : struct(x: 0.122464679914735E-15, y: -1.0, z: 0.0),
+  base             : ref(F2_LinX_Blue_refl_coor)
+)
+ 
+F2_LinY_Yellow_cut_coor  coor_sys  
+(
+  origin           : struct(x: 370.0 mm, y: -0.165327317884893E-13 mm, z: 65.8173064815085 mm),
+  x_axis           : struct(x: 0.612323399573677E-16, y: 1.0, z: 0.0),
+  y_axis           : struct(x: -1.0, y: 0.612323399573677E-16, z: 0.0),
+  base             : ref(F2_LinY_Yellow_refl_coor)
+)
+ 
+F2_LinX_Blue_Feed_Spacing  real_variable  
+(
+  value            : 11.9522
+)
+ 
+optimisation_manager_F1  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_F1_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(F1_LinX_Red_Goal), weight: 1.0),
+    struct(goal: ref(F1_LinY_Green_Goal), weight: 1.0),
+    struct(goal: ref(F1_LinX_Red_Goal_EoCAbs), weight: 1.0),
+    struct(goal: ref(F1_LinY_Green_Goal_EoCAbs), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting_01),
+  object_func_analysis : currents_calc_F1
+)
+ 
+optimisation_manager_F1_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(F1_LinX_Red_Refl_Rad), min_enabled: off, min: -0.1E+100, max_enabled: off
+, max: 0.1E+100),
+    struct(variable_object: ref(F1_LinY_Green_Refl_Rad), min_enabled: off, min: -0.1E+100, max_enabled: off, 
+max: 0.1E+100),
+    struct(variable_object: ref(F1_LinX_Red_Feed_Radius), min_enabled: off, min: -0.1E+100, max_enabled: on, 
+max: 12.0),
+    struct(variable_object: ref(F1_LinY_Green_Feed_Radius), min_enabled: off, min: -0.1E+100, max_enabled: on
+, max: 11.9)
+    )
+)
+ 
+optimisation_manager_F2  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_F2_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(F2_LinX_Blue_Goal), weight: 1.0),
+    struct(goal: ref(F2_LinY_Yellow_Goal), weight: 1.0),
+    struct(goal: ref(F2_LinX_Blue_Goal_EoCAbs), weight: 1.0),
+    struct(goal: ref(F2_LinY_Yellow_Goal_EoCAbs), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting_01),
+  object_func_analysis : currents_calc_F2
+)
+ 
+optimisation_manager_F2_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(F2_LinX_Blue_Refl_Rad), min_enabled: off, min: -0.1E+100, max_enabled: 
+off, max: 0.1E+100),
+    struct(variable_object: ref(F2_LinY_Yellow_Refl_Rad), min_enabled: off, min: -0.1E+100, max_enabled: off, 
+max: 0.1E+100),
+    struct(variable_object: ref(F2_LinX_Blue_Feed_Radius), min_enabled: off, min: -0.1E+100, max_enabled: on, 
+max: 11.8),
+    struct(variable_object: ref(F2_LinY_Yellow_Feed_Radius), min_enabled: off, min: -0.1E+100, max_enabled: on
+, max: 12.0)
+    )
+)
+ 
+F1_LinY_Green_Feed_Spacing  real_variable  
+(
+  value            : 11.9896
+)
+ 
+F2_LinY_Yellow_Feed_Spacing  real_variable  
+(
+  value            : 12.0407
+)
+ 
+F1_LinX_Red_Refl_Rad  real_variable  
+(
+  value            : 283.281023534718
+)
+ 
+F1_LinY_Green_Refl_Rad  real_variable  
+(
+  value            : 276.970643207387
+)
+ 
+F2_LinX_Blue_Refl_Rad  real_variable  
+(
+  value            : 305.0
+)
+ 
+F2_LinY_Yellow_Refl_Rad  real_variable  
+(
+  value            : 305.0
+)
+ 
+F1_LinX_Red_rim  elliptical_rim  
+(
+  centre           : struct(x: 370.0 mm, y: 0.0 m),
+  half_axis        : struct(x: "ref(F1_LinX_Red_Refl_Rad)" mm, y: "ref(F1_LinX_Red_Refl_Rad)" mm)
+)
+ 
+F1_LinY_Green_rim  elliptical_rim  
+(
+  centre           : struct(x: 370.0 mm, y: 0.0 m),
+  half_axis        : struct(x: "ref(F1_LinY_Green_Refl_Rad)" mm, y: "ref(F1_LinY_Green_Refl_Rad)" mm)
+)
+ 
+F2_LinX_Blue_rim  elliptical_rim  
+(
+  centre           : struct(x: 370.0 mm, y: 0.0 m),
+  half_axis        : struct(x: "ref(F2_LinX_Blue_Refl_Rad)" mm, y: "ref(F2_LinX_Blue_Refl_Rad)" mm)
+)
+ 
+F2_LinY_Yellow_rim  elliptical_rim  
+(
+  centre           : struct(x: 370.0 mm, y: 0.0 m),
+  half_axis        : struct(x: "ref(F2_LinY_Yellow_Refl_Rad)" mm, y: "ref(F2_LinY_Yellow_Refl_Rad)" mm)
+)
+ 
+F1_LinX_Red_Feed_Radius  real_variable  
+(
+  value            : 11.9999999899988
+)
+ 
+F1_LinY_Green_Feed_Radius  real_variable  
+(
+  value            : 11.8999999899956
+)
+ 
+F2_LinX_Blue_Feed_Radius  real_variable  
+(
+  value            : 10.5
+)
+ 
+F2_LinY_Yellow_Feed_Radius  real_variable  
+(
+  value            : 10.5
+)
+ 
+F1_LinY_Green_big_conical_horn  conical_horn  
+(
+  frequency        : ref(Frequency_1),
+  coor_sys         : ref(feed_coor),
+  aperture_radius  : "ref(F1_LinY_Green_Feed_Radius)" mm,
+  modes            : sequence
+    (    struct(type: TE11, amp: 1.0, phase: 0.0, rot: 90.0)
+    )
+)
+ 
+F2_LinY_Yellow_big_conical_horn  conical_horn  
+(
+  frequency        : ref(Frequency_2),
+  coor_sys         : ref(feed_coor),
+  aperture_radius  : "ref(F2_LinY_Yellow_Feed_Radius)" mm,
+  modes            : sequence
+    (    struct(type: TE11, amp: 1.0, phase: 0.0, rot: 90.0)
+    )
+)
+ 
+optimisation_setting_01  onesided_lsq_settings  
+(
+)
+ 
+F1_LinX_Red_Goal_EoCAbs  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F1_LinX_Red_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : eoc_abs,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.3E-01, beam_coor_2: -0.5196E-01, 
+component: linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.1E-01, beam_coor_2: -0.5196E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.5E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: -0.1E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.3E-01, beam_coor_2: -0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.3E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.1E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: 0.5E-01, beam_coor_2: 0.1732E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: -0.1E-01, beam_coor_2: 0.5196E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.3E-01, beam_coor_2: 0.5196E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise)
+    )
+)
+ 
+F1_LinY_Green_Goal_EoCAbs  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F1_LinY_Green_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : eoc_abs,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.1E-01, beam_coor_2: -0.5196E-01, 
+component: linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.3E-01, beam_coor_2: -0.5196E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.3E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: 0.1E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.5E-01, beam_coor_2: -0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.5E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: -0.1E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: 0.3E-01, beam_coor_2: 0.1732E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: -0.3E-01, beam_coor_2: 0.5196E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.1E-01, beam_coor_2: 0.5196E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise)
+    )
+)
+ 
+F2_LinX_Blue_Goal_EoCAbs  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F2_LinX_Blue_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : eoc_abs,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.4E-01, beam_coor_2: -0.3464E-01, 
+component: linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.0, beam_coor_2: -0.3464E-01, component: linear_x
+, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: 0.4E-01, beam_coor_2: -0.3464E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: -0.6E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: -0.2E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: 0.2E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.6E-01, beam_coor_2: 0.0, component: linear_x, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 8, beam_coor_1: -0.4E-01, beam_coor_2: 0.3464E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 9, beam_coor_1: 0.0, beam_coor_2: 0.3464E-01, component: linear_x, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 10, beam_coor_1: 0.4E-01, beam_coor_2: 0.3464E-01, component: 
+linear_x, goal: 40.0, weight: 1.0, action: maximise)
+    )
+)
+ 
+F2_LinY_Yellow_Goal_EoCAbs  goal_far_field_multibeam  
+(
+  source           : sequence(ref(F2_LinY_Yellow_po)),
+  coor_sys         : ref(global_coor),
+  beam_width       : 1.323,
+  goal_type        : eoc_abs,
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, beam_coor_1: -0.2E-01, beam_coor_2: -0.3464E-01, 
+component: linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 2, beam_coor_1: 0.2E-01, beam_coor_2: -0.3464E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 3, beam_coor_1: -0.4E-01, beam_coor_2: 0.0, component: linear_y, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 4, beam_coor_1: 0.0, beam_coor_2: 0.0, component: linear_y, goal: 
+40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 5, beam_coor_1: 0.4E-01, beam_coor_2: 0.0, component: linear_y, 
+goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 6, beam_coor_1: -0.2E-01, beam_coor_2: 0.3464E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise),
+    struct(frequency_index: 1, beam_index: 7, beam_coor_1: 0.2E-01, beam_coor_2: 0.3464E-01, component: 
+linear_y, goal: 40.0, weight: 1.0, action: maximise)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(reflector_plot_for_view_1),
+ref(feed_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(reflector_plot_for_F1_LinX_Red_reflector_for_view_1),
+ref(reflector_plot_for_F1_LinY_Green_reflector_for_view_1),
+ref(reflector_plot_for_F2_LinX_Blue_reflector_for_view_1),
+ref(reflector_plot_for_F2_LinY_Yellow_reflector_for_view_1)),
+  hidden_objects   : sequence(ref(conical_horn),ref(F1_LinX_Red_big_conical_horn),
+ref(F2_LinX_Blue_big_conical_horn),ref(feed),ref(complete_array),ref(F1_LinX_Red_refl_coor),
+ref(F1_LinY_Green_feed_coor),ref(F2_LinY_Yellow_feed_coor),ref(F1_LinX_Red_feed_coor),
+ref(F2_LinX_Blue_feed_coor),ref(F2_LinY_Yellow_refl_coor),ref(cut_coor),ref(F1_LinY_Green_refl_coor),
+ref(F2_LinX_Blue_refl_coor),ref(feed_coor),ref(reflector))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 1.0, g: 0.0, b: 0.0)
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+reflector_plot_for_F1_LinX_Red_reflector_for_view_1  reflector_plot  
+(
+  objects          : sequence(ref(F1_LinX_Red_reflector)),
+  surface_colour   : struct(r: 1.0, g: 0.0, b: 0.0)
+)
+ 
+reflector_plot_for_F1_LinY_Green_reflector_for_view_1  reflector_plot  
+(
+  objects          : sequence(ref(F1_LinY_Green_reflector)),
+  surface_colour   : struct(r: 0.0, g: 1.0, b: 0.0)
+)
+ 
+reflector_plot_for_F2_LinX_Blue_reflector_for_view_1  reflector_plot  
+(
+  objects          : sequence(ref(F2_LinX_Blue_reflector)),
+  surface_colour   : struct(r: 0.0, g: 0.0, b: 1.0)
+)
+ 
+reflector_plot_for_F2_LinY_Yellow_reflector_for_view_1  reflector_plot  
+(
+  objects          : sequence(ref(F2_LinY_Yellow_reflector)),
+  surface_colour   : struct(r: 1.0, g: 1.0, b: 0.0)
+)
+ 
+ //$$ Saved at 11:18:20 on 16.12.2022 by TICRA Tools 22.1 SN=009627
+  

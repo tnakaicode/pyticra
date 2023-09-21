@@ -1,0 +1,1230 @@
+// Frequencies
+ /*
+frequency  frequency  // optimisation
+(
+  frequency_list   : sequence(12.55 GHz,12.75 GHz,14.05 GHz,14.25 GHz)
+)
+*/ 
+/*
+frequency  frequency_range  // scattering parameters
+(
+  frequency_range  : struct(start_frequency: 12.4 GHz, end_frequency: 14.4 GHz, number_of_frequencies: 11)
+)
+ */ 
+/*
+frequency  frequency  // scattering parameters
+(
+  frequency_list   : sequence(12.0 GHz,12.1 GHz,12.2 GHz,12.3 GHz,12.4 GHz,12.425 GHz,12.45 GHz,12.475 GHz,
+12.5 GHz,12.525 GHz,12.55 GHz,12.575 GHz,12.6 GHz,12.625 GHz,12.65 GHz,12.675 GHz,12.7 GHz,12.725 GHz,
+12.75 GHz,12.775 GHz,12.8 GHz,12.85 GHz,12.9 GHz,13.0 GHz,13.1 GHz,13.2 GHz,13.3 GHz,13.4 GHz,13.5 GHz,13.6 GHz,13.7 GHz
+,13.8 GHz,13.825 GHz,13.85 GHz,13.875 GHz,13.9 GHz,13.925 GHz,13.95 GHz,13.975 GHz,14.0 GHz,14.025 GHz,
+14.05 GHz,14.075 GHz,14.1 GHz,14.125 GHz,14.15 GHz,14.175 GHz,14.2 GHz,14.225 GHz,14.25 GHz,14.275 GHz,
+14.3 GHz,14.325 GHz,14.35 GHz,14.375 GHz,14.4 GHz,14.5 GHz)
+)
+*/ 
+frequency  frequency  
+(// radiation
+  frequency_list   : sequence(12.65 GHz,14.15 GHz)
+)
+ 
+///// PORTS ////////////////////////////
+// COAXIAL PORTS
+port_coax  coaxial_waveguide_port  
+(
+  radius           : "ref(coax_rad)" mm,
+  inner_radius     : "ref(coax_ic_rad)" mm,
+  port_expansion_settings : ref(coax_port_mes)
+)
+ 
+port_coax_Rx_output  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_coax)
+)
+ 
+port_coax_Tx_output  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_coax)
+)
+ 
+port_coax_Rx_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_coax)
+)
+ 
+port_coax_Tx_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_coax)
+)
+ 
+// CIRCULAR PORTS
+port_ant_input  circular_waveguide_port  
+(
+  radius           : "ref(ant_r1)" mm,
+  port_expansion_settings : ref(circ_port_mes)
+)
+ 
+port_ant_aperture  circular_waveguide_port  
+(
+  radius           : "ref(ant_r2)" mm,
+  port_expansion_settings : ref(circ_port_mes)
+)
+ 
+// RECTANGULAR PORTS
+port_WR75  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg_adim)" mm,
+  y_dimension      : "ref(rwg_bdim)" mm,
+  port_expansion_settings : ref(rwg_port_mes)
+)
+ 
+port_RWG_1  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg_a)" mm,
+  y_dimension      : "(ref(rwg_a)-ref(pol_w))/2" mm,
+  port_expansion_settings : ref(rwg_port_mes)
+)
+ 
+port_Filter1_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_F1_in_output  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_F2_in_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_F2_in_output  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_rwg_step_in_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_diplexer_in_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_septum_in1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_RWG_1)
+)
+ 
+port_septum_in2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_RWG_1)
+)
+ 
+port_miter_in_input  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_RWG_1)
+)
+ 
+port_septum_output  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(rwg_a)" mm,
+  y_dimension      : "ref(rwg_a)" mm,
+  port_expansion_settings : ref(rwg_port_mes)
+)
+ 
+///// PORT SETTINGS ///////////////////
+wg_port_mes  waveguide_port_modal_expansion_settings  
+(
+  no_of_modes      : 40
+)
+ 
+rwg_port_mes  rectangular_waveguide_port_modal_expansion_settings  
+(
+  m_max            : 5,
+  n_max            : 5
+)
+ 
+circular_symmetric_horn  circular_symmetric_horn  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_ant_input),
+  port_2           : ref(port_ant_aperture),
+  horn_section     : ref(waveguide_interior),
+  analysis_settings : ref(mm_circular_settings)
+)
+ 
+mm_circular_settings  mode_matching_settings  
+(
+  additional_modes : 200
+)
+ 
+waveguide_interior  section_step  
+(
+  input_radius     : "ref(ant_r1)" mm,
+  output_radius    : "ref(ant_r2)" mm,
+  l1               : "ref(ant_l1)" mm,
+  l2               : "ref(ant_match)" mm,
+  conductivity     : 33000000.0 S/m
+)
+ 
+circ_port_mes  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 5,
+  m_max            : 2
+)
+ 
+///// DEVICES ////////////////////////
+// Antenna
+circular_symmetric_aperture  
+circular_symmetric_aperture  
+(
+  frequency        : ref(frequency),
+  waveguide_port   : ref(port_ant_aperture),
+  exterior         : ref(antenna_exterior),
+  analysis_settings : ref(mom_settings)
+)
+ 
+antenna_exterior  bor_mesh  
+(
+  regions          : table
+    (
+        1    2.52000E+00    1.00000E+00    0.00000E+00  
+    ),
+//List of points (format: rho z):
+  nodes            : table
+    (
+      101  "ref(ant_r2)"    0.00000E+00  
+      102  "ref(ant_r2)+1"    0.00000E+00  
+      103  "ref(ant_r2)+1"  "-ref(ant_dc)"  
+      104  "ref(ant_r2)+1.5"  "-ref(ant_dc)"  
+      105  "ref(ant_r2)+1.5+ref(ant_mount_thickness)"  "-ref(ant_dc)"  
+      106  "ref(ant_r2)+1.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)"  
+      107  "ref(ant_r2)+2.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)"  
+      108  "ref(ant_r2)+2.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)-20"  
+      109  "ref(ant_r2)+0.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)-40"  
+      110  "ref(ant_r2)+0.5+ref(ant_mount_thickness)"  "ref(ant_m0)+100"  
+      111  "ref(ant_r2)+5"  "ref(ant_m0)+ref(ant_m1)"  
+      201    0.00000E+00  "ref(ant_s0)+ref(ant_s1)"  
+      202  "ref(ant_srad)/9"  "ref(ant_s0)+ref(ant_s2)"  
+      203  "ref(ant_srad)*2/9"  "ref(ant_s0)+ref(ant_s3)"  
+      204  "ref(ant_srad)*3/9"  "ref(ant_s0)+ref(ant_s4)"  
+      205  "ref(ant_srad)*4/9"  "ref(ant_s0)+ref(ant_s5)"  
+      206  "ref(ant_srad)*5/9"  "ref(ant_s0)+ref(ant_s6)"  
+      207  "ref(ant_srad)*6/9"  "ref(ant_s0)+ref(ant_s7)"  
+      208  "ref(ant_srad)*7/9"  "ref(ant_s0)+ref(ant_s8)"  
+      209  "ref(ant_srad)*8/9"  "ref(ant_s0)+ref(ant_s9)"  
+      210  "ref(ant_srad)"  "ref(ant_s0)+ref(ant_s10)"  
+      211  "ref(ant_srad)+1"  "ref(ant_s0)+ref(ant_s10)"  
+      212  "ref(ant_srad)+1"  "ref(ant_s0)+ref(ant_s10)+4"  
+      213  "ref(ant_srad)+1"  "ref(ant_s0)+ref(ant_s10)+7"  
+      214    0.00000E+00  "ref(ant_s0)+ref(ant_s10)+7"  
+      301  "ref(ant_r2)+5"  "ref(ant_m0)+ref(ant_m1)"  
+      302  "ref(ant_mrad)/9"  "ref(ant_m0)+ref(ant_m2)"  
+      303  "ref(ant_mrad)*2/9"  "ref(ant_m0)+ref(ant_m3)"  
+      304  "ref(ant_mrad)*3/9"  "ref(ant_m0)+ref(ant_m4)"  
+      305  "ref(ant_mrad)*4/9"  "ref(ant_m0)+ref(ant_m5)"  
+      306  "ref(ant_mrad)*5/9"  "ref(ant_m0)+ref(ant_m6)"  
+      307  "ref(ant_mrad)*6/9"  "ref(ant_m0)+ref(ant_m7)"  
+      308  "ref(ant_mrad)*7/9"  "ref(ant_m0)+ref(ant_m8)"  
+      309  "ref(ant_mrad)*8/9"  "ref(ant_m0)+ref(ant_m9)"  
+      310  "ref(ant_mrad)"  "ref(ant_m0)+ref(ant_m10)"  
+      401  "ref(ant_r2)+1.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)"  
+      402  "ref(ant_r2)+1.5+ref(ant_mount_thickness)"  "-ref(ant_dc)+ref(ant_hw)+0.5"  
+      403  "ref(ant_srad)+ref(ant_mount_thickness)/cos(ref(ant_alpha))"  "ref(ant_s0)+ref(ant_s10)-1"  
+      404  "ref(ant_srad)+ref(ant_mount_thickness)/cos(ref(ant_alpha))"  "ref(ant_s0)+ref(ant_s10)+4.0"  
+      405  "ref(ant_srad)-0.0"  "ref(ant_s0)+ref(ant_s10)-1.0"  
+      406  "ref(ant_r2)+1.5"  "-ref(ant_dc)+ref(ant_hw)+0.5+ref(ant_d1)"  
+    ),
+  linear_segments  : table
+    (
+      101    101    102      0      0    0.00000E+00    0.00000E+00  
+      102    102    103      0      0    0.00000E+00    0.00000E+00  
+      103    103    104      0      0    0.00000E+00    0.00000E+00  
+      104    104    105      0      1    0.00000E+00    0.00000E+00  
+      105    105    106      0      1    0.00000E+00    0.00000E+00  
+      106    106    107      0      0    0.00000E+00    0.00000E+00  
+      107    107    108      0      0    0.00000E+00    0.00000E+00  
+      108    108    109      0      0    0.00000E+00    0.00000E+00  
+      109    109    110      0      0    0.00000E+00    0.00000E+00  
+      110    110    111      0      0    0.00000E+00    0.00000E+00  
+      210    210    211      0      1    0.00000E+00    0.00000E+00  
+      211    211    212      0      1    0.00000E+00    0.00000E+00  
+      212    212    213      0      0    0.00000E+00    0.00000E+00  
+      213    213    214      0      0    0.00000E+00    0.00000E+00  
+      401    106    401      0      1   -1.00000E+00    0.00000E+00  
+      402    401    402      0      1   -1.00000E+00    0.00000E+00  
+      403    402    403      0      1   -1.00000E+00    0.00000E+00  
+      404    403    404      0      1   -1.00000E+00    0.00000E+00  
+      405    210    405      0      1   -1.00000E+00    0.00000E+00  
+      406    405    406      0      1   -1.00000E+00    0.00000E+00  
+      407    406    104      0      1   -1.00000E+00    0.00000E+00  
+      408    212    404      0      1   -1.00000E+00    0.00000E+00  
+    ),
+  cubic_segments   : table
+    (
+      201    201    202    203    204      0      0    0.00000E+00    0.00000E+00  
+      202    204    205    206    207      0      0    0.00000E+00    0.00000E+00  
+      203    207    208    209    210      0      0    0.00000E+00    0.00000E+00  
+      301    301    302    303    304      0      0    0.00000E+00    0.00000E+00  
+      302    304    305    306    307      0      0    0.00000E+00    0.00000E+00  
+      303    307    308    309    310      0      0    0.00000E+00    0.00000E+00  
+    ),
+  length_unit      : mm,
+  coor_order       : rho_z,
+  advanced_regions : table
+    (
+    )
+)
+ 
+Antenna  combined_device  
+(
+  devices          : sequence(ref(circular_symmetric_aperture),ref(circular_symmetric_horn))
+)
+ 
+Radiating_Antenna_rx_lh  radiating_device  
+(
+  device           : ref(Antenna),
+  port_excitation  : sequence
+    (    struct(port: ref(port_ant_input), waveguide_mode: ref(circ_mode_TE11y), amplitude: 1.0, phase: 0.0),
+    struct(port: ref(port_ant_input), waveguide_mode: ref(circ_mode_TE11x), amplitude: 1.0, phase: 90.0)
+    )
+)
+ 
+// Square_2_Circular Step
+S2C_step  rectangular_circular_waveguide_step  
+(
+  frequency        : ref(frequency),
+  r_length         : 10.0 mm,
+  c_length         : 10.0 mm,
+  r_port           : ref(port_septum_output),
+  c_port           : ref(port_ant_input),
+  analysis_settings : ref(mm_square_circular_settings)
+)
+ 
+mm_square_circular_settings  mode_matching_settings  
+(
+  additional_modes : 200
+)
+ 
+// Rectangular Miter Bends
+miter_bend_1  rectangular_waveguide_mitered_bend  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_miter_in_input),
+  port_2           : ref(port_septum_in1),
+  angle            : 90.0,
+  miter            : "ref(miter_length)" mm,
+  l1               : 10.0 mm,
+  l2               : 10.0 mm,
+  analysis_settings : ref(mom_settings)
+)
+ 
+// Rectangular Waveguide Steps
+rwg_step_in  rectangular_waveguide_step  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_rwg_step_in_input),
+  port_2           : ref(port_miter_in_input),
+  length_1         : 10.0 mm,
+  length_2         : 10.0 mm,
+  analysis_settings : ref(mm_rectangular_settings)
+)
+ 
+mm_rectangular_settings  mode_matching_settings  
+(
+  additional_modes : 200
+)
+ 
+// Waveguide Filters
+Filter1  stepped_rectangular_waveguide  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_F1_in_output),
+  port_2           : ref(port_Filter1_in),
+  segments         : sequence
+    (    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, 
+length: "ref(dip_L1)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_1)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL1_1)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_2)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL1_2)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_3)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL1_3)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_4)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL1_4)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_5)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL1_5)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW1_6)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+10.0 mm, eps_r: 1.0, tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_filter_settings)
+)
+ 
+mm_filter_settings  mode_matching_settings  
+(
+  additional_modes : 200
+)
+ 
+Filter2  stepped_rectangular_waveguide  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_F2_in_output),
+  port_2           : ref(port_F2_in_input),
+  segments         : sequence
+    (    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, 
+length: "ref(dip_L2)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW2_1)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL2_1)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW2_2)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL2_2)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW2_3)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL2_3)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW2_4)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(RL2_4)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(dip_IW2_5)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(dip_iris_length)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(rwg_adim)" mm, y_dim: "ref(rwg_bdim)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+10.0 mm, eps_r: 1.0, tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_filter_settings)
+)
+ 
+// Coax-to-Waveguide Adapters
+coax_2_rwg_adapter_rx  coax_non_circular_waveguide_adapter  
+(
+  frequency        : ref(frequency),
+  coax_ports       : sequence
+    (    struct(port: ref(port_coax_Rx_output), face: y_min, back_dist: "ref(coax2rwg_bwdist)" mm, 
+pin_height: "ref(coax2rwg_hpin)" mm, pin_head_radius: 1.5 mm, pin_head_length_ratio: 0.0, exterior_length: 
+3.0 mm, dielectric_constant: 1.0, loss_tangent: 0.0)
+    ),
+  length           : 30.0 mm,
+  waveguide_port   : ref(port_Filter1_in),
+  analysis_settings : ref(mom_settings)
+)
+ 
+/*
+coax_2_rwg_adapter_tx_in  coax_rectangular_waveguide_adapter
+(
+  frequency        : ref(frequency),
+  coax_ports       : sequence
+    (    struct(port: ref(port_coax_Tx_output), face: y_min, back_dist: 6.0 mm, pin_height: 4.5 mm,
+pin_head_radius: 1.5 mm, pin_head_length_ratio: 0.0, exterior_length: 3.0 mm, dielectric_constant: 1.0,
+loss_tangent: 0.0)
+    ),
+  length           : 30.0 mm,
+  waveguide_port        : ref(port_F2_in_input),
+  analysis_settings     : ref(mom_settings)
+)
+*/ 
+coax_2_rwg_adapter_tx  device_replica  
+(
+  master_device    : ref(coax_2_rwg_adapter_rx),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_F2_in_input), master_device_port: ref(port_Filter1_in)),
+    struct(local_device_port: ref(port_coax_Tx_output), master_device_port: ref(port_coax_Rx_output))
+    )
+)
+ 
+mom_settings  mom_settings  
+(
+  relative_max_mesh_length : 0.75
+)
+ 
+circ_mode_TE11x  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+FF_Rx_180  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 801),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+FF_Rx_25  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+circ_mode_TE11y  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1,
+  mode_set         : 2nd
+)
+ 
+TE_10  rectangular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 0
+)
+ 
+coax_port_mes  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 1,
+  m_max            : 0
+)
+ 
+TEM_mode  coaxial_waveguide_mode  
+(
+  m_index          : 0,
+  n_index          : 0
+)
+ 
+/////// VARIABLES /////////////////////////////
+coax_rad  real_variable  
+(
+  value            : 1.65
+)
+ 
+coax_ic_rad  real_variable  
+(
+  value            : 0.5
+)
+ 
+ant_l1  real_variable  
+(
+  value            : 250.0
+)
+ 
+ant_r1  real_variable  
+(
+  value            : 8.85
+)
+ 
+ant_r2  real_variable  
+(
+  value            : 13.2516105293413
+)
+ 
+ant_dc  real_variable  
+(
+  value            : 7.9817202692148
+)
+ 
+ant_hw  real_variable  
+(
+  value            : 2.69630900684157
+)
+ 
+ant_match  real_variable  
+(
+  value            : 4.9147802876997
+)
+ 
+ant_mount_thickness  real_variable  
+(
+  value            : 1.5
+)
+ 
+ant_alpha  real_variable  
+(
+  value            : 
+"atan((ref(ant_srad)-ref(ant_r2))/(ref(ant_s0)+ref(ant_s10)-1+ref(ant_dc)-ref(ant_hw)-0.5))"
+)
+ 
+ant_d1  real_variable  
+(
+  value            : "sin(ref(ant_alpha))-(1-cos(ref(ant_alpha)))/tan(ref(ant_alpha))"
+)
+ 
+ant_s0  real_variable  
+(
+  value            : -10.0
+)
+ 
+ant_s1  real_variable  
+(
+  value            : 45.6637699906475
+)
+ 
+ant_s2  real_variable  
+(
+  value            : 49.9589435891802
+)
+ 
+ant_s3  real_variable  
+(
+  value            : 52.6683849567129
+)
+ 
+ant_s4  real_variable  
+(
+  value            : 53.1843044034846
+)
+ 
+ant_s5  real_variable  
+(
+  value            : 54.6475743630049
+)
+ 
+ant_s6  real_variable  
+(
+  value            : 55.741662541885
+)
+ 
+ant_s7  real_variable  
+(
+  value            : 56.3105816094377
+)
+ 
+ant_s8  real_variable  
+(
+  value            : 57.5017303917128
+)
+ 
+ant_s9  real_variable  
+(
+  value            : 58.7902312640121
+)
+ 
+ant_s10  real_variable  
+(
+  value            : 57.4319843526458
+)
+ 
+ant_m0  real_variable  
+(
+  value            : -229.021232111344
+)
+ 
+ant_m1  real_variable  
+(
+  value            : -0.175809907448432
+)
+ 
+ant_m2  real_variable  
+(
+  value            : -0.704060126852266E-02
+)
+ 
+ant_m3  real_variable  
+(
+  value            : 6.81121478043817
+)
+ 
+ant_m4  real_variable  
+(
+  value            : 19.5850654211526
+)
+ 
+ant_m5  real_variable  
+(
+  value            : 37.4632544026734
+)
+ 
+ant_m6  real_variable  
+(
+  value            : 61.0479411226029
+)
+ 
+ant_m7  real_variable  
+(
+  value            : 90.2209560747021
+)
+ 
+ant_m8  real_variable  
+(
+  value            : 124.581262155058
+)
+ 
+ant_m9  real_variable  
+(
+  value            : 165.124892479231
+)
+ 
+ant_m10  real_variable  
+(
+  value            : 210.705859763313
+)
+ 
+ant_srad  real_variable  
+(
+  value            : 39.9119853570756
+)
+ 
+ant_mrad  real_variable  
+(
+  value            : 500.0
+)
+ 
+rwg_a  real_variable  
+(
+  value            : 19.05
+)
+ 
+rwg_b  real_variable  
+(
+  value            : 9.525
+)
+ 
+pol_h4  real_variable  
+(
+  value            : 9.73
+)
+ 
+pol_h3  real_variable  
+(
+  value            : 7.11
+)
+ 
+pol_h2  real_variable  
+(
+  value            : 5.92
+)
+ 
+pol_h1  real_variable  
+(
+  value            : 2.98
+)
+ 
+pol_w  real_variable  
+(
+  value            : 1.0
+)
+ 
+dip_iris_length  real_variable  
+(
+  value            : 1.0
+)
+ 
+dip_L1  real_variable  
+(
+  value            : 0.5
+)
+ 
+dip_L2  real_variable  
+(
+  value            : 0.5
+)
+ 
+RL2_1  real_variable  
+(
+  value            : 11.237
+)
+ 
+RL2_2  real_variable  
+(
+  value            : 12.206
+)
+ 
+RL2_3  real_variable  
+(
+  value            : 12.206
+)
+ 
+RL2_4  real_variable  
+(
+  value            : 11.251
+)
+ 
+RL1_5  real_variable  
+(
+  value            : 13.26
+)
+ 
+RL1_4  real_variable  
+(
+  value            : 14.46
+)
+ 
+RL1_3  real_variable  
+(
+  value            : 14.554
+)
+ 
+RL1_2  real_variable  
+(
+  value            : 14.46
+)
+ 
+RL1_1  real_variable  
+(
+  value            : 13.3
+)
+ 
+rwg_adim  real_variable  
+(
+  value            : 19.05
+)
+ 
+rwg_bdim  real_variable  
+(
+  value            : 9.525
+)
+ 
+dip_IW1_1  real_variable  
+(
+  value            : 8.027
+)
+ 
+dip_IW1_2  real_variable  
+(
+  value            : 4.583
+)
+ 
+dip_IW1_3  real_variable  
+(
+  value            : 4.076
+)
+ 
+dip_IW1_4  real_variable  
+(
+  value            : 4.076
+)
+ 
+dip_IW1_5  real_variable  
+(
+  value            : 4.583
+)
+ 
+dip_IW1_6  real_variable  
+(
+  value            : 7.989
+)
+ 
+dip_IW2_1  real_variable  
+(
+  value            : 7.35
+)
+ 
+dip_IW2_2  real_variable  
+(
+  value            : 4.058
+)
+ 
+dip_IW2_3  real_variable  
+(
+  value            : 3.685
+)
+ 
+dip_IW2_4  real_variable  
+(
+  value            : 4.058
+)
+ 
+dip_IW2_5  real_variable  
+(
+  value            : 7.197
+)
+ 
+miter_length  real_variable  
+(
+  value            : 10.1
+)
+ 
+FF_Tx_180  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 801),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+FF_Tx_25  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+TE_01  rectangular_waveguide_mode  
+(
+  m_index          : 0,
+  n_index          : 1
+)
+ 
+septum_length  real_variable  
+(
+  value            : 39.86
+)
+ 
+Triangular_hub  rectangular_waveguide_triangular_junction  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_rwg_step_in_input),
+  port_2           : ref(port_F1_in_output),
+  port_3           : ref(port_F2_in_output),
+  analysis_settings : ref(mom_settings)
+)
+ 
+port_F1_in_internal  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+port_F2_in_internal  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_WR75)
+)
+ 
+l1x  real_variable  
+(
+  value            : 1.58
+)
+ 
+l2x  real_variable  
+(
+  value            : 0.29
+)
+ 
+coax2rwg_bwdist  real_variable  
+(
+  value            : 5.52
+)
+ 
+coax2rwg_hpin  real_variable  
+(
+  value            : 5.4
+)
+ 
+minmax_settings  minmax_settings  
+(
+  max_iterations   : 500,
+  accuracy         : 0.1E-02
+)
+ 
+optimisation_manager  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_far_field_angular_region_tx), weight: 1.0),
+    struct(goal: ref(goal_far_field_angular_region_rx), weight: 1.0)
+    ),
+  optimisation_settings : ref(minmax_settings)
+)
+ 
+optimisation_manager_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(sep_l1), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(sep_l2), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100),
+    struct(variable_object: ref(sep_l3), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100),
+    struct(variable_object: ref(sep_l4), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 0.1E+100)
+    )
+)
+ 
+port_rotary_joint_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_RWG_1)
+)
+ 
+rotary_joint_180  rotary_joint  
+(
+  frequency        : ref(frequency),
+  angle            : 180.0,
+  port_1           : ref(port_septum_in2),
+  port_2           : ref(port_rotary_joint_in)
+)
+ 
+rj2  device_replica  
+(
+  master_device    : ref(rotary_joint_180),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_rotary_joint_in), master_device_port: ref(port_rotary_joint_in)),
+    struct(local_device_port: ref(port_septum_in2), master_device_port: ref(port_septum_in2))
+    )
+)
+ 
+diplexer_with_coax_in  combined_device  
+(
+  devices          : sequence(ref(Filter1),ref(Filter2),ref(Triangular_hub),ref(coax_2_rwg_adapter_rx),
+ref(coax_2_rwg_adapter_tx),ref(miter_bend_1),ref(rwg_step_in))
+)
+ 
+septum_polariser  septum_polariser  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_septum_output),
+  port_2           : ref(port_septum_in1),
+  port_3           : ref(port_septum_in2),
+  length_1         : 5.0 mm,
+  septum_loc       : top,
+  segments         : sequence
+    (    struct(ridge_height: "ref(pol_h1)" mm, ridge_width: "ref(pol_w)" mm, length: "ref(sep_l1)" mm),
+    struct(ridge_height: "ref(pol_h2)" mm, ridge_width: "ref(pol_w)" mm, length: "ref(sep_l2)" mm),
+    struct(ridge_height: "ref(pol_h3)" mm, ridge_width: "ref(pol_w)" mm, length: "ref(sep_l3)" mm),
+    struct(ridge_height: "ref(pol_h4)" mm, ridge_width: "ref(pol_w)" mm, length: "ref(sep_l4)" mm)
+    ),
+  analysis_settings : ref(mom_settings)
+)
+ 
+Antenna_square_feed  combined_device  
+(
+  devices          : sequence(ref(S2C_step),ref(Antenna))
+)
+ 
+diplexer_with_coax_in_replica  device_replica  
+(
+  master_device    : ref(diplexer_with_coax_in),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(port_coax_Rx_input), master_device_port: ref(port_coax_Rx_output)),
+    struct(local_device_port: ref(port_coax_Tx_input), master_device_port: ref(port_coax_Tx_output)),
+    struct(local_device_port: ref(port_rotary_joint_in), master_device_port: ref(port_septum_in1))
+    )
+)
+ 
+diplexer_with_coax_out  combined_device  
+(
+  devices          : sequence(ref(diplexer_with_coax_in_replica),ref(rotary_joint_180))
+)
+ 
+Entire_antenna  combined_device  
+(
+  devices          : sequence(ref(Antenna_square_feed),ref(diplexer_with_coax_in),ref(diplexer_with_coax_out),
+ref(septum_polariser))
+)
+ 
+FF_Rx_orig  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+FF_Tx_orig  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+Radiating_Entire_Antenna_Rx  radiating_device  
+(
+  device           : ref(Entire_antenna),
+  port_excitation  : sequence
+    (    struct(port: ref(port_coax_Rx_output), waveguide_mode: ref(TEM_mode), amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+Radiating_Entire_Antenna_Tx  radiating_device  
+(
+  device           : ref(Entire_antenna),
+  port_excitation  : sequence
+    (    struct(port: ref(port_coax_Tx_input), waveguide_mode: ref(TEM_mode), amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+Antenna_alone_Rx  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+Antenna_alone_Tx  spherical_cut  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 165.0, np: 12),
+  polarisation     : circular
+)
+ 
+Radiating_Antenna_tx_rh  radiating_device  
+(
+  device           : ref(Antenna),
+  port_excitation  : sequence
+    (    struct(port: ref(port_ant_input), waveguide_mode: ref(circ_mode_TE11y), amplitude: 1.0, phase: 0.0),
+    struct(port: ref(port_ant_input), waveguide_mode: ref(circ_mode_TE11x), amplitude: 1.0, phase: -90.0)
+    )
+)
+ 
+sep_l1  real_variable  
+(
+  value            : 9.965
+)
+ 
+sep_l2  real_variable  
+(
+  value            : 9.965
+)
+ 
+sep_l3  real_variable  
+(
+  value            : 9.965
+)
+ 
+sep_l4  real_variable  
+(
+  value            : 9.965
+)
+ 
+goal_far_field_angular_region_rx  goal_far_field_angular_region  
+(
+  source           : sequence(ref(Radiating_Entire_Antenna_Rx)),
+  goal_spec        : sequence
+    (    struct(frequency_index: 1, beam_index: 1, theta_max: 2.0, component: rhc, goal: 12.0, weight: 1.0, 
+action: minimise)
+    )
+)
+ 
+goal_far_field_angular_region_tx  goal_far_field_angular_region  
+(
+  source           : sequence(ref(Radiating_Entire_Antenna_Tx)),
+  goal_spec        : sequence
+    (    struct(frequency_index: 2, beam_index: 1, theta_max: 2.0, component: lhc, goal: 12.0, weight: 1.0, 
+action: minimise)
+    )
+)
+ 
+coor_sys_tri_junction  coor_sys  
+(
+  origin           : struct(x: 0.0 mm, y: -10.0 mm, z: 0.0 mm)
+)
+ 
+planar_grid_tri_junction  planar_grid  
+(
+  coor_sys         : ref(coor_sys_tri_junction),
+  x_range          : struct(start: -15.0, end: 15.0, np: 71, unit: mm),
+  y_range          : struct(start: -15.0, end: 15.0, np: 71),
+  file_name        : field_plot_tri_junction.grd
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(bor_plot_for_view_1),
+ref(output_points_plot_for_view_1),ref(radiating_device_plot_for_view_1))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+device_plot  device_plot  
+(
+  objects          : sequence(ref(septum_polariser)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot))
+)
+ 
+device_plot_01  device_plot  
+(
+  objects          : sequence(ref(miter_bend_1)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_01  device_view  
+(
+  objects          : sequence(ref(device_plot_01))
+)
+ 
+device_plot_02  device_plot  
+(
+  objects          : sequence(ref(Antenna)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_02  device_view  
+(
+  objects          : sequence(ref(device_plot_02)),
+  dimension        : 2D
+)
+ 
+device_plot_03  device_plot  
+(
+  objects          : sequence(ref(Antenna_square_feed)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_03  device_view  
+(
+  objects          : sequence(ref(device_plot_03))
+)
+ 
+device_plot_04  device_plot  
+(
+  objects          : sequence(ref(diplexer_with_coax_in)),
+  device_coor_sys  : struct(show: yes, axis_length: 0.0 m, relative_arrow_length: 0.1),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_04  device_view  
+(
+  objects          : sequence(ref(device_plot_04))
+)
+ 
+device_plot_05  device_plot  
+(
+  objects          : sequence(ref(diplexer_with_coax_out)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_05  device_view  
+(
+  objects          : sequence(ref(device_plot_05))
+)
+ 
+device_plot_06  device_plot  
+(
+  objects          : sequence(ref(coax_2_rwg_adapter_rx)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_06  device_view  
+(
+  objects          : sequence(ref(device_plot_06))
+)
+ 
+device_plot_07  device_plot  
+(
+  objects          : sequence(ref(Filter1)),
+  root_device      : ref(Entire_antenna)
+)
+ 
+device_view_07  device_view  
+(
+  objects          : sequence(ref(device_plot_07))
+)
+ 
+ //$$ Saved at 13:27:26 on 17.05.2023 by TICRA Tools 23.0 SN=010211
+  

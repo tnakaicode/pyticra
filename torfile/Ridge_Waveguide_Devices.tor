@@ -1,0 +1,175 @@
+FEM_Settings  fem_settings  
+(
+  mesh_accuracy    : 5,
+  expansion_accuracy : enhanced
+)
+ 
+Frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 8.0 GHz, end_frequency: 18.0 GHz, number_of_frequencies: 5)
+)
+ 
+MoM_Settings  mom_settings  
+(
+  expansion_accuracy : enhanced,
+  relative_max_mesh_length : 0.5
+)
+ 
+DR_wg_port  double_ridge_waveguide_port  
+(
+  x_dimension      : 18.0 mm,
+  y_dimension      : 5.6 mm,
+  upper_ridge_height : 2.19 mm,
+  upper_ridge_width : 5.14 mm,
+  lower_ridge_height : 2.19 mm,
+  lower_ridge_width : 5.14 mm,
+  port_expansion_settings : ref(pmes_drwg),
+  fem_settings     : ref(FEM_Settings)
+)
+ 
+pmes_drwg  waveguide_port_modal_expansion_settings  
+(
+  no_of_modes      : 5
+)
+ 
+Horn_profile_1  linear_profile  
+(
+  input_radius     : "18*0.5" mm,
+  output_radius    : "40*0.5" mm,
+  length           : 50.0 mm
+)
+ 
+Horn_profile_2  linear_profile  
+(
+  input_radius     : "5.6*0.5" mm,
+  output_radius    : "20*0.5" mm,
+  length           : 50.0 mm
+)
+ 
+Tangential_ridge_profile  tangential_profile  
+(
+  input_radius     : "(5.6-2*2.19)/2" mm,
+  output_radius    : "20*0.5" mm,
+  length           : 50.0 mm,
+  exponent         : 5.0
+)
+ 
+profiled_ridge_aperture  profiled_ridge_aperture  
+(
+  frequency        : ref(Frequency),
+  port             : ref(DR_wg_port),
+  horn_profile_1   : ref(Horn_profile_1),
+  horn_profile_2   : ref(Horn_profile_2),
+  ridge_profile_1  : sequence(ref(Tangential_ridge_profile)),
+  close_exterior   : yes,
+  wall_thickness   : 2.0 mm,
+  exterior_length  : 70.0 mm,
+  analysis_settings : ref(MoM_Settings)
+)
+ 
+Coax_input_port  coaxial_waveguide_port  
+(
+  radius           : 2.1 mm,
+  inner_radius     : 0.65 mm,
+  port_expansion_settings : ref(pmes_coax),
+  eps_r            : 2.0
+)
+ 
+DR_wg_short_port  waveguide_port_replica  
+(
+  master_waveguide_port : ref(DR_wg_port)
+)
+ 
+MoM_Settings_adapter  mom_settings  
+(
+)
+ 
+pmes_coax  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 3,
+  m_max            : 3
+)
+ 
+coax_non_circular_waveguide_adapter  coax_non_circular_waveguide_adapter  
+(
+  frequency        : ref(Frequency),
+  coax_ports       : sequence
+    (    struct(port: ref(Coax_input_port), face: y_min, back_dist: 2.25 mm, pin_height: 10.0 mm, 
+pin_head_radius: 0.0 mm, pin_head_length_ratio: 0.0, exterior_length: 0.0 mm, dielectric_constant: 1.0, 
+loss_tangent: 0.0)
+    ),
+  length           : 10.0 mm,
+  waveguide_port   : ref(DR_wg_port),
+  waveguide_port_2 : ref(DR_wg_short_port),
+  analysis_settings : ref(MoM_Settings_adapter)
+)
+ 
+shorted_waveguide_taper  shorted_waveguide_taper  
+(
+  frequency        : ref(Frequency),
+  port             : ref(DR_wg_short_port),
+  port_margin      : 0.1 mm,
+  length_before_taper : 2.97 mm,
+  length_taper     : 1.0 mm,
+  taper_dim_x      : 9.87 mm,
+  taper_dim_y      : 5.27 mm,
+  analysis_settings : ref(MoM_Settings_adapter)
+)
+ 
+combined_device  combined_device  
+(
+  devices          : sequence(ref(coax_non_circular_waveguide_adapter),ref(profiled_ridge_aperture),
+ref(shorted_waveguide_taper))
+)
+ 
+TEM00  coaxial_waveguide_mode  
+(
+  m_index          : 0,
+  n_index          : 0
+)
+ 
+spherical_cut  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 721),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2)
+)
+ 
+combined_device_radiating  radiating_device  
+(
+  device           : ref(combined_device),
+  port_excitation  : sequence
+    (    struct(port: ref(Coax_input_port), waveguide_mode: ref(TEM00), amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+device_plot  device_plot  
+(
+  objects          : sequence(ref(combined_device)),
+  root_device      : ref(combined_device)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot))
+)
+ 
+view_1  view  
+(
+  objects          : sequence(ref(radiating_device_plot_for_view_1),ref(output_points_plot_for_view_1))
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 14:24:59 on 01.05.2023 by TICRA Tools 23.0 SN=010211
+  

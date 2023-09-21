@@ -1,0 +1,89 @@
+NASA_Almond  cad_file  
+(
+  coor_sys         : ref(coor_sys),
+  file_name        : nasaAlmond.stp,
+  tolerance        : 0.1E-02 m
+)
+ 
+mom_frequency  frequency  
+(
+  frequency_list   : sequence(2.58 GHz)
+)
+ 
+mom  mom  
+(
+  frequency        : ref(mom_frequency),
+  scatterer        : ref(composite_mom_scatterer),
+  expansion_accuracy : enhanced,
+  coor_sys         : ref(coor_sys)
+)
+ 
+coor_sys  coor_sys  
+(
+)
+ 
+rcs_cut  rcs_cut  
+(
+  coor_sys         : ref(coor_sys),
+  analysis_specification : ref(mom),
+  cut_type         : conical,
+  theta_range      : struct(start: 90.0, end: 90.0, np: 1),
+  phi_range        : struct(start: 0.0, end: 180.0, np: 181)
+)
+ 
+composite_mom_scatterer  composite_mom_scatterer  
+(
+  regions          : table
+    (
+        1    2.96870E+00    1.00000E+00    3.567217974000000E-02    0.00000E+00  
+    ),
+  geometrical_parts : sequence
+    (    struct(scatterer: ref(NASA_Almond), region_1: 0, region_2: 1, zs_real: -1.0, zs_imag: 0.0, 
+local_properties: none)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(cad_file_plot_for_view_1),ref(mom_plot_for_view_1),
+ref(coor_sys_plot_for_view_1),ref(cad_file_plot_for_NASA_Almond_for_view_1),ref(rays_from_point_sources),
+ref(rcs_cuts_grids_plot_for_view_1)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+cad_file_plot_for_view_1  cad_file_plot  
+(
+)
+ 
+mom_plot_for_view_1  mom_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+cad_file_plot_for_NASA_Almond_for_view_1  cad_file_plot  
+(
+  objects          : sequence(ref(NASA_Almond))
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  ray_path_range   : struct(start: 0.0 m, end: 1.0 m)
+)
+ 
+rcs_cuts_grids_plot_for_view_1  rcs_cuts_grids_plot  
+(
+)
+ 
+ //$$ Saved at 12:58:26 on 15.05.2023 by TICRA Tools 23.0 SN=010211
+  

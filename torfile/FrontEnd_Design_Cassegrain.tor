@@ -1,0 +1,249 @@
+dual_frame  frame  
+(
+  coor_sys         : ref(dual_frame.csy),
+  no_of_components : 5,
+  frame_unit       : mm,
+  size             : struct(x_min: -200.0, x_max: 200.0, y_min: -100.0, y_max: 1200.0),
+  grid             : struct(show: on, snap_to: on, x_spacing: 50.0, y_spacing: 50.0),
+  connection       : fixed,
+  feeds            : sequence
+    (    struct(name: F1, index: 1, center_x: 0.1524386947E-01, center_y: 0.1609809616E-01, orientation: 
+80.93548774, beam1_to_component: 2, beam1_to_port: 0, beam_radius: 0.284367E-02, phase_curvature: 40.73, 
+polarization_angle: 0.0, wavelength: 0.9993083333E-03)
+    ),
+  loads            : sequence
+    (    struct(name: Load_7, index: 7, center_x: -0.40589795E-01, center_y: 1.15, orientation: -90.0, 
+beam1_to_component: 3, beam1_to_port: 1, load_size_x: 0.252654579, load_size_y: 0.252654579)
+    ),
+  reflectors       : sequence
+    (    struct(name: M1, index: 2, center_x: 0.2798672352E-01, center_y: 0.9601159805E-01, orientation: 
+-113.5322561, beam1_to_component: 1, beam1_to_port: 0, beam2_to_component: 3, beam2_to_port: 0, f_value: 
+0.3617321562E-01, curvature_difference: 6.64386085, half_cone_angle: 35.795094, cone_axis_angle: 3.482808, 
+cone_vertex_focal_point: P1),
+    struct(name: M2, index: 3, center_x: -0.40589795E-01, center_y: 0.8237657E-02, orientation: 71.0, 
+beam1_to_component: 2, beam1_to_port: 1, beam2_to_component: 7, beam2_to_port: 0, f_value: 0.4395252808E-01, 
+curvature_difference: 14.39766552, half_cone_angle: 34.820635, cone_axis_angle: 5.08831, 
+cone_vertex_focal_point: P1)
+    ),
+  near_fields      : sequence
+    (    struct(name: Near_field_8, index: 8, center_x: -0.40589795E-01, center_y: 1.008237657, orientation: 
+90.0, sampling_type: planar_cut, polarisation: linear, number_of_cuts: 2, np: 301, rho_end: 0.15, width: 0.0)
+    )
+)
+ 
+dual_frame.csy  coor_sys  
+(
+)
+ 
+dual_frame.M1.csy  coor_sys  
+(
+  origin           : struct(x: 27.98672352 mm, y: 96.01159805 mm, z: 0.0 mm),
+  x_axis           : struct(x: 0.9209245687, y: -0.3897408611, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.M1.srf  conical_surface  
+(
+  r1               : 58.32838218 mm,
+  r2               : 95.23400063 mm,
+  theta_i          : 14.47,
+  theta_n          : -0.591624015
+)
+ 
+dual_frame.M1.rim  elliptical_rim  
+(
+  centre           : struct(x: -0.1924583045 mm, y: 0.0 mm),
+  half_axis        : struct(x: 36.10509191 mm, y: 34.98218395 mm)
+)
+ 
+dual_frame.M1  reflector  
+(
+  coor_sys         : ref(dual_frame.M1.csy),
+  surfaces         : sequence(ref(dual_frame.M1.srf)),
+  rim              : ref(dual_frame.M1.rim)
+)
+ 
+dual_frame.Initial.wln  wavelength  
+(
+  wavelength_list  : sequence(1.0 m)
+)
+ 
+dual_frame.M1.po  po_single_face_scatterer  
+(
+  frequency        : ref(dual_frame.Initial.wln),
+  scatterer        : ref(dual_frame.M1),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(dual_frame.M1.csy),
+  file_name        : " "
+)
+ 
+dual_frame.M2.csy  coor_sys  
+(
+  origin           : struct(x: -40.589795 mm, y: 8.237657 mm, z: 0.0 mm),
+  x_axis           : struct(x: -0.9513371737, y: 0.3081518814, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.M2.srf  conical_surface  
+(
+  r1               : 53.83654662 mm,
+  r2               : 239.4018502 mm,
+  theta_i          : 19.0,
+  theta_n          : -1.052110475
+)
+ 
+dual_frame.M2.rim  elliptical_rim  
+(
+  centre           : struct(x: -0.333800479 mm, y: 0.0 mm),
+  half_axis        : struct(x: 34.0608634 mm, y: 32.33222732 mm)
+)
+ 
+dual_frame.M2  reflector  
+(
+  coor_sys         : ref(dual_frame.M2.csy),
+  surfaces         : sequence(ref(dual_frame.M2.srf)),
+  rim              : ref(dual_frame.M2.rim)
+)
+ 
+dual_frame.M2.po  po_single_face_scatterer  
+(
+  frequency        : ref(dual_frame.Initial.wln),
+  scatterer        : ref(dual_frame.M2),
+  method           : po,
+  spill_over       : on,
+  coor_sys         : ref(dual_frame.M2.csy),
+  file_name        : " "
+)
+ 
+dual_frame.F1.csy  coor_sys  
+(
+  origin           : struct(x: 15.24386947 mm, y: 16.09809616 mm, z: 0.0 mm),
+  x_axis           : struct(x: -0.987511577, y: 0.1575464546, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.F1.wln  wavelength  
+(
+  wavelength_list  : sequence(1.19917 mm,0.9993083333 mm,0.85655 mm)
+)
+ 
+dual_frame.F1  gaussian_beam  
+(
+  frequency        : ref(dual_frame.F1.wln),
+  coor_sys         : ref(dual_frame.F1.csy),
+  beam_radius      : 2.84367 mm,
+  phase_front_radius : 24.55192733 mm
+)
+ 
+dual_frame.F2.csy  coor_sys  
+(
+  origin           : struct(x: -40.589795 mm, y: 1008.237657 mm, z: 0.0 mm),
+  x_axis           : struct(x: 1.0, y: 0.6123233996E-16, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.F2.wln  wavelength  
+(
+  wavelength_list  : sequence(0.9993083333 mm)
+)
+ 
+dual_frame.F2  gaussian_beam  
+(
+  frequency        : ref(dual_frame.F2.wln),
+  coor_sys         : ref(dual_frame.F2.csy),
+  beam_radius      : 50.0 mm,
+  phase_front_radius : -800.0 mm
+)
+ 
+dual_frame.Load_7.csy  coor_sys  
+(
+  origin           : struct(x: -40.589795 mm, y: 1150.0 mm, z: 0.0 mm),
+  x_axis           : struct(x: 1.0, y: 0.6123233996E-16, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.Load_7  load  
+(
+  coor_sys         : ref(dual_frame.Load_7.csy),
+  load_size_x      : 172.986058 mm,
+  load_size_y      : 172.986058 mm
+)
+ 
+dual_frame.Near_field_8.csy  coor_sys  
+(
+  origin           : struct(x: -40.589795 mm, y: 1008.237657 mm, z: 0.0 mm),
+  x_axis           : struct(x: -1.0, y: 0.6123233996E-16, z: 0.0),
+  y_axis           : struct(x: 0.0, y: 0.0, z: 1.0),
+  base             : ref(dual_frame.csy)
+)
+ 
+dual_frame.Near_field_8  planar_cut  
+(
+  coor_sys         : ref(dual_frame.Near_field_8.csy),
+  rho_range        : struct(start: -150.0, end: 150.0, np: 301, rho_unit: mm),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : dual_frame_Near_field_8.cut
+)
+ 
+spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(spheric_cut),
+  theta_range      : struct(start: -10.0, end: 10.0, np: 301),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  near_far         : near,
+  near_dist        : 800.0 mm,
+  file_name        : far_field.cut,
+  comment          : " "
+)
+ 
+spheric_cut  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -803.65 mm),
+  base             : ref(dual_frame.Near_field_8.csy)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(gaussian_beam_tube),ref(view_1_load_plot),ref(view_1_output_points_plot))
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+gaussian_beam_tube  gaussian_beam_tube  
+(
+  objects          : sequence(ref(dual_frame.F1)),
+  beam_path_range  : struct(start: 0.0 m, end: 2.0 m, number_of_cross_sections: 501),
+  phase_front_cuts : 0
+)
+ 
+view_1_load_plot  load_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 11:48:09 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

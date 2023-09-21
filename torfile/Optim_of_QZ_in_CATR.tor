@@ -1,0 +1,372 @@
+global_coor  coor_sys  
+(
+)
+ 
+main_surface  paraboloid  
+(
+  focal_length     : 33.208 m
+)
+ 
+outer_main_rim  rectangular_rim  
+(
+  centre           : struct(x: -38.79 m, y: 0.0 m),
+  side_lengths     : struct(x: 8.8 m, y: 7.5 m)
+)
+ 
+main_reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(main_surface)),
+  rim              : ref(outer_main_rim)
+)
+ 
+inner_main_rim  rectangular_rim  
+(
+  centre           : struct(x: -38.79 m, y: 0.0 m),
+  side_lengths     : struct(x: 7.3 m, y: 6.0 m)
+)
+ 
+main_reflector_serrated  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(main_surface)),
+  rim              : ref(outer_main_rim),
+  serration        : struct(inner_rim: ref(inner_main_rim), shape: linear)
+)
+ 
+sub_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 33.208 m),
+  x_axis           : struct(x: 0.3090170045, y: 0.0, z: -0.951056513),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+sub_surface  hyperboloid  
+(
+  vertex_distance  : -22.10312294 m,
+  foci_distance    : 48.184808 m
+)
+ 
+outer_sub_rim  rectangular_rim  
+(
+  centre           : struct(x: 7.14 m, y: 0.0 m),
+  side_lengths     : struct(x: 9.16 m, y: 7.62 m)
+)
+ 
+sub_reflector  reflector  
+(
+  coor_sys         : ref(sub_coor),
+  surfaces         : sequence(ref(sub_surface)),
+  rim              : ref(outer_sub_rim)
+)
+ 
+inner_sub_rim  rectangular_rim  
+(
+  centre           : struct(x: 7.14 m, y: 0.0 m),
+  side_lengths     : struct(x: 8.14 m, y: 6.87 m)
+)
+ 
+sub_reflector_serrated  reflector  
+(
+  coor_sys         : ref(sub_coor),
+  surfaces         : sequence(ref(sub_surface)),
+  rim              : ref(outer_sub_rim),
+  serration        : struct(inner_rim: ref(inner_sub_rim), shape: linear)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 48.184808 m),
+  x_axis           : struct(x: 0.8644840189, y: 0.0, z: 0.5026603038),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(sub_coor)
+)
+ 
+frequency  frequency  
+(
+  frequency_list   : sequence(5.0 GHz)
+)
+ 
+gaussian_beam_pattern  gaussian_beam_pattern  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 16.0,
+  taper            : -2.0,
+  polarisation     : linear_y
+)
+ 
+feed_pattern  spherical_cut  
+(
+  coor_sys         : ref(feed_coor),
+  theta_range      : struct(start: 0.0, end: 90.0, np: 91),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  file_name        : " "
+)
+ 
+main_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(main_reflector_serrated),
+  method           : po,
+  coor_sys         : ref(global_coor),
+  file_name        : main_po.cur
+)
+ 
+sub_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(sub_reflector_serrated),
+  method           : po,
+  coor_sys         : ref(global_coor),
+  file_name        : sub_po.cur
+)
+ 
+cut_coor  coor_sys  
+(
+  origin           : struct(x: -38.79043645 m, y: 0.0 m, z: 11.32782733 m),
+  base             : ref(global_coor)
+)
+ 
+QZ_cs  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 15.6 m),
+  base             : ref(cut_coor)
+)
+ 
+QZ_nominal_cuts  planar_cut  
+(
+  coor_sys         : ref(QZ_cs),
+  rho_range        : struct(start: -4.0, end: 4.0, np: 801, rho_unit: m),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " "
+)
+ 
+QZ_cuts  planar_cut  
+(
+  coor_sys         : ref(QZ_cs),
+  rho_range        : struct(start: -4.0, end: 4.0, np: 801, rho_unit: m),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " "
+)
+ 
+QZ_total_cuts  planar_cut  
+(
+  coor_sys         : ref(QZ_cs),
+  rho_range        : struct(start: -4.0, end: 4.0, np: 801, rho_unit: m),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " "
+)
+ 
+wall_cs  coor_sys_grasp_angles  
+(
+  origin           : struct(x: -1.97000000000001 m, y: 0.0 mm, z: 1.24 m),
+  theta            : 40.0,
+  phi              : -180.0,
+  psi              : -360.0,
+  base             : ref(feed_coor)
+)
+ 
+plane  plane  
+(
+)
+ 
+wall_width  real_variable  
+(
+  value            : 0.0
+)
+ 
+wall_back  real_variable  
+(
+  value            : 2700.0
+)
+ 
+wall_rim  rectangular_rim  
+(
+  centre           : struct(x: "-0.5*(ref(wall_back)-ref(wall_width))" mm, y: 0.0 mm),
+  side_lengths     : struct(x: "ref(wall_width)+ref(wall_back)" mm, y: 10.0 m)
+)
+ 
+wall  reflector  
+(
+  coor_sys         : ref(wall_cs),
+  surfaces         : sequence(ref(plane)),
+  rim              : ref(wall_rim),
+  el_prop          : sequence(ref(perfect_absorption))
+)
+ 
+wall_po  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency),
+  scatterer        : ref(wall),
+  method           : po,
+  po_points        : struct(po1: 370, po2: 300),
+  spill_over       : on,
+  file_name        : baffle.cur
+)
+ 
+optimisation_manager_amp_settings  minmax_settings  
+(
+  max_iterations   : 20
+)
+ 
+optimisation_manager_amp  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_amp_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_near_field_surface_amplitude), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_manager_amp_settings),
+  object_func_analysis : wall_po
+)
+ 
+optimisation_manager_amp_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(wall_width), min_enabled: on, min: 0.0, max_enabled: on, max: 1000.0)
+    )
+)
+ 
+goal_near_field_surface_amplitude  goal_near_field_surface_amplitude  
+(
+  source           : sequence(ref(wall_po),ref(gaussian_beam_pattern)),
+  coor_sys         : ref(QZ_cs),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, component: linear_y, goal: 0.0, weight: 1.0, action: 
+minimise)
+    ),
+  ell_trunc        : yes,
+  x_dim            : 4.0 m,
+  y_dim            : 4.0 m
+)
+ 
+optimisation_manager_amp_settings_01  mcs_settings  
+(
+  max_iterations   : 20
+)
+ 
+optimisation_manager_amp_variation  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_amp_variation_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_near_field_surface_amp_variation), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_manager_amp_settings_01),
+  object_func_analysis : wall_po
+)
+ 
+optimisation_manager_amp_variation_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(wall_width), min_enabled: on, min: 0.0, max_enabled: on, max: 1000.0)
+    )
+)
+ 
+goal_near_field_surface_amp_variation  goal_near_field_surface_variation  
+(
+  source           : sequence(ref(wall_po),ref(gaussian_beam_pattern),ref(plane_wave)),
+  coor_sys         : ref(QZ_cs),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, component: linear_y, quantity: e_amplitude, goal: 0.0, 
+weight: 1.0)
+    ),
+  ell_trunc        : yes,
+  x_dim            : 4.0 m,
+  y_dim            : 4.0 m
+)
+ 
+plane_wave  plane_wave  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(cut_coor),
+  aperture_radius  : 1.0 m,
+  polarisation     : linear_y,
+  factor           : struct(db: -17.4, deg: 0.0)
+)
+ 
+optimisation_manager_phase_variation  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_amp_variation_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_near_field_surface_phase_variation), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_manager_amp_settings_01),
+  object_func_analysis : wall_po
+)
+ 
+goal_near_field_surface_phase_variation  goal_near_field_surface_variation  
+(
+  source           : sequence(ref(wall_po),ref(gaussian_beam_pattern),ref(plane_wave)),
+  coor_sys         : ref(QZ_cs),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, component: linear_y, quantity: e_phase, goal: 0.0, 
+weight: 1.0)
+    ),
+  ell_trunc        : yes,
+  x_dim            : 4.0 m,
+  y_dim            : 4.0 m
+)
+ 
+perfect_absorption  perfect_absorption  
+(
+)
+ 
+optimisation_manager_amp_variation_settings  onesided_lsq_settings  
+(
+  max_iterations   : 20
+)
+ 
+QZ_grid  planar_grid  
+(
+  coor_sys         : ref(QZ_cs),
+  x_range          : struct(start: -2.0, end: 2.0, np: 101, unit: m),
+  y_range          : struct(start: -2.0, end: 2.0, np: 101)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_reflector_plot),ref(view_1_coor_sys_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(rays),ref(plane_wave_plot_for_view_1)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: show, wires: hide, 
+radiating_devices: hide, mom_meshes: hide, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, rooftop_mirrors: hide, loads: hide, bors: 
+hide, mom_sources: hide, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+  axis_length      : 3.0 m
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+rays  rays_from_point_sources  
+(
+  objects          : sequence(ref(gaussian_beam_pattern)),
+  theta_range      : struct(start: -90.0, end: 14.0, np: 11),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  ray_path_range   : struct(start: 0.0 m, end: 38.0 m)
+)
+ 
+plane_wave_plot_for_view_1  plane_wave_plot  
+(
+)
+ 
+ //$$ Saved at 16:01:04 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

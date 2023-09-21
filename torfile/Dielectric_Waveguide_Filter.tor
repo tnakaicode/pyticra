@@ -1,0 +1,365 @@
+freq  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 8.0 GHz, end_frequency: 12.0 GHz, number_of_frequencies: 201)
+)
+ 
+mm_settings  mode_matching_settings  
+(
+)
+ 
+TE_10  rectangular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 0
+)
+ 
+rcrwg_port_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_port_out  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+rcrwg_int_port_6  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_rounded_corner_rwg_port)
+)
+ 
+SevenDevices  combined_device  
+(
+  devices          : sequence(ref(srwg_sec_1),ref(srwg_sec_2),ref(srwg_sec_3),ref(srwg_sec_4),ref(srwg_sec_5),
+ref(srwg_sec_6),ref(srwg_sec_7))
+)
+ 
+rcrwg_sec_1  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_1)" mm,
+  port_1           : ref(rcrwg_port_in),
+  port_2           : ref(rcrwg_int_port_1),
+  eps_r            : "ref(epsr_1)",
+  analysis_settings : ref(mm_settings)
+)
+ 
+rcrwg_sec_2  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_2)" mm,
+  port_1           : ref(rcrwg_int_port_1),
+  port_2           : ref(rcrwg_int_port_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+rcrwg_sec_3  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_3)" mm,
+  port_1           : ref(rcrwg_int_port_2),
+  port_2           : ref(rcrwg_int_port_3),
+  eps_r            : "ref(epsr_2)",
+  analysis_settings : ref(mm_settings)
+)
+ 
+rcrwg_sec_4  device_replica  
+(
+  master_device    : ref(rcrwg_sec_2),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(rcrwg_int_port_3), master_device_port: ref(rcrwg_int_port_1)),
+    struct(local_device_port: ref(rcrwg_int_port_4), master_device_port: ref(rcrwg_int_port_2))
+    )
+)
+ 
+rcrwg_sec_5  device_replica  
+(
+  master_device    : ref(rcrwg_sec_3),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(rcrwg_int_port_4), master_device_port: ref(rcrwg_int_port_2)),
+    struct(local_device_port: ref(rcrwg_int_port_5), master_device_port: ref(rcrwg_int_port_3))
+    )
+)
+ 
+rcrwg_sec_6  device_replica  
+(
+  master_device    : ref(rcrwg_sec_2),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(rcrwg_int_port_5), master_device_port: ref(rcrwg_int_port_1)),
+    struct(local_device_port: ref(rcrwg_int_port_6), master_device_port: ref(rcrwg_int_port_2))
+    )
+)
+ 
+rcrwg_sec_7  device_replica  
+(
+  master_device    : ref(rcrwg_sec_1),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(rcrwg_int_port_6), master_device_port: ref(rcrwg_port_in)),
+    struct(local_device_port: ref(rcrwg_port_out), master_device_port: ref(rcrwg_int_port_1))
+    )
+)
+ 
+master_rounded_corner_rwg_port  rounded_rectangular_waveguide_port  
+(
+  x_dimension      : "ref(a)" mm,
+  y_dimension      : "ref(b)" mm,
+  corner_curvature_radius : 1.0 mm,
+  port_expansion_settings : ref(wg_pmes),
+  fem_settings     : ref(fem_settings)
+)
+ 
+fem_settings  fem_settings  
+(
+  mesh_accuracy    : 2
+)
+ 
+wg_pmes  waveguide_port_modal_expansion_settings  
+(
+  no_of_modes      : 20
+)
+ 
+master_standard_rwg_port  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(a)" mm,
+  y_dimension      : "ref(b)" mm,
+  port_expansion_settings : ref(wg_pmes)
+)
+ 
+OneDevice  stepped_rectangular_waveguide  
+(
+  frequency        : ref(freq),
+  port_1           : ref(srwg_port_in),
+  port_2           : ref(srwg_port_out),
+  segments         : sequence
+    (    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(l_1)" mm, eps_r: "ref(epsr_1)", tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_2)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_3)" mm, 
+eps_r: "ref(epsr_2)", tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_2)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_3)" mm, 
+eps_r: "ref(epsr_2)", tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_2)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(l_1)" mm, 
+eps_r: "ref(epsr_1)", tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_settings)
+)
+ 
+b  real_variable  
+(
+  value            : 10.16
+)
+ 
+l_1  real_variable  
+(
+  value            : 3.9147
+)
+ 
+epsr_1  real_variable  
+(
+  value            : 4.0947
+)
+ 
+l_3  real_variable  
+(
+  value            : 1.862
+)
+ 
+l_2  real_variable  
+(
+  value            : 19.8618
+)
+ 
+a  real_variable  
+(
+  value            : 22.86
+)
+ 
+epsr_2  real_variable  
+(
+  value            : 16.64
+)
+ 
+srwg_port_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_port_out  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+RoundedCorners  combined_device  
+(
+  devices          : sequence(ref(rcrwg_sec_1),ref(rcrwg_sec_2),ref(rcrwg_sec_3),ref(rcrwg_sec_4),
+ref(rcrwg_sec_5),ref(rcrwg_sec_6),ref(rcrwg_sec_7))
+)
+ 
+srwg_sec_1  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_1)" mm,
+  port_1           : ref(srwg_port_in),
+  port_2           : ref(srwg_int_port_1),
+  eps_r            : "ref(epsr_1)",
+  analysis_settings : ref(mm_settings)
+)
+ 
+srwg_sec_2  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_2)" mm,
+  port_1           : ref(srwg_int_port_1),
+  port_2           : ref(srwg_int_port_2),
+  analysis_settings : ref(mm_settings)
+)
+ 
+srwg_sec_3  straight_waveguide_section  
+(
+  frequency        : ref(freq),
+  length           : "ref(l_3)" mm,
+  port_1           : ref(srwg_int_port_2),
+  port_2           : ref(srwg_int_port_3),
+  eps_r            : "ref(epsr_2)",
+  analysis_settings : ref(mm_settings)
+)
+ 
+srwg_sec_4  device_replica  
+(
+  master_device    : ref(srwg_sec_2),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(srwg_int_port_3), master_device_port: ref(srwg_int_port_1)),
+    struct(local_device_port: ref(srwg_int_port_4), master_device_port: ref(srwg_int_port_2))
+    )
+)
+ 
+srwg_sec_5  device_replica  
+(
+  master_device    : ref(srwg_sec_3),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(srwg_int_port_4), master_device_port: ref(srwg_int_port_2)),
+    struct(local_device_port: ref(srwg_int_port_5), master_device_port: ref(srwg_int_port_3))
+    )
+)
+ 
+srwg_sec_6  device_replica  
+(
+  master_device    : ref(srwg_sec_2),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(srwg_int_port_5), master_device_port: ref(srwg_int_port_1)),
+    struct(local_device_port: ref(srwg_int_port_6), master_device_port: ref(srwg_int_port_2))
+    )
+)
+ 
+srwg_sec_7  device_replica  
+(
+  master_device    : ref(srwg_sec_1),
+  waveguide_ports  : sequence
+    (    struct(local_device_port: ref(srwg_int_port_6), master_device_port: ref(srwg_port_in)),
+    struct(local_device_port: ref(srwg_port_out), master_device_port: ref(srwg_int_port_1))
+    )
+)
+ 
+srwg_int_port_1  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_int_port_2  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_int_port_3  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_int_port_4  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_int_port_5  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+srwg_int_port_6  waveguide_port_replica  
+(
+  master_waveguide_port : ref(master_standard_rwg_port)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+)
+ 
+device_plot  device_plot  
+(
+  objects          : sequence(ref(OneDevice)),
+  root_device      : ref(OneDevice)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot))
+)
+ 
+device_plot_01  device_plot  
+(
+  objects          : sequence(ref(SevenDevices)),
+  root_device      : ref(SevenDevices)
+)
+ 
+device_view_01  device_view  
+(
+  objects          : sequence(ref(device_plot_01))
+)
+ 
+device_plot_02  device_plot  
+(
+  objects          : sequence(ref(RoundedCorners)),
+  root_device      : ref(RoundedCorners)
+)
+ 
+device_view_02  device_view  
+(
+  objects          : sequence(ref(device_plot_02))
+)
+ 
+ //$$ Saved at 10:49:54 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+  

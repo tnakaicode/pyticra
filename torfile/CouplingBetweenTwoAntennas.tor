@@ -1,0 +1,539 @@
+R1_global_coor  coor_sys  
+(
+  origin           : struct(x: 5.0 m, y: 0.0 m, z: 0.0 m),
+  base             : ref(Global_coor)
+)
+ 
+Wavelengths  wavelength  
+(
+  wavelength_list  : sequence(1.0 m)
+)
+ 
+R1_surface  paraboloid  
+(
+  focal_length     : 50.0 m
+)
+ 
+R1_rim  elliptical_rim  
+(
+  centre           : struct(x: 25.0 m, y: 0.0 m),
+  half_axis        : struct(x: 20.0 m, y: 20.0 m)
+)
+ 
+R1_reflector  reflector  
+(
+  coor_sys         : ref(R1_global_coor),
+  surfaces         : sequence(ref(R1_surface)),
+  rim              : ref(R1_rim)
+)
+ 
+R1_feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 50.0 m),
+  x_axis           : struct(x: 0.882352941176471, y: 0.0, z: 0.470588235294118),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(R1_global_coor)
+)
+ 
+R1_feed  fundamental_mode_circular_waveguide  
+(
+  frequency        : ref(Wavelengths),
+  coor_sys         : ref(R1_feed_coor),
+  aperture_radius  : 1.3 m,
+  polarisation     : linear_y
+)
+ 
+R1_cut_coor  coor_sys  
+(
+  origin           : struct(x: 25.0 m, y: 0.0 m, z: 3.125 m),
+  base             : ref(R1_global_coor)
+)
+ 
+R2_global_coor  coor_sys  
+(
+  origin           : struct(x: -5.0 m, y: 0.0 m, z: 0.0 m),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(Global_coor)
+)
+ 
+R2_surface  paraboloid  
+(
+  focal_length     : 50.0 m
+)
+ 
+R2_rim  elliptical_rim  
+(
+  centre           : struct(x: 25.0 m, y: 0.0 m),
+  half_axis        : struct(x: 20.0 m, y: 20.0 m)
+)
+ 
+R2_reflector  reflector  
+(
+  coor_sys         : ref(R2_global_coor),
+  surfaces         : sequence(ref(R2_surface)),
+  rim              : ref(R2_rim)
+)
+ 
+R2_feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 50.0 m),
+  x_axis           : struct(x: -0.8823529412, y: 0.0, z: -0.4705882353),
+  base             : ref(R2_global_coor)
+)
+ 
+R2_feed  fundamental_mode_circular_waveguide  
+(
+  frequency        : ref(Wavelengths),
+  coor_sys         : ref(R2_feed_move_coor),
+  aperture_radius  : 1.3 m,
+  polarisation     : linear_y
+)
+ 
+R2_cut_coor  coor_sys  
+(
+  origin           : struct(x: 25.0 m, y: 0.0 m, z: 3.125 m),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(R2_global_coor)
+)
+ 
+Global_coor  coor_sys  
+(
+)
+ 
+R1_feed_far_field  fundamental_mode_circular_waveguide  
+(
+  frequency        : ref(Wavelengths),
+  coor_sys         : ref(R1_feed_coor),
+  aperture_radius  : 1.3 m,
+  polarisation     : linear_y,
+  far_forced       : on
+)
+ 
+R2_feed_far_field  fundamental_mode_circular_waveguide  
+(
+  frequency        : ref(Wavelengths),
+  coor_sys         : ref(R2_feed_move_coor),
+  aperture_radius  : 1.3 m,
+  polarisation     : linear_y,
+  far_forced       : on
+)
+ 
+NF_Cut_F1  spherical_cut  
+(
+  coor_sys         : ref(R1_feed_coor),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  near_far         : near,
+  near_dist        : 10.0 m,
+  comment          : "Near field data from F1"
+)
+ 
+FF_Cut_F1  spherical_cut  
+(
+  coor_sys         : ref(R1_feed_coor),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  comment          : "Far field data from F1"
+)
+ 
+R2_feed_move_coor  coor_sys  
+(
+  base             : ref(R2_feed_coor)
+)
+ 
+Move_R2_feed  movement_definition  
+(
+  coor_sys_for_movements : ref(R2_feed_coor),
+  moved_coordinate_systems : sequence(ref(R2_feed_move_coor)),
+  movements        : sequence
+    (    struct(movement: rotation_around, axis: y_original, start: -180.0, end: 180.0, number: 901, 
+length_unit: m)
+    )
+)
+ 
+Cpl_F1_F2  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_R2_feed),
+  file_name        : " ",
+  comment          : "Near Field"
+)
+ 
+Cpl_F1_F2_far_field  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed_far_field)),
+  movement_definition : ref(Move_R2_feed),
+  file_name        : " ",
+  comment          : "Far  Field"
+)
+ 
+PO_Calc_F1_R1  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(R1_reflector),
+  ray_output       : all,
+  coor_sys         : ref(R1_global_coor)
+)
+ 
+PO_Calc_F2_R2  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(R2_reflector),
+  ray_output       : all,
+  coor_sys         : ref(R2_global_coor)
+)
+ 
+FF_cut_F1_R1  spherical_cut  
+(
+  coor_sys         : ref(R1_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  file_name        : " "
+)
+ 
+NF_cut_F1_R1  spherical_cut  
+(
+  coor_sys         : ref(R1_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 58.5 m,
+  file_name        : " "
+)
+ 
+NF_for_convergence  spherical_cut  
+(
+  coor_sys         : ref(R1_cut_coor),
+  theta_range      : struct(start: -90.0, end: 20.0, np: 111),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 58.0 m,
+  comment          : "Far field data from F1"
+)
+ 
+Cpl_F1_R1_F2  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_F2_ViaR1),
+  file_name        : " ",
+  comment          : "Coupling F1_R1_F2"
+)
+ 
+Move_F2_ViaR1  movement_definition  
+(
+  coor_sys_for_movements : ref(R1_cut_coor),
+  moved_coordinate_systems : sequence(ref(R2_feed_coor)),
+  movements        : sequence
+    (    struct(movement: rotation_around, axis: y_original, start: -45.0, end: 45.0, number: 901, 
+length_unit: m)
+    )
+)
+ 
+PO_Calc_F1_R1_Spherical  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(R1_reflector),
+  ray_output       : spherical,
+  coor_sys         : ref(R1_cut_coor)
+)
+ 
+Cpl_F1_R1_F2_Spherical  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_F2_ViaR1),
+  file_name        : " ",
+  comment          : "Coupling F1_R1_F2_Spherical"
+)
+ 
+PO_Calc_F1_R2  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(R2_reflector),
+  ray_output       : all,
+  coor_sys         : ref(R1_global_coor)
+)
+ 
+NF_cut_F1_R2_PO  spherical_cut  
+(
+  coor_sys         : ref(R2_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 53.125 m,
+  file_name        : " "
+)
+ 
+NF_cut_F1_R2_GO  spherical_cut  
+(
+  coor_sys         : ref(R2_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 53.125 m,
+  file_name        : " "
+)
+ 
+GTD_F1_R2_GO  single_reflector_gtd  
+(
+  frequency        : ref(Wavelengths),
+  source           : ref(R1_feed),
+  reflector        : ref(R2_reflector),
+  go               : on,
+  ray_output       : all
+)
+ 
+NF_cut_F1_R2_GTD  spherical_cut  
+(
+  coor_sys         : ref(R2_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 53.125 m,
+  file_name        : " "
+)
+ 
+GTD_F1_R2_GTD  single_reflector_gtd  
+(
+  frequency        : ref(Wavelengths),
+  source           : ref(R1_feed),
+  reflector        : ref(R2_reflector),
+  gtd              : on,
+  ray_output       : all
+)
+ 
+NF_cut_F1_R2_GOGTD  spherical_cut  
+(
+  coor_sys         : ref(R2_cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 53.125 m,
+  file_name        : " "
+)
+ 
+GTD_F1_R2_GOGTD  single_reflector_gtd  
+(
+  frequency        : ref(Wavelengths),
+  source           : ref(R1_feed),
+  reflector        : ref(R2_reflector),
+  go               : on,
+  gtd              : on,
+  ray_output       : all
+)
+ 
+Cpl_F1_R2_F2  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_F2_ViaR2),
+  file_name        : " ",
+  comment          : "Coupling F1_R2_F2"
+)
+ 
+Cpl_F1_R2_F2_GOGTD  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_F2_ViaR2),
+  file_name        : " ",
+  comment          : "Coupling F1_R2_F2_GOGTD"
+)
+ 
+Move_F2_ViaR2  movement_definition  
+(
+  coor_sys_for_movements : ref(R2_cut_coor),
+  moved_coordinate_systems : sequence(ref(R2_feed_coor)),
+  movements        : sequence
+    (    struct(movement: rotation_around, axis: y_original, start: -45.0, end: 45.0, number: 901, 
+length_unit: m)
+    )
+)
+ 
+FF_Cut_F1_R1_2_R2  spherical_cut  
+(
+  coor_sys         : ref(R1_cut_coor),
+  theta_range      : struct(start: -100.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  comment          : "Far field of refl1 illum by feed1"
+)
+ 
+NF_Cut_F1_R1_2_R2  spherical_cut  
+(
+  coor_sys         : ref(R1_cut_coor),
+  theta_range      : struct(start: -100.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  near_far         : near,
+  near_dist        : 50.0 m,
+  comment          : "Near field of refl1 illum by feed1"
+)
+ 
+Cpl_F1_R1_to_R2_F2  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(PO_Calc_F2_R2)),
+  movement_definition : ref(Move_Trans_F2),
+  file_name        : " ",
+  comment          : "Coupling F1_R1_to_R2_F2"
+)
+ 
+PO_Calc_F1_R1_R2  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(R2_reflector),
+  ray_output       : all,
+  coor_sys         : ref(R2_global_coor)
+)
+ 
+Cpl_Cut_F1_R1_R2_to_F2  spherical_cut  
+(
+  coor_sys         : ref(R2_cut_coor),
+  theta_range      : struct(start: 18.0, end: 38.0, np: 11),
+  phi_range        : struct(start: 0.0, end: 180.0, np: 1),
+  near_far         : near,
+  near_dist        : 58.5 m,
+  file_name        : " ",
+  comment          : "Only for plot"
+)
+ 
+Cpl_F1_R1_R2_to_F2  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(R2_feed)),
+  movement_definition : ref(Move_Rotat_F2),
+  file_name        : " ",
+  comment          : "Coupling F1_R1_R2_to_F2"
+)
+ 
+Move_Rotat_F2  movement_definition  
+(
+  coor_sys_for_movements : ref(R2_cut_coor),
+  moved_coordinate_systems : sequence(ref(R2_feed_coor)),
+  movements        : sequence
+    (    struct(movement: rotation_around, axis: y_original, start: -5.0, end: 5.0, number: 101, length_unit: 
+m)
+    )
+)
+ 
+Move_Trans_F2  movement_definition  
+(
+  coor_sys_for_movements : ref(Global_coor),
+  moved_coordinate_systems : sequence(ref(R2_global_coor)),
+  movements        : sequence
+    (    struct(movement: translation_along, axis: x_new, start: -3.0, end: 3.0, number: 7, length_unit: m)
+    )
+)
+ 
+PO_screen  po_single_face_scatterer  
+(
+  frequency        : ref(Wavelengths),
+  scatterer        : ref(screen),
+  ray_output       : all,
+  coor_sys         : ref(R1_global_coor)
+)
+ 
+GTD_F1_R1_GOGTD  single_reflector_gtd  
+(
+  frequency        : ref(Wavelengths),
+  source           : ref(R1_feed),
+  reflector        : ref(R1_reflector),
+  gtd              : on,
+  ray_output       : all
+)
+ 
+Cpl_F1_R1_screen_R2_F2_GOGTD  coupling_system  
+(
+  frequency        : ref(Wavelengths),
+  receiver_sources : sequence(ref(GTD_F2_R2_GOGTD_alt)),
+  movement_definition : ref(Move_Trans_F2),
+  file_name        : " ",
+  comment          : "Coupling F1_R1_screen_R2_F2_GOGTD"
+)
+ 
+GTD_F2_R2_GOGTD_alt  single_reflector_gtd  
+(
+  frequency        : ref(Wavelengths),
+  source           : ref(R2_feed_alt),
+  reflector        : ref(R2_reflector),
+  gtd              : on,
+  ray_output       : all
+)
+ 
+R2_feed_alt  fundamental_mode_circular_waveguide  
+(
+  frequency        : ref(Wavelengths),
+  coor_sys         : ref(R2_feed_coor_R1R2),
+  aperture_radius  : 1.3 m,
+  polarisation     : linear_y
+)
+ 
+screen  rectangular_plate  
+(
+  coor_sys         : ref(Global_coor),
+  corner_1         : struct(x: 0.0 m, y: -22.5 m, z: 12.625 m),
+  corner_2         : struct(x: 0.0 m, y: 22.5 m, z: 12.625 m),
+  opp_point        : struct(x: 0.0 m, y: 0.0 m, z: -2.375 m)
+)
+ 
+R2_feed_coor_R1R2  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 50.0 m),
+  x_axis           : struct(x: -0.88235294117647, y: 0.0, z: -0.470588235294118),
+  y_axis           : struct(x: 0.0, y: 0.999999999999996, z: 0.0),
+  base             : ref(R2_global_coor)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(reflector_plot_for_view_1),ref(feed_plot_for_view_1),ref(plot_feed_as_conical_horn),
+ref(plate_plot_for_view_1)),
+  hidden_objects   : sequence(ref(R1_global_coor),ref(R2_global_coor))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2),
+  spherical_mode_sphere : on,
+  rayleigh_sphere  : on
+)
+ 
+plot_feed_as_conical_horn  plot_feed_as_conical_horn  
+(
+  objects          : sequence(ref(R1_feed),ref(R2_feed)),
+  radius_front     : 1.3 m,
+  radius_middle    : 0.5 m,
+  radius_back      : 0.5 m,
+  length_front     : 4.0 m,
+  length_back      : 2.0 m
+)
+ 
+plate_plot_for_view_1  plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+ //$$ Saved at 10:29:27 on 05.10.2022 by TICRA Tools 22.1 SN=009627
+  

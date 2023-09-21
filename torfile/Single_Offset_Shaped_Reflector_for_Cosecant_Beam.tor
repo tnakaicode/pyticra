@@ -1,0 +1,245 @@
+Frequency  frequency  
+(
+  frequency_list   : sequence(12.0 GHz)
+)
+ 
+Dia  real_variable  
+(
+  value            : 1.0
+)
+ 
+FL  real_variable  
+(
+  value            : 0.5
+)
+ 
+FT  real_variable  
+(
+  value            : -18.0
+)
+ 
+RC  real_variable  
+(
+  value            : 0.8
+)
+ 
+Global_coor_sys  coor_sys  
+(
+)
+ 
+Reflector_rim_coor_sys  coor_sys  
+(
+  origin           : struct(x: "ref(RC)" m, y: 0.0 m, z: 0.0 m),
+  base             : ref(Global_coor_sys)
+)
+ 
+Feed_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(FL)" m),
+  x_axis           : struct(x: "cosd(2*atand(ref(RC)/(2*ref(FL))))", y: 0.0, z: 
+"sind(2*atand(ref(RC)/(2*ref(FL))))"),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(Global_coor_sys)
+)
+ 
+Initial_Paraboloid  paraboloid  
+(
+  focal_length     : "ref(FL)" m,
+  vertex           : struct(x: "-ref(RC)" m, y: 0.0 m, z: 0.0 m)
+)
+ 
+Rim  elliptical_rim  
+(
+  half_axis        : struct(x: "ref(Dia)/2" m, y: "ref(Dia)/2" m)
+)
+ 
+Reflector  reflector  
+(
+  coor_sys         : ref(Reflector_rim_coor_sys),
+  surfaces         : sequence(ref(Initial_Paraboloid)),
+  rim              : ref(Rim),
+  distortions      : sequence(ref(Spline_Surface_8by8))
+)
+ 
+FTA  real_variable  
+(
+  value            : 35.73
+)
+ 
+Feed  gaussian_beam_pattern  
+(
+  frequency        : ref(Frequency),
+  coor_sys         : ref(Feed_Pos_Opt_coor_sys),
+  taper_angle      : "ref(FTA)",
+  taper            : "ref(FT)"
+)
+ 
+Spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(Global_coor_sys),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2)
+)
+ 
+PO  po_single_face_scatterer  
+(
+  frequency        : ref(Frequency),
+  scatterer        : ref(Reflector),
+  po_points        : struct(po1: 110, po2: 300),
+  ptd_points       : sequence
+    (    struct(edge: -1, ptd: 300)
+    ),
+  coor_sys         : ref(Global_coor_sys),
+  file_name        : " "
+)
+ 
+Feed_shift_x  real_variable  
+(
+  value            : 0.0
+)
+ 
+Feed_shift_z  real_variable  
+(
+  value            : 0.0
+)
+ 
+Feed_Pos_Opt_coor_sys  coor_sys  
+(
+  origin           : struct(x: "ref(Feed_shift_x)" m, y: 0.0 m, z: "ref(Feed_shift_z)" m),
+  base             : ref(Feed_coor_sys)
+)
+ 
+Spline_Surface_8by8  spline_surface  
+(
+  file_name        : Spline_Surface_8by8.spl,
+  new_no_coef      : struct(nx: 8, ny: 8),
+  new_range        : struct(new_values: on, x_start: -0.6, y_start: -0.6, x_end: 0.6, y_end: 0.6, unit: m),
+  symmetric        : on
+)
+ 
+Spline_Coefficients_8by8  bulk_optimisation_variables_reflector_shaping  
+(
+  target           : ref(Reflector),
+  initialise_reflector_shape : struct(initialisation_type: use_initial_shaped_surface, 
+initial_shaped_surface: ref(Initial_Defocusing))
+)
+ 
+pattern_template  piecewise_lin_pattern_template  
+(
+  template         : table
+    (
+     -5.00000E+01   -2.00000E+01  
+     -3.00000E+01    2.70000E+01  
+      0.00000E+00    2.40000E+01  
+      3.00000E+01    2.10000E+01  
+      5.00000E+01   -2.00000E+01  
+    )
+)
+ 
+Pattern_Template_Goal  goal_far_field_pattern_template_in_cut  
+(
+  source           : sequence(ref(PO)),
+  coor_sys         : ref(Global_coor_sys),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, component: linear_x, template: ref(pattern_template), 
+phi: 0.0, weight: 1.0, action: maximise)
+    ),
+  theta_resolution : 0.2
+)
+ 
+Initial_Defocusing  initial_shaped_surface  
+(
+  far_field_ellipse : struct(u_centre: 0.0, v_centre: 0.0, first_axis: "-sind(30)", second_axis: "-sind(0.1)"
+, rotation: 0.0),
+  parent_paraboloid : struct(x_centre: 0.0 m, y_centre: 0.0 m, diameter: 1.0 m, focal_length: 0.5 m)
+)
+ 
+OSLS_setting  onesided_lsq_settings  
+(
+  deriv_approx_delta : 0.1E-02
+)
+ 
+Optimisation_OSLS  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_variables_default_01),ref(Spline_Coefficients_8by8)),
+  goals            : sequence
+    (    struct(goal: ref(Pattern_Template_Goal), weight: 1.0)
+    ),
+  optimisation_settings : ref(OSLS_setting),
+  object_func_analysis : PO_Eval_Optimization
+)
+ 
+optimisation_manager_variables_default_01  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(Feed_shift_x), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(Feed_shift_z), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100)
+    )
+)
+ 
+Optimisation_MinMax  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_01_variables_default_01),ref(Spline_Coefficients_8by8))
+,
+  goals            : sequence
+    (    struct(goal: ref(Pattern_Template_Goal), weight: 1.0)
+    ),
+  optimisation_settings : ref(MinMax_settings),
+  object_func_analysis : PO_Eval_Optimization
+)
+ 
+MinMax_settings  minmax_settings  
+(
+  max_iterations   : 300,
+  deriv_approx_delta : 0.1E-02
+)
+ 
+optimisation_manager_01_variables_default_01  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(Feed_shift_x), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100),
+    struct(variable_object: ref(Feed_shift_z), min_enabled: off, min: -0.1E+100, max_enabled: off, max: 
+0.1E+100)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(reflector_plot_for_view_1),
+ref(feed_plot_for_view_1),ref(output_points_plot_for_view_1),ref(rays_from_point_sources))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  objects          : sequence(ref(Feed)),
+  theta_range      : struct(start: -40.0, end: 25.0, np: 20),
+  ray_path_range   : struct(start: 0.0 m, end: 2.0 m)
+)
+ 
+ //$$ Saved at 17:45:09 on 25.04.2023 by TICRA Tools 23.0 SN=010211
+  

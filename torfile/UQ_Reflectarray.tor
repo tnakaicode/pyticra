@@ -1,0 +1,193 @@
+// ///////////////////////////////////////////////////////////////////////
+// SAMPLE 1
+// ///////////////////////////////////////////////////////////////////////
+frequency  frequency  
+(
+  frequency_list   : sequence(9.6 GHz)
+)
+ 
+// ///////////////////////////////////////////////////////////////////////
+// COORDINATE SYSTEMS
+// ///////////////////////////////////////////////////////////////////////
+global_coor_sys  coor_sys  
+(
+)
+ 
+plate_coorsys  coor_sys  
+(
+  base             : ref(global_coor_sys)
+)
+ 
+feed_coorsys  coor_sys  
+(
+  origin           : struct(x: 300.0 mm, y: 0.0 mm, z: 519.6152423 mm),
+  x_axis           : struct(x: 0.86602540379611, y: 0.0, z: -0.500000000006738),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor_sys)
+)
+ 
+peak_coorsys  coor_sys_grasp_angles  
+(
+  theta            : -30.0,
+  base             : ref(plate_coorsys)
+)
+ 
+Pmom  periodic_mom_layered_media  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(quasi_periodic_surface),
+  expansion_accuracy : enhanced,
+  analysis_method  : read_database,
+  database_file    : puc.pdb,
+  coor_sys         : ref(global_coor_sys),
+  file_name        : " "
+)
+ 
+spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(peak_coorsys),
+  theta_range      : struct(start: -90.0, end: 90.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 135.0, np: 4),
+  file_name        : p_mom_peak.cut
+)
+ 
+plane  plane  
+(
+)
+ 
+rectangular_rim  rectangular_rim  
+(
+  side_lengths     : struct(x: 435.0 mm, y: 435.0 mm)
+)
+ 
+pmom_settings_layered_media  periodic_mom_settings_layered_media  
+(
+  expansion_accuracy : enhanced
+)
+ 
+isotropic_dielectric  isotropic_dielectric  
+(
+  relative_permittivity : 3.66,
+  loss_tangent     : 0.37E-02
+)
+ 
+periodic_unit_cell_rectangular_patch  periodic_unit_cell_rectangular_patch  
+(
+  frequency        : ref(frequency),
+  unit_cell_size   : struct(x: 0.135E-01 m, y: 0.135E-01 m, skew_angle: 90.0, baseline: x),
+  element_parameters : sequence
+    (    struct(lx: 10.0 mm, ly: 10.0 mm, y_x_ratio: 1.0, rotation: 0.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: 0.762 mm, substrate: ref(isotropic_dielectric), el_par_index: 0)
+    ),
+  analysis_settings : ref(pmom_settings_layered_media)
+)
+ 
+quasi_periodic_surface  quasi_periodic_surface  
+(
+  periodic_unit_cell : ref(periodic_unit_cell_rectangular_patch),
+  coor_sys         : ref(plate_coorsys),
+  rim              : ref(rectangular_rim),
+  surface          : ref(plane),
+  elements_table_input_file : rect_patch_elements_table_input.eta,
+  grid_origin_x    : -209.25 mm,
+  grid_origin_y    : -209.25 mm
+)
+ 
+gaussian_beam_pattern  gaussian_beam_pattern  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(feed_coorsys),
+  taper_angle      : 30.0,
+  taper            : -12.0
+)
+ 
+uq_manager  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut)),
+  object_func_analysis : get_cur,
+  variables        : sequence(ref(bulk_uq_variables_qps)),
+  uq_settings      : ref(uq_setting_01)
+)
+ 
+bulk_uq_variables_qps  bulk_uq_variables_qps  
+(
+  target_scatterer : ref(quasi_periodic_surface),
+  uq_variables     : sequence
+    (    struct(parameter: lx, uq_parameter: yes, limits_unit: mm, el_par_index: 1, distribution: 
+ref(uniform_distribution), uncertainty_format: deviation_absolute),
+    struct(parameter: ly, uq_parameter: no, limits_unit: mm, el_par_index: 1, distribution: 
+ref(uniform_distribution), uncertainty_format: deviation_absolute),
+    struct(parameter: rotation, uq_parameter: no, limits_unit: deg, el_par_index: 1, distribution: ref(), 
+uncertainty_format: deviation_absolute)
+    )
+)
+ 
+uniform_distribution  uniform_distribution  
+(
+  a                : -0.1,
+  b                : 0.1
+)
+ 
+uq_setting  sc_settings  
+(
+)
+ 
+owu_far_field_spherical_cut  owu_far_field_spherical_cut  
+(
+  sources          : sequence(ref(gaussian_beam_pattern),ref(Pmom)),
+  coor_sys         : ref(peak_coorsys),
+  theta_range      : struct(start: -90.0, end: 90.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 135.0, np: 4)
+)
+ 
+uq_setting_01  mc_settings  
+(
+  max_iterations   : 100
+)
+ 
+uq_setting_02  pce_settings  
+(
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(feed_plot_for_view_1),ref(coor_sys_plot_for_view_1),
+ref(output_points_plot_for_view_1),ref(quasi_periodic_surface_plot_for_view_1)),
+  hidden_objects   : sequence(ref(feed_coorsys),ref(plate_coorsys))
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+quasi_periodic_surface_plot_for_view_1  quasi_periodic_surface_plot  
+(
+)
+ 
+puc_plot  puc_plot  
+(
+  objects          : sequence(ref(periodic_unit_cell_rectangular_patch))
+)
+ 
+puc_view  puc_view  
+(
+  objects          : sequence(ref(puc_plot))
+)
+ 
+ //$$ Saved at 11:14:26 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+  

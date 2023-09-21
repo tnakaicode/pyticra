@@ -1,0 +1,282 @@
+FL  real_variable  
+(
+  value            : 120.0
+)
+ 
+Global_coor  coor_sys  
+(
+)
+ 
+Frequency  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+Feed_coor  coor_sys_grasp_angles  
+(
+  origin           : struct(x: -60.0 mm, y: 0.0 m, z: "ref(FL)" mm),
+  theta            : "180-atand(60/120)",
+  psi              : 180.0,
+  base             : ref(Global_coor)
+)
+ 
+single_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(Frequency),
+  coor_sys         : ref(Feed_coor),
+  taper_angle      : "ref(taper_angle)",
+  taper            : "ref(taper)"
+)
+ 
+Cut_coor  coor_sys_grasp_angles  
+(
+  theta            : "atand(60/120)",
+  base             : ref(Global_coor)
+)
+ 
+single_cut  spherical_cut  
+(
+  coor_sys         : ref(Cut_coor),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 161),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(Frequency)
+)
+ 
+Reflectarray_rim  rectangular_rim  
+(
+  side_lengths     : struct(x: 120.0 mm, y: 120.0 mm)
+)
+ 
+DxDy  real_variable  
+(
+  value            : 5.0
+)
+ 
+a  real_variable  
+(
+  value            : 1.0
+)
+ 
+h  real_variable  
+(
+  value            : 6.3
+)
+ 
+Outer_rim  rectangular_rim  
+(
+  side_lengths     : struct(x: "ref(DxDy)" mm, y: "ref(DxDy)" mm)
+)
+ 
+Inner_rim  rectangular_rim  
+(
+  side_lengths     : struct(x: "ref(a)" mm, y: "ref(b)" mm)
+)
+ 
+top_dielectric_plate  arbitrary_plate  
+(
+  coor_sys         : ref(Global_coor),
+  rim              : ref(Outer_rim),
+  holes            : sequence(ref(Inner_rim))
+)
+ 
+resonator  box  
+(
+  coor_sys         : ref(Global_coor),
+  x_length         : "ref(a)" mm,
+  y_length         : "ref(b)" mm,
+  z_length         : "ref(h)" mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: "ref(h)/2" mm),
+  exclude_faces    : sequence(z_min)
+)
+ 
+Rectangular_Resonator  composite_mom_scatterer  
+(
+  regions          : table
+    (
+        1    4.40000E+00    1.00000E+00    0.00000E+00    0.00000E+00  
+    ),
+  geometrical_parts : sequence
+    (    struct(scatterer: ref(top_dielectric_plate), region_1: 0, region_2: 1, zs_real: -1.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(ground), region_1: 0, region_2: 1, zs_real: 0.0, zs_imag: 0.0, local_properties: 
+none),
+    struct(scatterer: ref(resonator), region_1: 0, region_2: 1, zs_real: -1.0, zs_imag: 0.0, 
+local_properties: none)
+    )
+)
+ 
+PMoM_3D_PUC  periodic_mom_settings_3d_elements  
+(
+  max_mesh_length  : 0.7,
+  expansion_accuracy : high
+)
+ 
+Rectangular_Resonator_PUC  periodic_unit_cell_3d_scatterer  
+(
+  frequency        : ref(Frequency),
+  unit_cell_size   : struct(x: "ref(DxDy)" mm, y: "ref(DxDy)" mm, skew_angle: 90.0, baseline: x),
+  scatterer        : ref(Rectangular_Resonator),
+  refl_region      : 0,
+  trans_region     : 0,
+  parameters       : sequence(ref(a)),
+  analysis_settings : ref(PMoM_3D_PUC)
+)
+ 
+plane  plane  
+(
+)
+ 
+PMoM  periodic_mom_3d_elements  
+(
+  frequency        : ref(Frequency),
+  scatterer        : ref(Reflectarray),
+  expansion_accuracy : high,
+  max_mesh_length  : 0.7,
+  coor_sys         : ref(Global_coor),
+  database_file    : puc_3D.pdb
+)
+ 
+optimisation_manager  optimisation_manager  
+(
+  variables        : sequence(ref(bulk_optimisation_variables_qps),ref(optimisation_manager_variables_default)
+),
+  goals            : sequence
+    (    struct(goal: ref(goal_far_field_specific_direction), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting_02),
+  object_func_analysis : f_Optimisation_eval
+)
+ 
+bulk_optimisation_variables_qps  bulk_optimisation_variables_qps  
+(
+  target_scatterer : ref(Reflectarray),
+  optimisation_variables : sequence
+    (    struct(parameter: a, optimise_parameter: yes, min: 0.5, min_enabled: yes, max: 4.5, max_enabled: yes
+, limits_unit: " ", el_par_index: 1, knot_spacing: 0.0 m)
+    )
+)
+ 
+optimisation_setting  onesided_lsq_settings  
+(
+)
+ 
+goal_far_field_specific_direction  goal_far_field_specific_direction  
+(
+  source           : sequence(ref(PMoM),ref(single_feed)),
+  coor_sys         : ref(Cut_coor),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, coor_1: 0.0, coor_2: 0.0, component: linear_x, goal: 30.0
+, weight: 1.0, action: maximise)
+    )
+)
+ 
+optimisation_setting_01  mcs_settings  
+(
+)
+ 
+optimisation_setting_02  minmax_settings  
+(
+  max_iterations   : 600
+)
+ 
+Reflectarray  quasi_periodic_surface  
+(
+  periodic_unit_cell : ref(Rectangular_Resonator_PUC),
+  coor_sys         : ref(Global_coor),
+  rim              : ref(Reflectarray_rim),
+  surface          : ref(plane)
+)
+ 
+b  real_variable  
+(
+  value            : 4.2
+)
+ 
+ground  rectangular_plate  
+(
+  coor_sys         : ref(Global_coor),
+  corner_1         : struct(x: "ref(DxDy)*0.5" mm, y: "ref(DxDy)*0.5" mm, z: -0.2 mm),
+  corner_2         : struct(x: "-ref(DxDy)*0.5" mm, y: "ref(DxDy)*0.5" mm, z: -0.2 mm),
+  opp_point        : struct(x: "-ref(DxDy)*0.5" mm, y: "-ref(DxDy)*0.5" mm, z: -0.2 mm)
+)
+ 
+taper_angle  real_variable  
+(
+  value            : 12.311576412087
+)
+ 
+taper  real_variable  
+(
+  value            : -3.0
+)
+ 
+optimisation_manager_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(taper_angle), min_enabled: on, min: 7.0, max_enabled: on, max: 15.0)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+puc_plot  puc_plot  
+(
+  objects          : sequence(ref(Rectangular_Resonator_PUC)),
+  puc_view_type    : analysis_mesh
+)
+ 
+puc_view  puc_view  
+(
+  objects          : sequence(ref(puc_plot))
+)
+ 
+view_1  view  
+(
+  objects          : sequence(ref(output_points_plot_for_view_1),ref(quasi_periodic_surface_plot_for_view_1),
+ref(coor_sys_plot_for_view_1),ref(arbitrary_plate_plot_for_view_1),ref(box_plot_for_view_1),
+ref(feed_plot_for_view_1),ref(plate_plot_for_view_1)),
+  show_hide        : struct(reflectors: hide, coordinate_systems: show, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: hide, wires: hide, 
+radiating_devices: hide, mom_meshes: hide, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, rooftop_mirrors: hide, loads: hide, bors: 
+hide, mom_sources: hide, quasi_periodic_surfaces: show, ellipsoids: hide)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+quasi_periodic_surface_plot_for_view_1  quasi_periodic_surface_plot  
+(
+  show_unit_cell   : on,
+  element_visualisation : actual_accurate
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+arbitrary_plate_plot_for_view_1  arbitrary_plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+box_plot_for_view_1  box_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+plate_plot_for_view_1  plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+ //$$ Saved at 11:30:52 on 08.06.2023 by TICRA Tools 23.0 SN=010211
+  

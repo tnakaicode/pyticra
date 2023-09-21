@@ -1,0 +1,206 @@
+global_coor  coor_sys  
+(
+)
+ 
+feed_on_axis_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 36.92091217 cm),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  base             : ref(global_on_axis_coor)
+)
+ 
+off_axis_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_off_axis_coor),
+  taper_angle      : 15.0,
+  taper            : -12.0
+)
+ 
+frequencies  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+off_axis_cut  spherical_cut  
+(
+  coor_sys         : ref(cut_off_axis_coor),
+  theta_range      : struct(start: -20.0, end: 20.0, np: 1001),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  file_name        : " ",
+  frequency        : ref(frequencies)
+)
+ 
+feed_off_axis_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 36.92091217 cm),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  base             : ref(global_off_axis_coor)
+)
+ 
+sub_reflector  tabulated_circ_sym_reflector  
+(
+  coor_sys         : ref(global_coor),
+  file_name        : sub.rsf,
+  r_unit           : cm,
+  z_unit           : cm,
+  tip              : on
+)
+ 
+main_reflector  tabulated_circ_sym_reflector  
+(
+  coor_sys         : ref(global_coor),
+  file_name        : main.rsf,
+  r_unit           : cm,
+  z_unit           : cm,
+  tip              : on
+)
+ 
+bor_mom_main_sub  bor_mom  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(scatterer_cluster),
+  max_mesh_length  : 1.0,
+  expansion_accuracy : Enhanced,
+  file_name        : " ",
+  colour_plot_file : " "
+)
+ 
+scatterer_cluster  scatterer_cluster  
+(
+  scatterers       : sequence(ref(main_reflector),ref(sub_reflector))
+)
+ 
+cut_off_axis_coor  coor_sys  
+(
+  x_axis           : struct(x: 0.999538905588961, y: 0.0, z: 0.303640612241364E-01),
+  y_axis           : struct(x: 0.0, y: 0.999999999999999, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+on_axis_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(frequencies),
+  coor_sys         : ref(feed_on_axis_coor),
+  taper_angle      : 15.0,
+  taper            : -12.0
+)
+ 
+cut_on_axis_coor  coor_sys  
+(
+  y_axis           : struct(x: 0.0, y: 0.999999999999999, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+on_axis_cut  spherical_cut  
+(
+  coor_sys         : ref(cut_on_axis_coor),
+  theta_range      : struct(start: -20.0, end: 20.0, np: 1001),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(frequencies)
+)
+ 
+off_axis_sub_po  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(sub_reflector),
+  spill_over       : on
+)
+ 
+off_axis_main_po  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(main_reflector),
+  spill_over       : on
+)
+ 
+on_axis_main_po  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(main_reflector),
+  spill_over       : on
+)
+ 
+on_axis_sub_po  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(sub_reflector),
+  spill_over       : on
+)
+ 
+off_axis_sub_po_2  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(sub_reflector),
+  spill_over       : on
+)
+ 
+on_axis_sub_po_2  po_multi_face_scatterer  
+(
+  frequency        : ref(frequencies),
+  scatterer        : ref(sub_reflector),
+  spill_over       : on
+)
+ 
+global_off_axis_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm),
+  x_axis           : struct(x: 0.989776230907789, y: 0.0, z: 0.142628933705512),
+  base             : ref(global_on_axis_coor)
+)
+ 
+global_on_axis_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_feed_plot),ref(view_1_output_points_plot),
+ref(rays_from_point_sources),ref(view_1_bor_plot),ref(view_1_mom_plot),ref(rays_from_point_sources_01))
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  objects          : sequence(ref(off_axis_feed)),
+  theta_range      : struct(start: -12.0, end: 12.0, np: 20),
+  ray_path_range   : struct(start: 0.0 cm, end: 1000.0 mm),
+  colour_shifts    : -12
+)
+ 
+view_1_bor_plot  bor_plot  
+(
+)
+ 
+view_1_mom_plot  mom_plot  
+(
+)
+ 
+rays_from_point_sources_01  rays_from_point_sources  
+(
+  objects          : sequence(ref(on_axis_feed)),
+  theta_range      : struct(start: -12.0, end: 12.0, np: 20),
+  ray_path_range   : struct(start: 0.0 m, end: 1.0 m),
+  colour_shifts    : -9
+)
+ 
+ //$$ Saved at 13:35:22 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

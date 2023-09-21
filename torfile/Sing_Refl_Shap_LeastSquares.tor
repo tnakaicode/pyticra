@@ -1,0 +1,171 @@
+global_coor  coor_sys  
+(
+)
+ 
+initial_defocusing  initial_shaped_surface  
+(
+  far_field_ellipse : struct(u_centre: 0.4E-01, v_centre: -0.1E-01, first_axis: 0.12, second_axis: 0.75E-01, 
+rotation: 0.0),
+  parent_paraboloid : struct(x_centre: 0.0 mm, y_centre: 0.0 mm, diameter: 1000.0 mm, focal_length: 800.0 mm),
+  adjust_mean_value : on
+)
+ 
+pos_frequency  wavelength  
+(
+  wavelength_list  : sequence(25.0 mm)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 800.0 mm),
+  x_axis           : struct(x: 0.78865, y: 0.0, z: 0.61485),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+rot_feed_coor  tabulated_coor_sys  
+(
+  file_name        : feed_coor.cor,
+  base             : ref(feed_coor)
+)
+ 
+elem_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(pos_frequency),
+  coor_sys         : ref(rot_feed_coor),
+  taper_angle      : 31.48,
+  taper            : -18.0
+)
+ 
+pos_po  po_single_face_scatterer  
+(
+  frequency        : ref(pos_frequency),
+  scatterer        : ref(pos_reflector),
+  po_points        : struct(po1: 60, po2: 140)
+)
+ 
+pos_reflector  reflector  
+(
+  coor_sys         : ref(main_ref_coor),
+  surfaces         : sequence(ref(initial_paraboloid)),
+  rim              : ref(circle),
+  distortions      : sequence(ref(spline_shaping))
+)
+ 
+main_ref_coor  tabulated_coor_sys  
+(
+  file_name        : main_coor.cor,
+  base             : ref(global_coor)
+)
+ 
+initial_paraboloid  paraboloid  
+(
+  focal_length     : 800.0 mm,
+  vertex           : struct(x: -550.0 mm, y: 0.0 mm, z: 0.0 mm)
+)
+ 
+circle  elliptical_rim  
+(
+  half_axis        : struct(x: 500.0 mm, y: 500.0 mm)
+)
+ 
+stat_coor_sys  coor_sys  
+(
+  origin           : struct(x: 550.0 mm, y: 0.0 mm, z: 94.53125 mm)
+)
+ 
+spline_shaping  spline_surface  
+(
+  file_name        : Reflector.spl,
+  xy_unit          : mm,
+  coef_unit        : mm,
+  new_no_coef      : struct(nx: 8, ny: 8)
+)
+ 
+minmax_manager  optimisation_manager  
+(
+  variables        : sequence(ref(bulk_optimisation_variables_reflector_shaping)),
+  goals            : sequence
+    (    struct(goal: ref(Goals_NorthAmerica), weight: 1.0)
+    ),
+  optimisation_settings : ref(Minmax_setting),
+  object_func_analysis : Get_Curr
+)
+ 
+bulk_optimisation_variables_reflector_shaping  bulk_optimisation_variables_reflector_shaping  
+(
+  target           : ref(pos_reflector),
+  initialise_reflector_shape : struct(initialisation_type: use_initial_shaped_surface, 
+initial_shaped_surface: ref(initial_defocusing)),
+  curvature_constraints : struct(on_off: off, min_radius: 3.0 m, type: principal_curvature),
+  z_constraints    : struct(on_off: off, z_min: 5.0 m, z_max: 5.0 m, type: distortion)
+)
+ 
+Goals_NorthAmerica  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(pos_po)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmericaHawaii.sta, partition: 1)
+)
+ 
+Minmax_setting  minmax_settings  
+(
+)
+ 
+OSLSq_manager  optimisation_manager  
+(
+  variables        : sequence(ref(bulk_optimisation_variables_reflector_shaping)),
+  goals            : sequence
+    (    struct(goal: ref(Goals_NorthAmerica), weight: 1.0),
+    struct(goal: ref(Goals_Hawaii), weight: 1.0)
+    ),
+  optimisation_settings : ref(OSLSq_setting),
+  object_func_analysis : Get_Curr
+)
+ 
+OSLSq_setting  onesided_lsq_settings  
+(
+)
+ 
+spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(stat_coor_sys),
+  x_range          : struct(start: -0.2, end: 0.2, np: 101),
+  y_range          : struct(start: -0.2, end: 0.2, np: 101)
+)
+ 
+Goals_Hawaii  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(pos_po)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmericaHawaii.sta, partition: 2)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_feed_plot),ref(view_1_reflector_plot),
+ref(output_points_plot_for_view_1))
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 09:32:46 on 28.04.2023 by TICRA Tools 23.0 SN=010211
+  

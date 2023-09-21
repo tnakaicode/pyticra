@@ -1,0 +1,348 @@
+frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 7.5 GHz, end_frequency: 8.5 GHz, number_of_frequencies: 3)
+)
+ 
+axial_design_wl  real_variable  
+(
+  value            : 0.382713776186498E-01
+)
+ 
+axial_slot_width  real_variable  
+(
+  value            : "0.1*ref(axial_design_wl)"
+)
+ 
+axial_ridge_thickness  real_variable  
+(
+  value            : "0.025*ref(axial_design_wl)"
+)
+ 
+axial_axial_distance  real_variable  
+(
+  value            : "ref(axial_slot_width)+ref(axial_ridge_thickness)"
+)
+ 
+axial_ridge_thickness1  real_variable  
+(
+  value            : "ref(axial_ridge_thickness)"
+)
+ 
+axial_slot_width1  real_variable  
+(
+  value            : "ref(axial_slot_width)"
+)
+ 
+axial_axial_distance1  real_variable  
+(
+  value            : "ref(axial_axial_distance)"
+)
+ 
+axial_input_radius1  real_variable  
+(
+  value            : "3*ref(axial_design_wl)/(2*3.14159)+ref(input_radius1_tolerance)"
+)
+ 
+axial_slot_depth1  real_variable  
+(
+  value            : 
+"ref(axial_design_wl)/4*exp(1/(2.114*(2*3.14159*ref(axial_input_radius1)/ref(axial_design_wl))^1.134))"
+)
+ 
+axial_axial_corrugation1  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(axial_input_radius1)" m,
+  slot_width       : "ref(axial_slot_width1)+ref(slot_width_tolerance)" m,
+  slot_depth       : "ref(axial_slot_depth1)+ref(slot_depth_tolerance)" m,
+  ridge_thickness  : "ref(axial_ridge_thickness1)" m,
+  axial_distance   : "ref(axial_axial_distance1)" m,
+  number_of_axial_slots : 1
+)
+ 
+axial_ridge_thickness2  real_variable  
+(
+  value            : "ref(axial_ridge_thickness)"
+)
+ 
+axial_slot_width2  real_variable  
+(
+  value            : "ref(axial_slot_width)"
+)
+ 
+axial_axial_distance2  real_variable  
+(
+  value            : "ref(axial_axial_distance)"
+)
+ 
+axial_input_radius2  real_variable  
+(
+  value            : "ref(axial_input_radius1)+ref(axial_ridge_thickness1)+ref(axial_slot_width1)"
+)
+ 
+axial_slot_depth2  real_variable  
+(
+  value            : 
+"ref(axial_design_wl)/4*exp(1/(2.114*(2*3.14159*ref(axial_input_radius2)/ref(axial_design_wl))^1.134))"
+)
+ 
+axial_axial_corrugation2  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(axial_input_radius2)+ref(slot_width_tolerance)" m,
+  slot_width       : "ref(axial_slot_width2)+ref(slot_width_tolerance)" m,
+  slot_depth       : "ref(axial_slot_depth2)+ref(slot_depth_tolerance)" m,
+  ridge_thickness  : "ref(axial_ridge_thickness2)" m,
+  axial_distance   : "ref(axial_axial_distance2)" m,
+  number_of_axial_slots : 1
+)
+ 
+axial_ridge_thickness3  real_variable  
+(
+  value            : "ref(axial_ridge_thickness)"
+)
+ 
+axial_slot_width3  real_variable  
+(
+  value            : "ref(axial_slot_width)"
+)
+ 
+axial_axial_distance3  real_variable  
+(
+  value            : "ref(axial_axial_distance)"
+)
+ 
+axial_input_radius3  real_variable  
+(
+  value            : "ref(axial_input_radius2)+ref(axial_ridge_thickness2)+ref(axial_slot_width2)"
+)
+ 
+axial_slot_depth3  real_variable  
+(
+  value            : 
+"ref(axial_design_wl)/4*exp(1/(2.114*(2*3.14159*ref(axial_input_radius3)/ref(axial_design_wl))^1.134))"
+)
+ 
+axial_axial_corrugation3  simple_axial_corrugated_section  
+(
+  input_radius     : "ref(axial_input_radius3)+2*ref(slot_width_tolerance)" m,
+  slot_width       : "ref(axial_slot_width3)+ref(slot_width_tolerance)" m,
+  slot_depth       : "ref(axial_slot_depth3)+ref(slot_depth_tolerance)" m,
+  ridge_thickness  : "ref(axial_ridge_thickness3)" m,
+  axial_distance   : "ref(axial_axial_distance3)" m,
+  number_of_axial_slots : 1
+)
+ 
+axial_circular_waveguide_section  circular_waveguide_section  
+(
+  radius           : "ref(axial_input_radius1)" m,
+  length           : "2*ref(axial_input_radius1)" m
+)
+ 
+axial_throat_port_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+axial_throat_port  circular_waveguide_port  
+(
+  radius           : "ref(axial_input_radius1)" m,
+  port_expansion_settings : ref(axial_throat_port_expansion_settings)
+)
+ 
+axial_aperture_port_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : -1,
+  m_max            : 1
+)
+ 
+axial_aperture_port  circular_waveguide_port  
+(
+  radius           : 
+"ref(axial_input_radius3)+ref(axial_ridge_thickness3)+ref(axial_slot_width3)+3*ref(slot_width_tolerance)" m,
+  port_expansion_settings : ref(axial_aperture_port_expansion_settings)
+)
+ 
+axial_combined_horn_section  combined_horn_section  
+(
+  horn_sections    : sequence(ref(axial_circular_waveguide_section),ref(axial_axial_corrugation1),
+ref(axial_axial_corrugation2),ref(axial_axial_corrugation3))
+)
+ 
+axial_mode_matching_settings  mode_matching_settings  
+(
+)
+ 
+axial_circular_symmetric_horn  circular_symmetric_horn  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(axial_throat_port),
+  port_2           : ref(axial_aperture_port),
+  horn_section     : ref(axial_combined_horn_section),
+  analysis_settings : ref(axial_mode_matching_settings),
+  device_library   : struct(max_elements: -1, max_size_mb: 100, allow_one: yes)
+)
+ 
+axial_circular_waveguide_mode  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+axial_circular_symmetric_horn_exterior  circular_symmetric_horn_exterior  
+(
+  nodes            : table
+    (
+      0.00000E+00  "ref(axial_input_radius3)+ref(axial_slot_width3)+2*ref(axial_ridge_thickness3)+3*ref(slot_width_tolerance)"  
+    "-3.0*ref(axial_axial_distance3)-1.5*ref(axial_slot_depth3)"  "ref(axial_input_radius3)+ref(axial_slot_width3)+2*ref(axial_ridge_thickness3)+3*ref(slot_width_tolerance)"  
+    )
+)
+ 
+axial_MoM_settings  mom_settings  
+(
+)
+ 
+axial_horn_aperture  circular_symmetric_aperture  
+(
+  frequency        : ref(frequency),
+  waveguide_port   : ref(axial_aperture_port),
+  exterior         : ref(axial_circular_symmetric_horn_exterior),
+  analysis_settings : ref(axial_MoM_settings)
+)
+ 
+axial_combined_device  combined_device  
+(
+  devices          : sequence(ref(axial_circular_symmetric_horn),ref(axial_horn_aperture)),
+  device_library   : struct(max_elements: -1, max_size_mb: 100, allow_one: yes)
+)
+ 
+axial_radiating_device  radiating_device  
+(
+  device           : ref(axial_combined_device),
+  port_excitation  : sequence
+    (    struct(port: ref(axial_throat_port), waveguide_mode: ref(axial_circular_waveguide_mode), amplitude: 
+1.0, phase: 0.0)
+    )
+)
+ 
+axial_Band1_cut  spherical_cut  
+(
+  theta_range      : struct(start: -180.0, end: 180.0, np: 761),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(frequency)
+)
+ 
+slot_depth_tolerance  real_variable  
+(
+  value            : 0.0
+)
+ 
+uq_manager  uq_manager  
+(
+  owu              : sequence(ref(owu_far_field_spherical_cut),ref(owu_scattering_parameter)),
+  variables        : sequence(ref(uq_manager_variables_default)),
+  uq_settings      : ref(uq_setting)
+)
+ 
+uq_manager_variables_default  real_uq_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(slot_depth_tolerance), distribution: ref(uniform_distribution_0p1mm), 
+uncertainty_format: deviation_absolute),
+    struct(variable_object: ref(slot_width_tolerance), distribution: ref(uniform_distribution_0p5mm), 
+uncertainty_format: deviation_absolute),
+    struct(variable_object: ref(input_radius1_tolerance), distribution: ref(uniform_distribution_0p1mm), 
+uncertainty_format: deviation_absolute)
+    )
+)
+ 
+uniform_distribution_1mm  uniform_distribution  
+(
+  a                : -0.1E-02,
+  b                : 0.1E-02
+)
+ 
+uq_setting  sc_settings  
+(
+)
+ 
+owu_far_field_spherical_cut  owu_far_field_spherical_cut  
+(
+  sources          : sequence(ref(axial_radiating_device)),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 761),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3)
+)
+ 
+owu_scattering_parameter  owu_scattering_parameter  
+(
+  device           : ref(axial_combined_device),
+  uncert_spec      : sequence
+    (    struct(frequency_index: -1, input_port: ref(axial_throat_port), input_mode: 
+ref(axial_circular_waveguide_mode), output_port: ref(axial_throat_port), output_mode: 
+ref(axial_circular_waveguide_mode), type: amplitude)
+    )
+)
+ 
+slot_width_tolerance  real_variable  
+(
+  value            : 0.0
+)
+ 
+uq_setting_01  pce_settings  
+(
+)
+ 
+uniform_distribution_0p5mm  uniform_distribution  
+(
+  a                : -0.5E-03,
+  b                : 0.5E-03
+)
+ 
+input_radius1_tolerance  real_variable  
+(
+  value            : 0.0
+)
+ 
+uniform_distribution_0p1mm  uniform_distribution  
+(
+  a                : -0.1E-03,
+  b                : 0.1E-03
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+device_plot  device_plot  
+(
+  objects          : sequence(ref(axial_combined_device)),
+  root_device      : ref(axial_combined_device)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot)),
+  dimension        : 2D
+)
+ 
+view_1  view  
+(
+  objects          : sequence(ref(radiating_device_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(bor_plot_for_view_1))
+)
+ 
+radiating_device_plot_for_view_1  radiating_device_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+ //$$ Saved at 09:13:03 on 15.05.2023 by TICRA Tools 23.0 SN=010211
+  

@@ -1,0 +1,243 @@
+Frequency  frequency  
+(
+  frequency_list   : sequence(13.0 GHz)
+)
+ 
+Global_Coor  coor_sys  
+(
+)
+ 
+Main_Reflector  reflector  
+(
+  coor_sys         : ref(Global_Coor),
+  surfaces         : sequence(ref(Main_Refl_Surf)),
+  rim              : ref(Main_Refl_Rim)
+)
+ 
+Main_Refl_Surf  paraboloid  
+(
+  focal_length     : 33.0 m
+)
+ 
+Main_Refl_Rim  rectangular_rim  
+(
+  centre           : struct(x: -39.0 m, y: 0.0 m),
+  side_lengths     : struct(x: 10.0 m, y: 7.0 m)
+)
+ 
+Sub_Reflector  reflector  
+(
+  coor_sys         : ref(Coor_Sys_Subrefl),
+  surfaces         : sequence(ref(Sub_Refl_Surf)),
+  rim              : ref(Sub_Refl_Rim)
+)
+ 
+Coor_Sys_Subrefl  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 33.0 m),
+  x_axis           : struct(x: 0.31, y: 0.0, z: -0.95),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(Global_Coor)
+)
+ 
+Sub_Refl_Surf  hyperboloid  
+(
+  vertex_distance  : -22.0 m,
+  foci_distance    : 48.0 m
+)
+ 
+Sub_Refl_Rim  rectangular_rim  
+(
+  centre           : struct(x: 7.0 m, y: 0.0 m),
+  side_lengths     : struct(x: 9.0 m, y: 7.0 m)
+)
+ 
+Coor_Sys_Feed  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 48.0 m),
+  x_axis           : struct(x: 0.88, y: 0.0, z: 0.47),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(Coor_Sys_Subrefl)
+)
+ 
+gaussian_Feed  gaussian_beam_pattern  
+(
+  frequency        : ref(Frequency),
+  coor_sys         : ref(Coor_Sys_Feed),
+  taper_angle      : 12.0,
+  taper            : -3.0
+)
+ 
+Main_output_coor_sys  coor_sys  
+(
+  origin           : struct(x: -39.0 m, y: 0.0 m, z: 11.0 m)
+)
+ 
+cptr_center  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 16.0 m),
+  base             : ref(Main_output_coor_sys)
+)
+ 
+Wall1_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: 6.0 m, y: 5.0 m, z: 6.0 m),
+  corner_2         : struct(x: -6.0 m, y: 5.0 m, z: 6.0 m),
+  opp_point        : struct(x: -6.0 m, y: -5.0 m, z: 6.0 m)
+)
+ 
+Wall2_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -6.0 m, y: 5.0 m, z: 6.0 m),
+  corner_2         : struct(x: -6.0 m, y: 5.0 m, z: -6.0 m),
+  opp_point        : struct(x: -6.0 m, y: -5.0 m, z: 6.0 m)
+)
+ 
+Wall3_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -6.0 m, y: 5.0 m, z: -6.0 m),
+  corner_2         : struct(x: -11.093 m, y: 5.0 m, z: -6.0 m),
+  opp_point        : struct(x: -11.093 m, y: -5.0 m, z: -6.0 m)
+)
+ 
+Wall4_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -11.093 m, y: 5.0 m, z: -6.0 m),
+  corner_2         : struct(x: -11.093 m, y: 5.0 m, z: -14.0 m),
+  opp_point        : struct(x: -11.093 m, y: -5.0 m, z: -14.0 m)
+)
+ 
+Wall5_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -6.0 m, y: 5.0 m, z: -14.0 m),
+  corner_2         : struct(x: -11.093 m, y: 5.0 m, z: -14.0 m),
+  opp_point        : struct(x: -11.093 m, y: -5.0 m, z: -14.0 m)
+)
+ 
+Wall6_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -6.0 m, y: 5.0 m, z: -14.0 m),
+  corner_2         : struct(x: -6.0 m, y: 5.0 m, z: -20.0 m),
+  opp_point        : struct(x: -6.0 m, y: -5.0 m, z: -20.0 m)
+)
+ 
+Wall7_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: -6.0 m, y: 5.0 m, z: -20.0 m),
+  corner_2         : struct(x: 10.013 m, y: 5.0 m, z: -20.0 m),
+  opp_point        : struct(x: 10.013 m, y: -5.0 m, z: -20.0 m)
+)
+ 
+Wall8_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: 10.013 m, y: 5.0 m, z: -20.0 m),
+  corner_2         : struct(x: 10.013 m, y: 5.0 m, z: -4.0 m),
+  opp_point        : struct(x: 10.013 m, y: -5.0 m, z: -4.0 m)
+)
+ 
+Wall9_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: 10.013 m, y: 5.0 m, z: -4.0 m),
+  corner_2         : struct(x: 6.0 m, y: 5.0 m, z: -4.0 m),
+  opp_point        : struct(x: 6.0 m, y: -5.0 m, z: -4.0 m)
+)
+ 
+Wall10_plate  rectangular_plate  
+(
+  coor_sys         : ref(cptr_center),
+  corner_1         : struct(x: 6.0 m, y: 5.0 m, z: -4.0 m),
+  corner_2         : struct(x: 6.0 m, y: 5.0 m, z: 6.0 m),
+  opp_point        : struct(x: 6.0 m, y: -5.0 m, z: 6.0 m)
+)
+ 
+/*MULTI_GTD
+  */ plate_gtd  gtd_plate  
+(
+  plates           : sequence(ref(Wall1_plate),ref(Wall2_plate),ref(Wall3_plate),ref(Wall4_plate),
+ref(Wall5_plate),ref(Wall6_plate),ref(Wall7_plate),ref(Wall8_plate),ref(Wall9_plate),ref(Wall10_plate)),
+  diffraction      : struct(method: off, edge_index: -1, sample_points: 40, slope: on)
+)
+ 
+Reflector_gtd  gtd_reflector  
+(
+  reflectors       : sequence(ref(sub_reflector),ref(main_reflector)),
+  diffraction      : struct(method: automatic, edge_index: -1, sample_points: 40, max_diffraction_points: 4, 
+slope: on)
+)
+ 
+multi_gtd  multi_gtd  
+(
+  frequency        : ref(Frequency),
+  source           : ref(Gaussian_feed),
+  gtd_scatterers   : sequence(ref(reflector_gtd),ref(plate_gtd)),
+  combinations     : struct(type: all, from_order: 0, to_order: 2)
+)
+ 
+planar_cut  planar_cut  
+(
+  coor_sys         : ref(cptr_center),
+  rho_range        : struct(start: -2.2, end: 2.2, np: 221, rho_unit: m),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  file_name        : planar.cut
+)
+ 
+planar_cut_one_point  planar_cut  
+(
+  coor_sys         : ref(cptr_center),
+  rho_range        : struct(start: 0.0, end: 4.4, np: 1, rho_unit: m),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
+  file_name        : planar.cut
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(view_1_parallelogram_plot),ref(view_1_output_points_plot),ref(gtd_plot)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, radiating_devices: show, 
+mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: show, plane_waves: show, 
+dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: show, mom_sources: show)
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_parallelogram_plot  plate_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+gtd_plot  gtd_plot  
+(
+  field_points     : ref(planar_cut_one_point),
+  ray_path_range   : struct(start: 0.3 m, end: -38.0 m),
+  colour_shifts    : 8
+)
+ 
+ //$$ Saved at 15:44:32 on 02.04.2019 by TICRA Tools 19.0 SN=006398
+  

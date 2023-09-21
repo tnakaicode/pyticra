@@ -1,0 +1,141 @@
+single_design_focal_length  real_variable  
+(
+  value            : 0.6
+)
+ 
+single_design_offset  real_variable  
+(
+  value            : 0.6
+)
+ 
+single_design_reflector_diameter  real_variable  
+(
+  value            : 1.0
+)
+ 
+single_wizard_clearance  real_variable  
+(
+  value            : "ref(single_design_offset)-ref(single_design_reflector_diameter)/2.00"
+)
+ 
+single_design_feed_taper  real_variable  
+(
+  value            : -12.0
+)
+ 
+single_wizard_feed_taper_angle  real_variable  
+(
+  value            : 
+"atand((ref(single_design_offset)+ref(single_design_reflector_diameter)/2)/(2*ref(single_design_focal_length)))-atand((ref(single_design_offset)-ref(single_design_reflector_diameter)/2)/(2*ref(single_design_focal_length)))"
+)
+ 
+single_wizard_feed_tf  real_variable  
+(
+  value            : "2.0*atand(ref(single_design_offset)/(2.0*ref(single_design_focal_length)))"
+)
+ 
+single_wizard_z0  real_variable  
+(
+  value            : "ref(single_design_offset)^2.0/(4.0*ref(single_design_focal_length))"
+)
+ 
+single_global_coor  coor_sys  
+(
+)
+ 
+single_frequencies  frequency  
+(
+  frequency_list   : sequence(12.0 GHz)
+)
+ 
+single_surface  paraboloid  
+(
+  focal_length     : "ref(single_design_focal_length)" m
+)
+ 
+single_rim  elliptical_rim  
+(
+  centre           : struct(x: "ref(single_design_offset)" m, y: 0.0 in),
+  half_axis        : struct(x: "ref(single_design_reflector_diameter)/2.0" m, y: 
+"ref(single_design_reflector_diameter)/2.0" m)
+)
+ 
+single_reflector  reflector  
+(
+  coor_sys         : ref(single_global_coor),
+  surfaces         : sequence(ref(single_surface)),
+  rim              : ref(single_rim)
+)
+ 
+single_feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(single_design_focal_length)" m),
+  x_axis           : struct(x: "cosd(ref(single_wizard_feed_tf))", y: 0.0, z: 
+"sind(ref(single_wizard_feed_tf))"),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(single_global_coor)
+)
+ 
+single_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(single_frequencies),
+  coor_sys         : ref(single_feed_coor),
+  taper_angle      : "ref(single_wizard_feed_taper_angle)",
+  taper            : "ref(single_design_feed_taper)"
+)
+ 
+single_po  po_single_face_scatterer  
+(
+  frequency        : ref(single_frequencies),
+  scatterer        : ref(single_reflector),
+  coor_sys         : ref(single_global_coor)
+)
+ 
+single_cut_coor  coor_sys  
+(
+  origin           : struct(x: "ref(single_design_offset)" m, y: 0.0 m, z: "ref(single_wizard_z0)" m),
+  base             : ref(single_global_coor)
+)
+ 
+single_cut  spherical_cut  
+(
+  coor_sys         : ref(single_cut_coor),
+  theta_range      : struct(start: -7.15701779967802, end: 7.15701779967802, np: 161),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  frequency        : ref(single_frequencies)
+)
+ 
+parameter_sweep  auxiliary_functions  
+(
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(output_points_plot_for_view_1),
+ref(feed_plot_for_view_1),ref(reflector_plot_for_view_1))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+ //$$ Saved at 14:46:44 on 17.05.2022 by TICRA Tools 22.0 SN=009627
+  

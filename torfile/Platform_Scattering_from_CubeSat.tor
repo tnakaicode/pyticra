@@ -1,0 +1,195 @@
+frequency  frequency  
+(
+  frequency_list   : sequence(86.0 GHz)
+)
+ 
+MoM  mom  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(composite_mom_scatterer),
+  max_mesh_length  : 1.0,
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(circular_waveguide_port), coor_sys: ref(refl_feed_coor_sys), x: 0.0 m, y: 
+0.0 m, z: "-20-3-2.440535" mm, normal: Z-axis)
+    ),
+  file_name        : ""
+)
+ 
+global_coor_sys  coor_sys  
+(
+)
+ 
+refl_cut_coor_sys  coor_sys  
+(
+  origin           : struct(x: -0.44E-01 m, y: -0.26E-01 m, z: 0.1575 m),
+  x_axis           : struct(x: 0.0, y: -0.17364817766693, z: 0.984807753012208),
+  y_axis           : struct(x: 1.0, y: 0.0, z: 0.0)
+)
+ 
+refl_global_coor_sys  coor_sys  
+(
+  origin           : struct(x: -0.45E-01 m, y: 0.0 m, z: -0.25E-01 m),
+  base             : ref(refl_cut_coor_sys)
+)
+ 
+rim_refl  elliptical_rim  
+(
+  centre           : struct(x: 0.5E-01 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5E-01 m, y: 0.5E-01 m)
+)
+ 
+paraboloid  paraboloid  
+(
+  focal_length     : 0.25E-01 m
+)
+ 
+reflector  reflector  
+(
+  coor_sys         : ref(refl_global_coor_sys),
+  surfaces         : sequence(ref(paraboloid)),
+  rim              : ref(rim_refl)
+)
+ 
+refl_feed_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.25E-01 m),
+  x_axis           : struct(x: 0.0, y: 0.0, z: 0.999999999999999),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(refl_global_coor_sys)
+)
+ 
+cut_refl  spherical_cut  
+(
+  coor_sys         : ref(refl_cut_coor_sys),
+  theta_range      : struct(start: -30.0, end: 30.0, np: 301),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  polarisation     : circular
+)
+ 
+cad_file_feedHorn  cad_file  
+(
+  coor_sys         : ref(refl_feed_coor_sys),
+  file_name        : WBand_FeedHorn.stp,
+  tolerance        : 0.1E-02 m,
+  mom_material_regions : table
+    (
+    ),
+  mom_material_parts : table
+    (
+    )
+)
+ 
+TE11_x  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+TE11_y  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1,
+  mode_set         : 2nd
+)
+ 
+circular_waveguide_port_modal_expansion_settings  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 1,
+  n_max            : 1,
+  m_max            : 1
+)
+ 
+circular_waveguide_port  circular_waveguide_port  
+(
+  radius           : 1.1 mm,
+  port_expansion_settings : ref(circular_waveguide_port_modal_expansion_settings)
+)
+ 
+mom_waveguide_excitation  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(circular_waveguide_port), waveguide_mode: ref(TE11_x), amplitude: 1.0, 
+phase: 0.0),
+    struct(waveguide_port: ref(circular_waveguide_port), waveguide_mode: ref(TE11_y), amplitude: 1.0, phase: 
+-90.0)
+    ),
+  s_parameter_selection : propagating_modes,
+  s_parameter_file : Sparam.par
+)
+ 
+cad_file_satellite_body_closed  cad_file  
+(
+  coor_sys         : ref(global_coor_sys),
+  file_name        : 6U_CubeSat_Closed_Body.stp,
+  tolerance        : 0.1E-01 mm,
+  exclude_faces    : sequence(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
+,37,38,39,40)
+)
+ 
+composite_mom_scatterer  composite_mom_scatterer  
+(
+  geometrical_parts : sequence
+    (    struct(scatterer: ref(reflector), region_1: 0, region_2: 0, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(cad_file_feedHorn), region_1: 0, region_2: 0, zs_real: 0.0, zs_imag: 0.0, 
+local_properties: none),
+    struct(scatterer: ref(cad_file_satellite_body_closed), region_1: 0, region_2: 0, zs_real: 0.0, zs_imag: 
+0.0, local_properties: none)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_cad_file_plot),ref(view_1_mom_plot),ref(view_1_coor_sys_plot),
+ref(view_1_reflector_plot),ref(view_1_output_points_plot),ref(view_1_mom_source_plot),
+ref(rays_from_coordinate_systems)),
+  hidden_objects   : sequence(ref(global_coor_sys)),
+  resolution_index : 5,
+  show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: hide, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: hide, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_cad_file_plot  cad_file_plot  
+(
+)
+ 
+view_1_mom_plot  mom_plot  
+(
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2),
+  x_lines          : 0,
+  y_lines          : 0
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_mom_source_plot  mom_source_plot  
+(
+)
+ 
+rays_from_coordinate_systems  rays_from_coordinate_systems  
+(
+  objects          : sequence(ref(refl_feed_coor_sys)),
+  theta_range      : struct(start: -20.0, end: 20.0, np: 11),
+  ray_path_range   : struct(start: 0.0 m, end: 0.2 m),
+  colour_shifts    : -1
+)
+ 
+ //$$ Saved at 11:42:14 on 29.09.2022 by TICRA Tools 22.0 SN=009627
+  

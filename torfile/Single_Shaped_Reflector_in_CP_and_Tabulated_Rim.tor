@@ -1,0 +1,151 @@
+global_coor  coor_sys  
+(
+)
+ 
+wavelengths  wavelength  
+(
+  wavelength_list  : sequence(0.75E-01 m)
+)
+ 
+surface  paraboloid  
+(
+  focal_length     : 3.3 m
+)
+ 
+rim  elliptical_rim  
+(
+  centre           : struct(x: 1.8499998 m, y: 0.0 m),
+  half_axis        : struct(x: 1.65 m, y: 1.65 m)
+)
+ 
+reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(regular_xy_grid)),
+  rim              : ref(rim_with_indents)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 3.3 m),
+  x_axis           : struct(x: 0.8543074865, y: 0.0, z: 0.5197679468),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+feed  gaussian_beam_pattern  
+(
+  frequency        : ref(wavelengths),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 26.5,
+  taper            : -12.0,
+  polarisation     : lhc
+)
+ 
+cut_coor  coor_sys  
+(
+  origin           : struct(x: 1.849999783 m, y: 0.0 m, z: 0.2592802423 m),
+  base             : ref(global_coor)
+)
+ 
+cut  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: -0.6510884091, end: 0.6510884091, np: 161),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  file_name        : " ",
+  frequency        : ref(wavelengths)
+)
+ 
+po  po_single_face_scatterer  
+(
+  frequency        : ref(wavelengths),
+  scatterer        : ref(reflector),
+  method           : po,
+  coor_sys         : ref(global_coor),
+  file_name        : " "
+)
+ 
+regular_xy_grid  regular_xy_grid  
+(
+  file_name        : gr3.sfc
+)
+ 
+spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(cut_coor),
+  x_range          : struct(start: -0.2, end: 0.3, np: 101),
+  y_range          : struct(start: -0.2, end: 0.2, np: 101),
+  polarisation     : circular,
+  file_name        : " "
+)
+ 
+rim_with_indents  tabulated_rim_xy  
+(
+  file_name        : rim_with_indents.rim,
+  file_xy_number   : struct(in_file: no, line: 2, column: 1),
+  file_corner_points_id : struct(status: on, column: 3, id_string: corner_point),
+  unit             : mm,
+  point_ordering   : sequential,
+  scaling_factor   : 5.5,
+  translation      : struct(x: 1850.0 mm, y: 0.0 mm),
+  list_rim         : on,
+  plot_points      : struct(symbol: off, size: 100.0 mm)
+)
+ 
+tabulated_feed_data  spherical_cut  
+(
+  coor_sys         : ref(feed_coor),
+  theta_range      : struct(start: 0.0, end: 180.0, np: 181),
+  phi_range        : struct(start: 0.0, end: 337.5, np: 16),
+  file_name        : " ",
+  frequency        : ref(wavelengths)
+)
+ 
+External_feed_analysis_input  tabulated_pattern  
+(
+  frequency        : ref(wavelengths),
+  coor_sys         : ref(feed_coor),
+  file_name        : tabulated_feed_data.cut
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(rays_from_point_sources)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+  distance         : 1.0 m
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 25),
+  ray_path_range   : struct(start: 0.0 m, end: 5.0 mm)
+)
+ 
+ //$$ Saved at 11:12:06 on 28.03.2023 by TICRA Tools 23.0 SN=010211
+  

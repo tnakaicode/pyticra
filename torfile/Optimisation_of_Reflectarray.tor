@@ -1,0 +1,283 @@
+frequency  frequency  
+(
+  frequency_list   : sequence(35.75 GHz)
+)
+ 
+Rogers6002  isotropic_dielectric  
+(
+  relative_permittivity : 2.97,
+  loss_tangent     : 0.12E-02
+)
+ 
+periodic_mom_settings_layered_media  periodic_mom_settings_layered_media  
+(
+  expansion_accuracy : enhanced
+)
+ 
+periodic_unit_cell_triple_dipoles  periodic_unit_cell_triple_dipoles  
+(
+  frequency        : ref(frequency),
+  unit_cell_size   : struct(x: 3.816 mm, y: 3.816 mm, skew_angle: 90.0, baseline: x),
+  element_parameters : sequence
+    (    struct(l: "ref(L)" mm, w: "ref(w)" mm, b: "ref(b)", d: "ref(d)" mm, rotation: 0.0)
+    ),
+  layer_info       : sequence
+    (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
+    struct(thickness: 0.762 mm, substrate: ref(Rogers6002), el_par_index: 0)
+    ),
+  analysis_settings : ref(periodic_mom_settings_layered_media)
+)
+ 
+L  real_variable  
+(
+  value            : 2.5
+)
+ 
+w  real_variable  
+(
+  value            : 0.399999999
+)
+ 
+b  real_variable  
+(
+  value            : 0.65745716578765
+)
+ 
+d  real_variable  
+(
+  value            : 0.793372856481411
+)
+ 
+Panel1_coor_sys  coor_sys  
+(
+  x_axis           : struct(x: 0.0, y: 1.0, z: 0.0),
+  y_axis           : struct(x: -1.0, y: 0.0, z: 0.0)
+)
+ 
+Panel2_coor_sys  coor_sys  
+(
+  origin           : struct(x: "ref(panel_x)+0.002" m, y: 0.0 m, z: 0.0 m),
+  base             : ref(Panel1_coor_sys)
+)
+ 
+Panel3_coor_sys  coor_sys  
+(
+  origin           : struct(x: "ref(panel_x)+0.002" m, y: 0.0 m, z: 0.0 m),
+  base             : ref(Panel2_coor_sys)
+)
+ 
+panel_x  real_variable  
+(
+  value            : 0.954E-01
+)
+ 
+tilt  real_variable  
+(
+  value            : 20.0
+)
+ 
+angle_feed_coor_sys_01  coor_sys  
+(
+  y_axis           : struct(x: 0.0, y: 0.939692620785908, z: -0.342020143325669),
+  base             : ref(Panel2_coor_sys)
+)
+ 
+f  real_variable  
+(
+  value            : 0.3
+)
+ 
+feed_coorsys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(f)" m),
+  x_axis           : struct(x: -1.0, y: 0.0, z: 0.0),
+  base             : ref(angle_feed_coor_sys_01)
+)
+ 
+angle_feed_coor_sys_02  coor_sys  
+(
+  y_axis           : struct(x: 0.0, y: 0.939692620785908, z: 0.342020143325669),
+  base             : ref(Panel2_coor_sys)
+)
+ 
+peak_coorsys  coor_sys  
+(
+  base             : ref(angle_feed_coor_sys_02)
+)
+ 
+panel_y  real_variable  
+(
+  value            : 0.194616
+)
+ 
+rec_rim  rectangular_rim  
+(
+  side_lengths     : struct(x: "ref(panel_x)" m, y: "ref(panel_y)" m)
+)
+ 
+plane  plane  
+(
+)
+ 
+qps1  quasi_periodic_surface_panels  
+(
+  periodic_unit_cell : ref(periodic_unit_cell_triple_dipoles),
+  panels_def       : sequence
+    (    struct(coor_sys: ref(Panel1_coor_sys), rim: ref(rec_rim), surface: ref(plane), grid_origin_x: 0.0 m, 
+grid_origin_y: 0.0 m, hole: ref(), distortion: ref()),
+    struct(coor_sys: ref(Panel2_coor_sys), rim: ref(rec_rim), surface: ref(plane), grid_origin_x: 0.0 m, 
+grid_origin_y: 0.0 m, hole: ref(), distortion: ref()),
+    struct(coor_sys: ref(Panel3_coor_sys), rim: ref(rec_rim), surface: ref(plane), grid_origin_x: 0.0 m, 
+grid_origin_y: 0.0 m, hole: ref(), distortion: ref())
+    )
+)
+ 
+elliptical_pattern  elliptical_pattern  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(feed_coorsys),
+  taper            : -12.0,
+  taper_angles     : struct(zx: 30.0, zy: 30.0),
+  polarisation_angle : 90.0
+)
+ 
+periodic_mom_layered_media  periodic_mom_layered_media  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(qps1),
+  expansion_accuracy : enhanced,
+  analysis_method  : read_database,
+  database_file    : Triple_Dipoles.pdb
+)
+ 
+spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(peak_coorsys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 501),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2)
+)
+ 
+optimisation_manager_puc  optimisation_manager  
+(
+  variables        : sequence(ref(optimisation_manager_puc_variables_default)),
+  goals            : sequence
+    (    struct(goal: ref(goal_puc_phase_curve), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting)
+)
+ 
+optimisation_manager_puc_variables_default  real_optimisation_variables  
+(
+  real_variables   : sequence
+    (    struct(variable_object: ref(b), min_enabled: on, min: 0.3, max_enabled: on, max: 1.0),
+    struct(variable_object: ref(d), min_enabled: on, min: 0.5, max_enabled: on, max: 1.5),
+    struct(variable_object: ref(w), min_enabled: on, min: 0.18, max_enabled: on, max: 1.0)
+    )
+)
+ 
+optimisation_setting  minmax_settings  
+(
+  max_iterations   : 50
+)
+ 
+goal_puc_phase_curve  goal_puc_phase_curve  
+(
+  periodic_unit_cell : ref(periodic_unit_cell_triple_dipoles),
+  curve_parameter  : sequence
+    (    struct(parameter: l, enabled: yes, min: 1.5, max: 3.7, limits_unit: mm, n_samples: 10, el_par_index: 
+1),
+    struct(parameter: w, enabled: no, min: 0.1, max: 0.1, limits_unit: m, n_samples: 5, el_par_index: 1),
+    struct(parameter: b, enabled: no, min: 0.1, max: 0.1, limits_unit: " ", n_samples: 5, el_par_index: 1),
+    struct(parameter: d, enabled: no, min: 0.1, max: 0.1, limits_unit: m, n_samples: 5, el_par_index: 1),
+    struct(parameter: rotation, enabled: no, min: 0.1, max: 0.1, limits_unit: deg, n_samples: 5, 
+el_par_index: 1)
+    ),
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, theta: 0.0, phi: 0.0, comp_in: te, comp_out: te, front_rear: front, 
+refl_trans: refl, phase_range: 450.0, weight: 1.0)
+    )
+)
+ 
+optimisation_manager_qps  optimisation_manager  
+(
+  variables        : sequence(ref(bulk_optimisation_variables_qps)),
+  goals            : sequence
+    (    struct(goal: ref(goal_far_field_specific_direction), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting),
+  object_func_analysis : get_cur
+)
+ 
+bulk_optimisation_variables_qps  bulk_optimisation_variables_qps  
+(
+  target_scatterer : ref(qps1),
+  optimisation_variables : sequence
+    (    struct(parameter: l, optimise_parameter: yes, min: 1.5, min_enabled: yes, max: 3.7, max_enabled: yes
+, limits_unit: mm, el_par_index: 1, knot_spacing: 0.0 m),
+    struct(parameter: w, optimise_parameter: no, min: 0.1, min_enabled: no, max: 0.1, max_enabled: no, 
+limits_unit: m, el_par_index: 1, knot_spacing: 0.0 m),
+    struct(parameter: b, optimise_parameter: no, min: 0.1, min_enabled: no, max: 0.1, max_enabled: no, 
+limits_unit: " ", el_par_index: 1, knot_spacing: 0.0 m),
+    struct(parameter: d, optimise_parameter: no, min: 0.1, min_enabled: no, max: 0.1, max_enabled: no, 
+limits_unit: m, el_par_index: 1, knot_spacing: 0.0 m),
+    struct(parameter: rotation, optimise_parameter: no, min: 0.1, min_enabled: no, max: 0.1, max_enabled: no, 
+limits_unit: deg, el_par_index: 1, knot_spacing: 0.0 m)
+    )
+)
+ 
+goal_far_field_specific_direction  goal_far_field_specific_direction  
+(
+  source           : sequence(ref(periodic_mom_layered_media)),
+  coor_sys         : ref(peak_coorsys),
+  grid_type        : uv,
+  goal_spec        : sequence
+    (    struct(frequency_index: -1, beam_index: 1, coor_1: 0.0, coor_2: 0.0, component: linear_y, goal: 30.0
+, weight: 1.0, action: maximise)
+    ),
+  normalise_to_peak : struct(normalise: no, theta_max: 30.0, theta_resolution: 0.5, phi_resolution: 2.0, 
+component: linear_y)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(quasi_periodic_surface_plot_for_view_1),
+ref(feed_plot_for_view_1),ref(output_points_plot_for_view_1)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+puc_plot  puc_plot  
+(
+  objects          : sequence(ref(periodic_unit_cell_triple_dipoles))
+)
+ 
+puc_view  puc_view  
+(
+  objects          : sequence(ref(puc_plot))
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+quasi_periodic_surface_plot_for_view_1  quasi_periodic_surface_plot  
+(
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 10:44:21 on 28.03.2023 by TICRA Tools 23.0 SN=010211
+  

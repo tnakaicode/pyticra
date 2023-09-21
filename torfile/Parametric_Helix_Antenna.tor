@@ -1,0 +1,297 @@
+Bend  tabulated_mesh  
+(
+  coor_sys         : ref(Helix_start_coor_sys),
+  file_name        : bend.msh,
+  unit             : mm,
+  parameter_assignments : table
+    (
+    bend_rad  "ref(bend_rad)"  
+    wire_rad  "ref(wire_rad)"  
+    )
+)
+ 
+Helix_start_coor_sys  coor_sys  
+(
+  origin           : struct(x: "ref(r)" mm, y: 0.0 m, z: 
+"ref(straight_section_len)+ref(bend_rad)+ref(wire_rad)" mm),
+  base             : ref(Global_coor_sys)
+)
+ 
+bend_rad  real_variable  
+(
+  value            : "3*ref(wire_rad)"
+)
+ 
+wire_rad  real_variable  
+(
+  value            : 0.75
+)
+ 
+r  real_variable  
+(
+  value            : 30.0
+)
+ 
+rt  real_variable  
+(
+  value            : 5.0
+)
+ 
+t  real_variable  
+(
+  value            : 4.0
+)
+ 
+theta_max  real_variable  
+(
+  value            : "2*pi()*ref(t)/64"
+)
+ 
+p  real_variable  
+(
+  value            : 15.5
+)
+ 
+Parametric_Helix_top_half  tabulated_mesh  
+(
+  coor_sys         : ref(Helix_start_coor_sys),
+  file_name        : parametric_helix_top.msh,
+  unit             : mm,
+  parameter_assignments : table
+    (
+    p  "ref(p)"  
+    r  "ref(r)"  
+    rt  "ref(rt)"  
+    t  "ref(t)"  
+    theta_max  "ref(theta_max)"  
+    wire_rad  "ref(wire_rad)"  
+    )
+)
+ 
+Parametric_Helix_bottom_half  tabulated_mesh  
+(
+  coor_sys         : ref(Helix_start_coor_sys),
+  file_name        : parametric_helix_bottom.msh,
+  unit             : mm,
+  parameter_assignments : table
+    (
+    p  "ref(p)"  
+    r  "ref(r)"  
+    rt  "ref(rt)"  
+    t  "ref(t)"  
+    theta_max  "ref(theta_max)"  
+    wire_rad  "ref(wire_rad)"  
+    )
+)
+ 
+Helix_end_coor_sys  coor_sys_euler_angles  
+(
+  origin           : struct(x: "((ref(r))-(ref(rt)*ref(t)))*cos(ref(theta_max)*64)-ref(r)" mm, y: 
+"((ref(r))-(ref(rt)*ref(t)))*sin(ref(theta_max)*64)" mm, z: "ref(p)*(ref(theta_max)*64)/(2*pi())" mm),
+  alpha            : "90+ref(correct_angle)",
+  beta             : 90.0,
+  gamma            : -90.0,
+  base             : ref(Helix_start_coor_sys)
+)
+ 
+Helix_top_cap_rim  elliptical_rim  
+(
+  half_axis        : struct(x: "ref(wire_rad)" mm, y: "ref(wire_rad)" mm)
+)
+ 
+Helix_top_closure  arbitrary_plate  
+(
+  coor_sys         : ref(Helix_end_coor_sys),
+  rim              : ref(Helix_top_cap_rim)
+)
+ 
+correct_angle  real_variable  
+(
+  value            : "ref(t)*90/0.25"
+)
+ 
+Straight_section_start_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: "-ref(bend_rad)-ref(wire_rad)" mm, z: 
+"-ref(bend_rad)-ref(wire_rad)" mm),
+  base             : ref(Helix_start_coor_sys)
+)
+ 
+straight_section_len  real_variable  
+(
+  value            : 1.0
+)
+ 
+Global_coor_sys  coor_sys  
+(
+)
+ 
+Straight_wire_section  piecewise_linear_bor  
+(
+  coor_sys         : ref(Straight_section_start_coor_sys),
+  length_unit      : mm,
+  nodes            : table
+    (
+      0.00000E+00  "ref(wire_rad)"  
+    "-ref(straight_section_len)"  "ref(wire_rad)"  
+    )
+)
+ 
+Straight_section_end_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 mm, z: "-ref(straight_section_len)" mm),
+  base             : ref(Straight_section_start_coor_sys)
+)
+ 
+ground_rad  real_variable  
+(
+  value            : "2*ref(r)"
+)
+ 
+Backing_Cup  piecewise_linear_bor  
+(
+  coor_sys         : ref(Global_coor_sys),
+  length_unit      : mm,
+  nodes            : table
+    (
+      0.00000E+00  "ref(ground_rad)"  
+     -2.00000E+00  "ref(ground_rad)"  
+     -2.00000E+00    0.00000E+00  
+    )
+)
+ 
+coax_outer_rad  real_variable  
+(
+  value            : 3.0
+)
+ 
+Coax_outer_rim  elliptical_rim  
+(
+  centre           : struct(x: "ref(r)" mm, y: "-(ref(bend_rad)+ref(wire_rad))" mm),
+  half_axis        : struct(x: "ref(coax_outer_rad)" mm, y: "ref(coax_outer_rad)" mm)
+)
+ 
+coax_inner_rad  real_variable  
+(
+  value            : "ref(wire_rad)"
+)
+ 
+Ground_top_surface_rim  elliptical_rim  
+(
+  half_axis        : struct(x: "ref(ground_rad)" mm, y: "ref(ground_rad)" mm)
+)
+ 
+Ground_top_surface  arbitrary_plate  
+(
+  coor_sys         : ref(Global_coor_sys),
+  rim              : ref(Ground_top_surface_rim),
+  holes            : sequence(ref(Coax_outer_rim))
+)
+ 
+Helix_with_ground  scatterer_cluster  
+(
+  scatterers       : sequence(ref(Bend),ref(Backing_Cup),ref(Ground_top_surface),ref(Helix_top_closure),
+ref(Parametric_Helix_bottom_half),ref(Parametric_Helix_top_half),ref(Straight_wire_section))
+)
+ 
+Frequency  frequency  
+(
+  frequency_list   : sequence(2.5 GHz)
+)
+ 
+PMES  circular_waveguide_port_modal_expansion_settings  
+(
+  m_min            : 0,
+  n_max            : 3,
+  m_max            : 3
+)
+ 
+InputPort  coaxial_waveguide_port  
+(
+  radius           : "ref(coax_outer_rad)" mm,
+  inner_radius     : "ref(coax_inner_rad)" mm,
+  port_expansion_settings : ref(PMES)
+)
+ 
+MoM  mom  
+(
+  frequency        : ref(Frequency),
+  scatterer        : ref(Helix_with_ground),
+  expansion_accuracy : high,
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(InputPort), coor_sys: ref(Straight_section_end_coor_sys), x: 0.0 m, y: 
+0.0 m, z: 0.0 m, normal: Z-axis)
+    )
+)
+ 
+Excitation  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(InputPort), waveguide_mode: ref(TEM00), amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+TEM00  coaxial_waveguide_mode  
+(
+  m_index          : 0,
+  n_index          : 0
+)
+ 
+Spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(Global_coor_sys),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  polarisation     : circular
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(output_points_plot_for_view_1),ref(coor_sys_plot_for_view_1),
+ref(tabulated_mesh_plot_for_view_1),ref(mom_plot_for_view_1),ref(mom_source_plot_for_view_1),
+ref(bor_plot_for_view_1),ref(arbitrary_plate_plot_for_view_1)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: hide, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+tabulated_mesh_plot_for_view_1  tabulated_mesh_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2),
+  line_colour      : struct(r: 0.580392156862745, g: 0.580392156862745, b: 0.580392156862745)
+)
+ 
+mom_plot_for_view_1  mom_plot  
+(
+)
+ 
+mom_source_plot_for_view_1  mom_source_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+arbitrary_plate_plot_for_view_1  arbitrary_plate_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2),
+  line_colour      : struct(r: 0.580392156862745, g: 0.580392156862745, b: 0.580392156862745)
+)
+ 
+ //$$ Saved at 14:18:30 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+  

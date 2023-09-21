@@ -1,0 +1,340 @@
+Main_coor_sys  coor_sys  
+(
+)
+ 
+Main_surface  paraboloid  
+(
+  focal_length     : 0.8 m
+)
+ 
+Main_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.6460465 m, y: 0.0 m),
+  half_axis        : struct(x: 0.6 m, y: 0.6 m)
+)
+ 
+Sub_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.8 m),
+  x_axis           : struct(x: 0.93439, y: 0.0, z: -0.35624),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0)
+)
+ 
+Sub_reflector  reflector  
+(
+  coor_sys         : ref(Sub_coor_sys),
+  surfaces         : sequence(ref(Sub_surface)),
+  rim              : ref(Sub_rim)
+)
+ 
+Feed_element  gaussian_beam_pattern  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(Feed_coor_sys),
+  taper_angle      : 25.0,
+  taper            : -6.0,
+  polarisation     : linear_y,
+  far_forced       : on
+)
+ 
+Main_output_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.646046 m, y: 0.0 m, z: 0.13043 m)
+)
+ 
+spherical_cut_gtd_direct  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+multi_gtd_Sd  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sd)),
+  combinations     : struct(type: sequential, from_order: 0, to_order: 1),
+  max_searches     : 2
+)
+ 
+frequency  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+gtd_Sd  gtd_reflector  
+(
+  reflectors       : sequence(ref(Sub_reflector)),
+  reflection       : struct(method: off, sample_points: 120, max_reflection_points: -1),
+  diffraction      : struct(method: automatic, edge_index: -1, sample_points: 120, max_diffraction_points: -1
+, slope: on)
+)
+ 
+gtd_Md  gtd_reflector  
+(
+  reflectors       : sequence(ref(Main_reflector)),
+  reflection       : struct(method: off, sample_points: 120, max_reflection_points: -1),
+  diffraction      : struct(method: automatic, edge_index: -1, sample_points: 120, max_diffraction_points: -1
+, slope: on)
+)
+ 
+multi_gtd_Sd_Md  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sd),ref(gtd_Md)),
+  combinations     : struct(type: sequential, from_order: 1, to_order: 1)
+)
+ 
+gtd_Sr  gtd_reflector  
+(
+  reflectors       : sequence(ref(Sub_reflector))
+)
+ 
+multi_gtd_Sr_Md  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sr),ref(gtd_Md))
+)
+ 
+multi_gtd_Sd_Mr  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sd),ref(gtd_Mr))
+)
+ 
+multi_gtd_Sd_Md_Sd  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sd),ref(gtd_Md),ref(gtd_Sd)),
+  combinations     : struct(type: sequential, from_order: 1, to_order: 1)
+)
+ 
+gtd_Sd_01  gtd_reflector  
+(
+  reflectors       : sequence(ref(Sub_reflector)),
+  reflection       : struct(method: off, sample_points: 120, max_reflection_points: -1),
+  diffraction      : struct(method: automatic, edge_index: -1, sample_points: 120, max_diffraction_points: -1
+, slope: on)
+)
+ 
+multi_gtd_Sr_Md_Sd  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element),
+  gtd_scatterers   : sequence(ref(gtd_Sr),ref(gtd_Md),ref(gtd_Sd))
+)
+ 
+multi_gtd_direct  multi_gtd  
+(
+  frequency        : ref(frequency),
+  source           : ref(Feed_element)
+)
+ 
+spherical_cut_gtd_Sd_Md_Sd  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd_Sd_Md  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd_Sd  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd_Sr_Md  spherical_cut  
+(
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd_Sd_Mr  spherical_cut  
+(
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1)
+)
+ 
+spherical_cut_gtd_Sr_Md_Sd  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+Main_reflector  reflector  
+(
+  coor_sys         : ref(Main_coor_sys),
+  surfaces         : sequence(ref(Main_surface)),
+  rim              : ref(Main_rim)
+)
+ 
+Sub_surface  ellipsoid  
+(
+  vertex_distance  : 1.0 m,
+  foci_distance    : 0.3 m
+)
+ 
+Sub_rim  elliptical_rim  
+(
+  centre           : struct(x: -0.304485 m, y: 0.0 m),
+  half_axis        : struct(x: 0.1648287 m, y: 0.2481317 m)
+)
+ 
+Feed_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.3 m),
+  x_axis           : struct(x: 0.79055, y: 0.0, z: -0.6124),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(Sub_coor_sys)
+)
+ 
+// PO
+Main_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(Main_reflector),
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 120)
+    ),
+  file_name        : main_po.cur
+)
+ 
+Sub_po  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(Sub_reflector),
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 96)
+    )
+)
+ 
+// plot
+Global_coor_sys  coor_sys  
+(
+)
+ 
+gtd_Mr  gtd_reflector  
+(
+  reflectors       : sequence(ref(Main_reflector))
+)
+ 
+spherical_cut_gtd_ray_plot  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 9),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_cut_gtd_total  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -45.0, end: 45.0, np: 901),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_po_main_beam  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -2.6, end: 2.6, np: 53),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+spherical_po_caustic  spherical_cut  
+(
+  coor_sys         : ref(Main_output_coor_sys),
+  theta_range      : struct(start: -16.6, end: -14.7, np: 19),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 1),
+  comment          : "Dual reflector simple definition",
+  frequency        : ref(frequency)
+)
+ 
+Sub_ptd  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(Sub_reflector),
+  method           : ptd,
+  ptd_points       : sequence
+    (    struct(edge: 1, ptd: 96)
+    )
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+)
+ 
+feed_plot_for_view_1  feed_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+reflector_plot_for_view_1  reflector_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+gtd_plot  gtd_plot  
+(
+  field_points     : ref(spherical_cut_gtd_ray_plot),
+  ray_path_range   : struct(start: 0.0 m, end: 3.0 m),
+  objects          : sequence(ref(multi_gtd_Sd_Md),ref(multi_gtd_Sr_Md),ref(multi_gtd_Sd_Mr)),
+  colour_shifts    : 1
+)
+ 
+view_1  view  
+(
+  objects          : sequence(ref(coor_sys_plot_for_view_1),ref(feed_plot_for_view_1),
+ref(output_points_plot_for_view_1),ref(reflector_plot_for_view_1),ref(gtd_plot)),
+  hidden_objects   : sequence(ref(Main_coor_sys),ref(Feed_coor_sys),ref(Global_coor_sys),
+ref(Main_output_coor_sys),ref(Sub_coor_sys))
+)
+ 
+ //$$ Saved at 09:03:19 on 10.05.2023 by TICRA Tools 23.0 SN=010211
+  

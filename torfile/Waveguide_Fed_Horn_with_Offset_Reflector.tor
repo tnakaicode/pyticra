@@ -1,0 +1,234 @@
+frequency  frequency  
+(
+  frequency_list   : sequence(12.0 GHz)
+)
+ 
+paraboloid  paraboloid  
+(
+  focal_length     : 0.6 m
+)
+ 
+reflector_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.6 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5 m, y: 0.5 m)
+)
+ 
+Reflector  reflector  
+(
+  surfaces         : sequence(ref(paraboloid)),
+  rim              : ref(reflector_rim)
+)
+ 
+coor_sys_horn  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.6 m),
+  x_axis           : struct(x: 0.600000006304359, y: 0.0, z: 0.799999995271731),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0)
+)
+ 
+coor_sys_output  coor_sys  
+(
+  origin           : struct(x: 0.599999994089664 m, y: 0.0 m, z: 0.149999997044832 m)
+)
+ 
+Axially_corr_horn_inner  piecewise_linear_bor  
+(
+  coor_sys         : ref(coor_sys_horn),
+  length_unit      : mm,
+  nodes            : table
+    (
+     -1.00000E+02    8.90000E+00  
+     -2.80000E+01    8.90000E+00  
+     -2.80000E+01    9.50000E+00  
+     -3.60000E+01    9.50000E+00  
+     -3.60000E+01    1.19300E+01  
+     -2.49800E+01    1.19300E+01  
+     -2.49800E+01    1.25500E+01  
+     -3.21400E+01    1.25500E+01  
+     -3.21400E+01    1.50500E+01  
+     -2.18600E+01    1.50500E+01  
+     -2.18600E+01    1.56800E+01  
+     -2.87900E+01    1.56800E+01  
+     -2.87900E+01    1.81700E+01  
+     -1.87400E+01    1.81700E+01  
+     -1.87400E+01    1.88000E+01  
+     -2.55300E+01    1.88000E+01  
+     -2.55300E+01    2.13000E+01  
+     -1.56100E+01    2.13000E+01  
+     -1.56100E+01    2.19200E+01  
+     -2.23200E+01    2.19200E+01  
+     -2.23200E+01    2.44200E+01  
+     -1.24900E+01    2.44200E+01  
+     -1.24900E+01    2.50400E+01  
+     -1.91300E+01    2.50400E+01  
+     -1.91300E+01    2.75400E+01  
+     -9.369999999999999E+00    2.75400E+01  
+     -9.369999999999999E+00    2.81700E+01  
+     -1.59500E+01    2.81700E+01  
+     -1.59500E+01    3.06700E+01  
+     -6.25000E+00    3.06700E+01  
+     -6.25000E+00    3.12900E+01  
+     -1.27900E+01    3.12900E+01  
+     -1.27900E+01    3.37900E+01  
+     -3.12000E+00    3.37900E+01  
+     -3.12000E+00    3.44100E+01  
+     -9.640000000000001E+00    3.44100E+01  
+     -9.640000000000001E+00    3.70000E+01  
+      0.00000E+00    3.70000E+01  
+    )
+)
+ 
+mom_all  mom  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(Antenna),
+  expansion_accuracy : enhanced,
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(port), coor_sys: ref(coor_sys_horn), x: 0.0 m, y: 0.0 m, z: -100.0 mm, 
+normal: Z-axis)
+    ),
+  file_name        : " ",
+  colour_plot_file : " "
+)
+ 
+port  circular_waveguide_port  
+(
+  radius           : 8.9 mm,
+  port_expansion_settings : ref(waveguide_port_modal_expansion_settings)
+)
+ 
+Antenna  scatterer_cluster  
+(
+  scatterers       : sequence(ref(Reflector),ref(support_1),ref(support_2),ref(Axially_corr_horn))
+)
+ 
+mom_cut  spherical_cut  
+(
+  coor_sys         : ref(coor_sys_output),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 1801),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2),
+  file_name        : " ",
+  frequency        : ref(frequency)
+)
+ 
+mom_waveguide_excitation  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(port), waveguide_mode: ref(TE11), amplitude: 1.0, phase: 0.0)
+    ),
+  s_parameter_file : " "
+)
+ 
+TE11  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+coor_sys_support_1  coor_sys_grasp_angles  
+(
+  origin           : struct(x: -120.0 mm, y: 25.0 mm, z: 650.0 mm),
+  theta            : -35.0,
+  phi              : 45.0,
+  psi              : -120.0
+)
+ 
+coor_sys_support_2  coor_sys_grasp_angles  
+(
+  origin           : struct(x: -120.0 mm, y: -25.0 mm, z: 650.0 mm),
+  theta            : -35.0,
+  phi              : -45.0,
+  psi              : 120.0
+)
+ 
+support_1  box  
+(
+  coor_sys         : ref(coor_sys_support_1),
+  x_length         : 25.0 mm,
+  y_length         : 50.0 mm,
+  z_length         : 750.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: -375.0 mm)
+)
+ 
+support_2  box  
+(
+  coor_sys         : ref(coor_sys_support_2),
+  x_length         : 25.0 mm,
+  y_length         : 50.0 mm,
+  z_length         : 750.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: -375.0 mm)
+)
+ 
+Axially_corr_horn_outer  piecewise_linear_bor  
+(
+  coor_sys         : ref(coor_sys_horn),
+  length_unit      : mm,
+  nodes            : table
+    (
+      0.00000E+00    3.70000E+01  
+      0.00000E+00    3.90000E+01  
+     -1.50000E+01    3.90000E+01  
+     -4.00000E+01    1.20000E+01  
+     -1.05000E+02    1.20000E+01  
+     -1.05000E+02    0.00000E+00  
+    )
+)
+ 
+Axially_corr_horn  scatterer_cluster  
+(
+  scatterers       : sequence(ref(Axially_corr_horn_inner),ref(Axially_corr_horn_outer))
+)
+ 
+waveguide_port_modal_expansion_settings  waveguide_port_modal_expansion_settings  
+(
+  no_of_modes      : 1
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),
+ref(view_1_output_points_plot),ref(view_1_bor_plot),ref(view_1_mom_plot),ref(view_1_mom_source_plot),
+ref(view_1_box_plot)),
+  resolution_index : 3,
+  show_hide        : struct(reflectors: hide, coordinate_systems: hide, feeds: hide, output_points: hide, 
+rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: hide, ellipsoids: show)
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_bor_plot  bor_plot  
+(
+)
+ 
+view_1_mom_plot  mom_plot  
+(
+)
+ 
+view_1_mom_source_plot  mom_source_plot  
+(
+)
+ 
+view_1_box_plot  box_plot  
+(
+)
+ 
+ //$$ Saved at 14:01:26 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+  

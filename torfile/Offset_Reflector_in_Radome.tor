@@ -1,0 +1,180 @@
+global_coor  coor_sys  
+(
+)
+ 
+frequency  frequency  
+(
+  frequency_list   : sequence(12.0 GHz)
+)
+ 
+reflector_surface  paraboloid  
+(
+  focal_length     : 0.7 m
+)
+ 
+reflector_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.6 m, y: 0.0 m),
+  half_axis        : struct(x: 0.5 m, y: 0.5 m)
+)
+ 
+reflector  reflector  
+(
+  coor_sys         : ref(global_coor),
+  surfaces         : sequence(ref(reflector_surface)),
+  rim              : ref(reflector_rim)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.7 m),
+  x_axis           : struct(x: 0.6896551774, y: 0.0, z: 0.7241379263),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+feed  gaussian_beam_pattern  
+(
+  frequency        : ref(frequency),
+  coor_sys         : ref(feed_coor),
+  taper_angle      : 34.07161018,
+  taper            : -12.0
+)
+ 
+cut_coor  coor_sys  
+(
+  origin           : struct(x: 0.5999999943 m, y: 0.0 m, z: 0.1285714261 m),
+  base             : ref(global_coor)
+)
+ 
+cut_reflector  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: -10.0, end: 10.0, np: 201),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  file_name        : reflector.cut,
+  frequency        : ref(frequency)
+)
+ 
+PO_reflector  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(reflector),
+  spill_over       : on,
+  coor_sys         : ref(global_coor),
+  file_name        : " "
+)
+ 
+radome_rim  elliptical_rim  
+(
+  half_axis        : struct(x: 1.0 m, y: 1.0 m)
+)
+ 
+dielectric1  dielectric_layer  
+(
+  displacement     : 0.625 cm,
+  thickness        : 0.625 cm,
+  dielectric_constant : 4.0,
+  loss_tangent     : 0.3E-02
+)
+ 
+dielectric2  dielectric_layer  
+(
+  displacement     : 2.5 cm,
+  thickness        : 0.625 cm,
+  dielectric_constant : 4.0,
+  loss_tangent     : 0.3E-02
+)
+ 
+sphere  spherical_surface  
+(
+  radius           : 1.5 m,
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: -0.6 m)
+)
+ 
+spherical_radome  reflector  
+(
+  coor_sys         : ref(cut_coor),
+  surfaces         : sequence(ref(sphere)),
+  rim              : ref(radome_rim),
+  el_prop          : sequence(ref(dielectric2),ref(dielectric1))
+)
+ 
+cut_spherical_radome  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: -10.0, end: 10.0, np: 201),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  file_name        : spherical_radome.cut,
+  frequency        : ref(frequency)
+)
+ 
+cut_total  spherical_cut  
+(
+  coor_sys         : ref(cut_coor),
+  theta_range      : struct(start: -10.0, end: 10.0, np: 201),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  file_name        : total.cut,
+  frequency        : ref(frequency)
+)
+ 
+PWE  plane_wave_expansion  
+(
+  frequency        : ref(frequency),
+  beam_coor_sys    : ref(cut_coor),
+  beam_cone_angle  : 10.0,
+  file_name        : reflector.pwe
+)
+ 
+PO_spherical_radome  po_single_face_scatterer  
+(
+  frequency        : ref(frequency),
+  scatterer        : ref(spherical_radome),
+  method           : po,
+  coor_sys         : ref(global_coor),
+  file_name        : " "
+)
+ 
+uniform_distribution  uniform_distribution  
+(
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(rays_from_point_sources)),
+  hidden_objects   : sequence(ref(rays_from_point_sources))
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+  axis_length      : 0.2 m,
+  relative_arrow_length : 0.2
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+  x_lines          : 8,
+  y_lines          : 8
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+rays_from_point_sources  rays_from_point_sources  
+(
+  theta_range      : struct(start: -25.0, end: 25.0, np: 11),
+  ray_path_range   : struct(start: 0.0 mm, end: 2000.0 mm)
+)
+ 
+ //$$ Saved at 10:53:43 on 28.02.2023 by TICRA Tools 23.0 SN=010211
+  

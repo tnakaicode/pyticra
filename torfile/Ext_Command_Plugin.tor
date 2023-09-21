@@ -1,0 +1,43 @@
+length  real_variable  
+(
+  value            : 40.0
+)
+ 
+side  real_variable  
+(
+  value            : 35.0
+)
+ 
+external_command  external_command  
+(
+  command          : matlab,
+  command_arguments : sequence
+    (    struct(string: "-nodesktop -nosplash -nodisplay -minimize -wait -r", expression: 0.0, arg: string),
+    struct(string: "'pyramidal_horn(", expression: "ref(length)", arg: string_and_expression),
+    struct(string: ",", expression: "ref(side)", arg: string_and_expression),
+    struct(string: ");quit'", expression: 0.0, arg: string)
+    )
+)
+ 
+tabulated_mesh  tabulated_mesh  
+(
+  file_name        : pyramidal_horn.msh,
+  unit             : mm,
+  external_command : ref(external_command)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(tabulated_mesh_plot_for_view_1))
+)
+ 
+tabulated_mesh_plot_for_view_1  tabulated_mesh_plot  
+(
+)
+ 
+ //$$ Saved at 14:22:16 on 11.06.2019 by TICRA Tools 19.0 SN=007117
+  

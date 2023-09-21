@@ -1,0 +1,292 @@
+a  real_variable  
+(
+  value            : 19.05
+)
+ 
+b  real_variable  
+(
+  value            : 9.525
+)
+ 
+d_H  real_variable  
+(
+  value            : 0.908
+)
+ 
+d_L  real_variable  
+(
+  value            : 1.855
+)
+ 
+t  real_variable  
+(
+  value            : 1.0
+)
+ 
+w_H1  real_variable  
+(
+  value            : 7.35
+)
+ 
+w_H2  real_variable  
+(
+  value            : 4.058
+)
+ 
+w_H3  real_variable  
+(
+  value            : 3.685
+)
+ 
+w_H4  real_variable  
+(
+  value            : 4.058
+)
+ 
+w_H5  real_variable  
+(
+  value            : 7.197
+)
+ 
+w_L1  real_variable  
+(
+  value            : 8.027
+)
+ 
+w_L2  real_variable  
+(
+  value            : 4.583
+)
+ 
+w_L3  real_variable  
+(
+  value            : 4.076
+)
+ 
+w_L4  real_variable  
+(
+  value            : 4.076
+)
+ 
+w_L5  real_variable  
+(
+  value            : 4.583
+)
+ 
+w_L6  real_variable  
+(
+  value            : 7.989
+)
+ 
+x_H1  real_variable  
+(
+  value            : 11.237
+)
+ 
+x_H2  real_variable  
+(
+  value            : 12.206
+)
+ 
+x_H3  real_variable  
+(
+  value            : 12.206
+)
+ 
+x_H4  real_variable  
+(
+  value            : 11.251
+)
+ 
+x_L1  real_variable  
+(
+  value            : 13.3
+)
+ 
+x_L2  real_variable  
+(
+  value            : 14.46
+)
+ 
+x_L3  real_variable  
+(
+  value            : 14.554
+)
+ 
+x_L4  real_variable  
+(
+  value            : 14.46
+)
+ 
+x_L5  real_variable  
+(
+  value            : 13.26
+)
+ 
+x_out  real_variable  
+(
+  value            : 10.0
+)
+ 
+frequency  frequency_range  
+(
+  frequency_range  : struct(start_frequency: 12.3 GHz, end_frequency: 14.4 GHz, number_of_frequencies: 85)
+)
+ 
+port_settings  rectangular_waveguide_port_modal_expansion_settings  
+(
+  m_max            : 3,
+  n_max            : 3
+)
+ 
+port_diplexer_in  rectangular_waveguide_port  
+(
+  x_dimension      : "ref(a)" mm,
+  y_dimension      : "ref(b)" mm,
+  port_expansion_settings : ref(port_settings)
+)
+ 
+port_diplexer_out_L  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_diplexer_in)
+)
+ 
+port_diplexer_out_H  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_diplexer_in)
+)
+ 
+port_FL_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_diplexer_in)
+)
+ 
+port_FH_in  waveguide_port_replica  
+(
+  master_waveguide_port : ref(port_diplexer_in)
+)
+ 
+mm_settings  mode_matching_settings  
+(
+  additional_modes : 400
+)
+ 
+mom_settings  mom_settings  
+(
+  relative_max_mesh_length : 0.5
+)
+ 
+Filter_L  stepped_rectangular_waveguide  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_FL_in),
+  port_2           : ref(port_diplexer_out_L),
+  segments         : sequence
+    (    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(d_L)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L1)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_L1)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L2)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_L2)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L3)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_L3)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L4)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_L4)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L5)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_L5)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_L6)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_out)" mm, 
+eps_r: 1.0, tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_settings)
+)
+ 
+Filter_H  stepped_rectangular_waveguide  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_FH_in),
+  port_2           : ref(port_diplexer_out_H),
+  segments         : sequence
+    (    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: 
+"ref(d_H)" mm, eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_H1)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_H1)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_H2)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_H2)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_H3)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_H3)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_H4)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_H4)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(w_H5)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(t)" mm, 
+eps_r: 1.0, tan_d: 0.0),
+    struct(x_dim: "ref(a)" mm, y_dim: "ref(b)" mm, x_offset: 0.0 m, y_offset: 0.0 m, length: "ref(x_out)" mm, 
+eps_r: 1.0, tan_d: 0.0)
+    ),
+  analysis_settings : ref(mm_settings)
+)
+ 
+hub  rectangular_waveguide_triangular_junction  
+(
+  frequency        : ref(frequency),
+  port_1           : ref(port_diplexer_in),
+  port_2           : ref(port_FL_in),
+  port_3           : ref(port_FH_in),
+  analysis_settings : ref(mom_settings)
+)
+ 
+cd_diplexer  combined_device  
+(
+  devices          : sequence(ref(Filter_H),ref(Filter_L),ref(hub))
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+)
+ 
+device_plot_02  device_plot  
+(
+  objects          : sequence(ref(cd_diplexer)),
+  root_device      : ref(cd_diplexer)
+)
+ 
+device_view_02  device_view  
+(
+  objects          : sequence(ref(device_plot_02))
+)
+ 
+device_plot  device_plot  
+(
+  objects          : sequence(ref(hub)),
+  root_device      : ref(cd_diplexer)
+)
+ 
+device_view  device_view  
+(
+  objects          : sequence(ref(device_plot))
+)
+ 
+ //$$ Saved at 08:15:56 on 03.03.2023 by TICRA Tools 23.0 SN=010211
+  

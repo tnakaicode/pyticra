@@ -1,0 +1,239 @@
+global_coor  coor_sys  
+(
+)
+ 
+initial_defocusing  initial_shaped_surface  
+(
+  far_field_ellipse : struct(u_centre: -0.249E-02, v_centre: -0.187E-02, first_axis: 0.8765E-01, second_axis: 
+0.5E-01, rotation: 20.24),
+  parent_paraboloid : struct(x_centre: 0.0 mm, y_centre: 0.0 mm, diameter: 1000.0 mm, focal_length: 800.0 mm)
+)
+ 
+stat_coor_sys  coor_sys  
+(
+  origin           : struct(x: 611.22672 mm, y: 0.0 mm, z: 116.74942 mm)
+)
+ 
+task1  optimisation_task  
+(
+  po_analysis      : sequence
+    (    struct(source: ref(elem_feed), po: ref(pos_sub_po)),
+    struct(source: ref(pos_sub_po), po: ref(pos_main_po))
+    ),
+  far_field        : sequence(ref(elem_feed),ref(pos_sub_po),ref(pos_main_po))
+)
+ 
+pos_main_po  po_single_face_scatterer  
+(
+  frequency        : ref(pos_frequency),
+  scatterer        : ref(main_reflector),
+  po_points        : struct(po1: 29, po2: 70)
+)
+ 
+pos_sub_po  po_single_face_scatterer  
+(
+  frequency        : ref(pos_frequency),
+  scatterer        : ref(subreflector),
+  po_points        : struct(po1: 29, po2: 70)
+)
+ 
+main_reflector  reflector  
+(
+  coor_sys         : ref(main_ref_coor),
+  surfaces         : sequence(ref(initial_paraboloid)),
+  rim              : ref(main_circle),
+  distortions      : sequence(ref(main_spline_shaping))
+)
+ 
+main_ref_coor  tabulated_coor_sys  
+(
+  file_name        : main_coor.cor,
+  base             : ref(global_coor)
+)
+ 
+initial_paraboloid  paraboloid  
+(
+  focal_length     : 800.0 mm,
+  vertex           : struct(x: -611.22675 mm, y: 0.0 mm, z: 0.0 mm)
+)
+ 
+main_spline_shaping  spline_surface  
+(
+  file_name        : NorthAmerica.spl,
+  xy_unit          : mm,
+  coef_unit        : mm,
+  new_no_coef      : struct(nx: 16, ny: 16)
+)
+ 
+main_circle  elliptical_rim  
+(
+  half_axis        : struct(x: 500.0 mm, y: 500.0 mm)
+)
+ 
+subreflector  reflector  
+(
+  coor_sys         : ref(sub_coor),
+  surfaces         : sequence(ref(initial_ellipsoid)),
+  rim              : ref(sub_ellipse),
+  distortions      : sequence(ref(sub_spline_shaping))
+)
+ 
+sub_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 mm, y: 0.0 mm, z: 800.0 mm),
+  x_axis           : struct(x: 0.88853, y: 0.0, z: 0.45882),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(global_coor)
+)
+ 
+initial_ellipsoid  ellipsoid  
+(
+  vertex_distance  : 1142.85714 mm,
+  foci_distance    : 400.0 mm,
+  axis_angle       : 41.31
+)
+ 
+sub_ellipse  elliptical_rim  
+(
+  centre           : struct(x: -99.47099 mm, y: 0.0 mm),
+  half_axis        : struct(x: 224.94362 mm, y: 218.85709 mm)
+)
+ 
+rot_feed_coor  tabulated_coor_sys  
+(
+  file_name        : feed_coor.cor,
+  base             : ref(feed_coor)
+)
+ 
+feed_coor  coor_sys  
+(
+  origin           : struct(x: -264.05663 mm, y: 0.0 mm, z: 300.45648 mm),
+  x_axis           : struct(x: 0.97554, y: 0.0, z: 0.21981),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(sub_coor)
+)
+ 
+elem_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(pos_frequency),
+  coor_sys         : ref(rot_feed_coor),
+  taper_angle      : 17.94,
+  taper            : -18.0
+)
+ 
+pos_frequency  wavelength  
+(
+  wavelength_list  : sequence(25.0 mm)
+)
+ 
+double_ref  optimisation  
+(
+  analysis         : sequence
+    (    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
+NorthAmerica_CowithXPDSuppr.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " "
+, theta_phi_cuts_file_name: " ", opt_sum_file_name: " "),
+    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
+NorthAmerica_XPD.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " ", 
+theta_phi_cuts_file_name: " ", opt_sum_file_name: " "),
+    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
+SouthAmerica_SLSuppr.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " ", 
+theta_phi_cuts_file_name: " ", opt_sum_file_name: " ")
+    ),
+  max_iterations   : 500,
+  surface_variables : sequence(ref(main_spline_shaping),ref(sub_spline_shaping)),
+  coor_sys_variables : sequence
+    (    struct(coor_sys: ref(main_ref_coor), x: off, x_min: 0.0 m, x_max: 0.0 m, y: off, y_min: 0.0 m, 
+y_max: 0.0 m, z: off, z_min: 0.0 m, z_max: 0.0 m, theta: off, theta_min: 0.0, theta_max: 0.0, phi: off, 
+phi_min: 0.0, phi_max: 0.0, psi: off, psi_min: 0.0, psi_max: 0.0, u: off, u_min: 0.0, u_max: 0.0, v: off, 
+v_min: 0.0, v_max: 0.0),
+    struct(coor_sys: ref(rot_feed_coor), x: off, x_min: 0.0 m, x_max: 0.0 m, y: off, y_min: 0.0 m, y_max: 
+0.0 m, z: off, z_min: 0.0 m, z_max: 0.0 m, theta: off, theta_min: 0.0, theta_max: 0.0, phi: off, phi_min: 0.0
+, phi_max: 0.0, psi: off, psi_min: 0.0, psi_max: 0.0, u: off, u_min: 0.0, u_max: 0.0, v: off, v_min: 0.0, 
+v_max: 0.0)
+    ),
+  far_field_grid   : sequence
+    (    struct(grid_type: uv, polarisation: linear, x_min: -0.3125, y_min: -0.3125, x_max: 0.3125, y_max: 
+0.3125, nx: 101, ny: 101)
+    ),
+  convergence_test : struct(on_off: on, test_succession: before_and_after_optimisation, accuracy: -60.0, 
+stations: on, output_grid: on)
+)
+ 
+sub_spline_shaping  spline_surface  
+(
+  file_name        : NorthAmerica_sub.spl,
+  xy_unit          : mm,
+  coef_unit        : mm,
+  new_no_coef      : struct(nx: 4, ny: 4)
+)
+ 
+spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(stat_coor_sys),
+  x_range          : struct(start: -0.3125, end: 0.3125, np: 101),
+  y_range          : struct(start: -0.3125, end: 0.3125, np: 101)
+)
+ 
+NorthAmerica_points  tabulated_uv_points  
+(
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : NorthAmerica.sta,
+  file_name        : NorthAmerica.fmt
+)
+ 
+NorthAmerica_XPD_points  tabulated_uv_points  
+(
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : NorthAmerica_XPD.sta,
+  file_name        : NorthAmerica_XPD.fmt
+)
+ 
+NorthAmerica_CowithXPDSuppr  tabulated_uv_points  
+(
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : NorthAmerica_CowithXPDSuppr.sta,
+  file_name        : NorthAmerica_CowithXPDSuppr.fmt
+)
+ 
+NorthAmerica_CowithXPDSuppr2  tabulated_uv_points  
+(
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : NorthAmerica_CowithXPDSuppr2.sta,
+  file_name        : NorthAmerica_CowithXPDSuppr2.fmt
+)
+ 
+SouthAmerica_SLSuppr  tabulated_uv_points  
+(
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : SouthAmerica_SLSuppr.sta,
+  file_name        : SouthAmerica_SLSuppr.fmt
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_feed_plot),ref(view_1_reflector_plot),
+ref(output_points_plot_for_view_1))
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+ //$$ Saved at 10:07:59 on 17.06.2023 by TICRA Tools 23.0 SN=010211
+  

@@ -1,0 +1,220 @@
+single_global_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm)
+)
+ 
+single_frequencies  frequency  
+(
+  frequency_list   : sequence(30.0 GHz)
+)
+ 
+single_surface  paraboloid  
+(
+  focal_length     : 25.0 cm,
+  vertex           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm)
+)
+ 
+single_rim  elliptical_rim  
+(
+  centre           : struct(x: 0.0 cm, y: 0.0 cm),
+  half_axis        : struct(x: 25.0 cm, y: 25.0 cm)
+)
+ 
+single_reflector  reflector  
+(
+  coor_sys         : ref(single_global_coor),
+  surfaces         : sequence(ref(single_surface)),
+  rim              : ref(single_rim),
+  centre_hole_radius : 0.0 cm
+)
+ 
+single_feed_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 25.0 cm),
+  y_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  base             : ref(single_global_coor)
+)
+ 
+single_feed  gaussian_beam_pattern  
+(
+  frequency        : ref(single_frequencies),
+  coor_sys         : ref(single_feed_coor),
+  taper_angle      : 53.1301028056724,
+  taper            : -12.0
+)
+ 
+single_cut_coor  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm),
+  base             : ref(single_global_coor)
+)
+ 
+single_cut  spherical_cut  
+(
+  coor_sys         : ref(single_cut_coor),
+  theta_range      : struct(start: -180.0, end: 180.0, np: 18001),
+  phi_range        : struct(start: 0.0, end: 60.0, np: 3),
+  near_dist        : 0.0 cm,
+  file_name        : " ",
+  frequency        : ref(single_frequencies)
+)
+ 
+single_po  po_single_face_scatterer  
+(
+  frequency        : ref(single_frequencies),
+  scatterer        : ref(single_reflector),
+  coor_sys         : ref(single_global_coor),
+  file_name        : " "
+)
+ 
+strut1_coor_sys  coor_sys  
+(
+  origin           : struct(x: 12.0 cm, y: 0.0 cm, z: 2.2 cm),
+  x_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  y_axis           : struct(x: 0.913545457642601, y: 0.0, z: 0.4067366430758)
+)
+ 
+strut1  polygonal_struts  
+(
+  position         : sequence
+    (    struct(coor_sys: ref(strut1_coor_sys), z1: 0.0 cm, z2: 25.0 cm)
+    ),
+  cross_section    : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm),
+    struct(x: 5.0 mm, y: 4.0 mm),
+    struct(x: 5.0 mm, y: 14.0 mm),
+    struct(x: 0.0 mm, y: 10.0 mm),
+    struct(x: -5.0 mm, y: 14.0 mm),
+    struct(x: -5.0 mm, y: 4.0 mm)
+    )
+)
+ 
+strutall_analysis_arbitrary_cross  strut_analysis_arbitrary_cross  
+(
+  frequency        : ref(single_frequencies),
+  strut            : ref(struts_all),
+  file_name        : " "
+)
+ 
+struts_all  polygonal_struts  
+(
+  position         : sequence
+    (    struct(coor_sys: ref(strut1_coor_sys), z1: 0.0 cm, z2: 25.0 cm),
+    struct(coor_sys: ref(strut2_coor_sys), z1: 0.0 cm, z2: 25.0 cm),
+    struct(coor_sys: ref(strut3_coor_sys), z1: 0.0 cm, z2: 25.0 cm)
+    ),
+  cross_section    : sequence
+    (    struct(x: 0.0 mm, y: 0.0 mm),
+    struct(x: 5.0 mm, y: 4.0 mm),
+    struct(x: 5.0 mm, y: 14.0 mm),
+    struct(x: 0.0 mm, y: 10.0 mm),
+    struct(x: -5.0 mm, y: 14.0 mm),
+    struct(x: -5.0 mm, y: 4.0 mm)
+    )
+)
+ 
+strut2_coor_sys  coor_sys  
+(
+  origin           : struct(x: -6.0 cm, y: 10.392 cm, z: 2.2 cm),
+  x_axis           : struct(x: 0.866025403784439, y: 0.5, z: 0.0),
+  y_axis           : struct(x: -0.456772728821301, y: 0.791153573830373, z: 0.4067366430758)
+)
+ 
+strut3_coor_sys  coor_sys  
+(
+  origin           : struct(x: -6.0 cm, y: -10.392 cm, z: 2.2 cm),
+  x_axis           : struct(x: -0.866025403784439, y: 0.5, z: 0.0),
+  y_axis           : struct(x: -0.456772728821301, y: -0.791153573830373, z: 0.4067366430758)
+)
+ 
+cone1_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm),
+  x_axis           : struct(x: 0.0, y: -1.0, z: 0.0),
+  y_axis           : struct(x: 0.913545457642601, y: 0.0, z: 0.4067366430758)
+)
+ 
+cone2_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm),
+  x_axis           : struct(x: 0.866025403784439, y: 0.5, z: 0.0),
+  y_axis           : struct(x: -0.456772728821301, y: 0.791153573830373, z: 0.4067366430758)
+)
+ 
+cone3_coor_sys  coor_sys  
+(
+  origin           : struct(x: 0.0 cm, y: 0.0 cm, z: 0.0 cm),
+  x_axis           : struct(x: -0.866025403784439, y: 0.5, z: 0.0),
+  y_axis           : struct(x: -0.456772728821301, y: -0.791153573830373, z: 0.4067366430758)
+)
+ 
+cone_01  spherical_cut  
+(
+  coor_sys         : ref(cone1_coor_sys),
+  cut_type         : conical,
+  theta_range      : struct(start: 23.8, end: 24.2, np: 3),
+  phi_range        : struct(start: 0.0, end: 360.0, np: 361),
+  near_dist        : 0.0 cm,
+  file_name        : " ",
+  frequency        : ref(single_frequencies)
+)
+ 
+cone_02  spherical_cut  
+(
+  coor_sys         : ref(cone2_coor_sys),
+  cut_type         : conical,
+  theta_range      : struct(start: 23.8, end: 24.2, np: 3),
+  phi_range        : struct(start: 0.0, end: 360.0, np: 361),
+  near_dist        : 0.0 cm,
+  file_name        : " ",
+  frequency        : ref(single_frequencies)
+)
+ 
+cone_03  spherical_cut  
+(
+  coor_sys         : ref(cone3_coor_sys),
+  cut_type         : conical,
+  theta_range      : struct(start: 23.8, end: 24.2, np: 3),
+  phi_range        : struct(start: 0.0, end: 360.0, np: 361),
+  near_dist        : 0.0 cm,
+  file_name        : " ",
+  frequency        : ref(single_frequencies)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
+ref(view_1_output_points_plot),ref(view_1_polygonal_struts_plot)),
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
+show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+)
+ 
+view_1_coor_sys_plot  coor_sys_plot  
+(
+)
+ 
+view_1_reflector_plot  reflector_plot  
+(
+)
+ 
+view_1_feed_plot  feed_plot  
+(
+)
+ 
+view_1_output_points_plot  output_points_plot  
+(
+)
+ 
+view_1_polygonal_struts_plot  polygonal_struts_plot  
+(
+)
+ 
+ //$$ Saved at 10:40:02 on 13.12.2022 by TICRA Tools 22.1 SN=009627
+  
