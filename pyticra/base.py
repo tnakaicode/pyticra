@@ -149,15 +149,17 @@ class Command(OrderedDict):
         lines = ['COMMAND OBJECT {} {}'.format(
             self.target_name, self.command_name)]
         lines.append('(')
-        for k, v in self.iteritems():
+        for k, v in self.items():
             lines.append('  {:16s} : {},'.format(k, v))
         lines[-1] = lines[-1].rstrip(',')
         lines.append(')')
         return ' &\n'.join(lines)
 
     def __repr__(self):
-        return 'COMMAND OBJECT {} {}'.format(self.target_name,
-                                             self.command_name,)
+        print(self.items())
+        return 'COMMAND OBJECT {} {} ( {} )'.format(self.target_name,
+                                                    self.command_name,
+                                                    ",".join([' {} : {}'.format(k, v) for k, v in self.items()]))
 
     # This code is shared between Command and Physical objects. Fix this.
     # def traverse(self, test, action):
