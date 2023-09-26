@@ -156,10 +156,8 @@ class Command(OrderedDict):
         return ' &\n'.join(lines)
 
     def __repr__(self):
-        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
-                                               self.target_name,
-                                               self.command_name,
-                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.iteritems()]))
+        return 'COMMAND OBJECT {} {}'.format(self.target_name,
+                                             self.command_name,)
 
     # This code is shared between Command and Physical objects. Fix this.
     # def traverse(self, test, action):
@@ -403,7 +401,7 @@ class Grammar(object):
     group_command = p.Group((command | function | function_call))
 
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(group_command) +
+    command_interface = (p.ZeroOrMore(group_command) + quit_command +
                          p.StringEnd())
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
