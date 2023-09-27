@@ -22,6 +22,11 @@ if __name__ == '__main__':
     txt, tor_file = """
 COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys),  ref : ref(global.coor_sys)) 
 COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys)) 
+Calc () 
+FUNCTION Calc 
+   COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys),  ref : ref(global.coor_sys)) 
+   COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys)) 
+END 
 QUIT """, "./ticra_ErrorTor/Matched_Feed.tor"
 
     grm = Grammar()
