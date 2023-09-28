@@ -29,6 +29,12 @@ FUNCTION Calc
 END 
 QUIT """, "./ticra_ErrorTor/Matched_Feed.tor"
 
+    txt, tor_file = """
+COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys),  ref : ref(global.coor_sys)) 
+COMMAND OBJECT local.coor_sys get_coor_sys ( base : ref(global.coor_sys)) 
+Calc () 
+QUIT """, "./ticra_ErrorTor/Matched_Feed.tor"
+
     grm = Grammar()
     tci = grm.command_interface.parse_string(txt)
     print(tci)
@@ -36,4 +42,7 @@ QUIT """, "./ticra_ErrorTor/Matched_Feed.tor"
     print(tci[0][0]["base"])
     tci[0][0]["base"] = "ref(local.coor_sys)"
     print(tci)
+    print(tci.get("batch_command", []))
+    print(tci.get("commands", []))
+    print(tci.get("COMMAND OBJECT", []))
     # grm.object_repository.parse_file(tor_file)
