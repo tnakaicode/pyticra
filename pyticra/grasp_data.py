@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.constants as cnt
 from abc import abstractmethod
-from collections import MutableMapping
+from collections.abc import MutableMapping
 
 from pyticra.units import convert
 
