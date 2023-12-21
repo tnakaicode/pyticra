@@ -16,7 +16,7 @@ if __name__ == "__main__":
     argvs = sys.argv
     parser = argparse.ArgumentParser()
     parser.add_argument("--tor", dest="tor",
-                        default="../project/working/project.tor")
+                        default="./project/working/project.tor")
     opt = parser.parse_args()
     print(opt)
 

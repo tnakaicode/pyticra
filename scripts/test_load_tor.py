@@ -6,6 +6,7 @@ import time
 import glob
 import shutil
 import argparse
+from collections import OrderedDict
 from linecache import getline, clearcache
 
 from pyticra.base import Grammar
@@ -22,9 +23,15 @@ if __name__ == '__main__':
     try:
         grm.object_repository.parse_file(tor_file)
         print(tor_file)
-        print(grm)
     except Exception as e:
         print(e)
+    tor = OrderedDict()
+    tor.update([(physical.display_name, physical)
+               for physical in Grammar.object_repository.parseFile(tor_file)])
+    bor = tor["bor_mesh"]
+    sim = tor["simple_lens"]
+    print(sim)
+    print(bor)
 
     dir_name = "c:/Program Files/TICRA/TICRA-Tools-23.1/TutorialCases/"
     # print(glob.glob(dir_name + "/*"))
