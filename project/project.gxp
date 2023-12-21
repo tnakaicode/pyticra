@@ -6,28 +6,19 @@ working/project.tor
 working/project.tci
 [Project setup]
 <!DOCTYPE Project>
-<Project version="21.0.2" application="TICRA Tools">
- <Results>
-  <Analysis Name="Job_01" Path="Job_01">
-   <Objects Path="Job_01.tor"/>
-   <Commands Path="Job_01.tci"/>
-   <Output Path="output_files_21688.xml"/>
-   <Job Name="Job_01" JobProcessID="21688" JobStatus="Job Finished" StartTime="2022-04-20T16:59:33" JobOutputSpec="output_files_21688.xml" NumCommands="0" JobHidden="false"/>
-  </Analysis>
-  <Analysis Name="Job_02" Path="Job_02">
-   <Objects Path="Job_02.tor"/>
-   <Commands Path="Job_02.tci"/>
-   <Output Path="output_files_30892.xml"/>
-   <Job Name="Job_02" JobProcessID="30892" JobStatus="Job Finished" StartTime="2022-04-20T17:05:42" JobOutputSpec="output_files_30892.xml" NumCommands="0" JobHidden="false"/>
-  </Analysis>
- </Results>
+<Project application="TICRA Tools" version="23.1.0">
+ <Results/>
  <ResultWindows>
-  <PlotStyleModel/>
-  <GridStyleModel/>
+  <PlotStyleModel>
+   <DefaultPlotStyle name=""/>
+  </PlotStyleModel>
+  <GridStyleModel>
+   <DefaultPlotStyle name=""/>
+  </GridStyleModel>
  </ResultWindows>
  <WizardData/>
  <view_configuration>
-  <view enable_theta_slider="no" size="1362x971" pos="0x0" upVector="-0.3118042349815369,-0.1178508102893829,0.9428091049194336" perspective_view="no" minimized="no" collapsed_view_settings_entries="" position="0.1592916250228882,0.8592916131019592,1.745500087738037" show_surfaces="yes" locked_phi_theta="no" enable_psi_slider="no" enable_phi_slider="no" name="view_1" maximized="yes" show_rulers="yes" show_wire_grid="yes" orientation_type="0" scale="3.67267" viewCenter="-0.7226256132125854,0.5259581804275513,1.412167191505432"/>
+  <view show_wire_grid="yes" size="1362x971" enable_phi_slider="no" enable_theta_slider="no" minimized="no" show_rulers="yes" pos="0x0" show_surfaces="yes" maximized="yes" viewCenter="2.139159202575684,0.4402938485145569,0.1586072444915771" enable_psi_slider="no" name="view_1" locked_phi_theta="no" collapsed_view_settings_entries="" upVector="-0.8007862567901611,-0.4236419498920441,0.4234006702899933" position="1.930834054946899,1.300065875053406,0.6248601675033569" scale="4.36606" orientation_type="0" perspective_view="no"/>
  </view_configuration>
  <optimisation_configuration current_tab="optimisation_manager"/>
  <uq_configuration current_tab="Press 'New Manager' to create an uncertainty quantification manager"/>

@@ -1,9 +1,9 @@
 import numpy as np
 import os
 import json
+import pyparsing as p
 from os import path
 from collections import OrderedDict
-import pyparsing as p
 
 basepath = path.dirname(__file__) + "/"
 
@@ -23,7 +23,7 @@ class Project(object):
         self.tor = ObjectRepository()
         self.tor.load(basepath + "temp.tor")
         self.tci = CommandInterface()
-        #self.tci.load(basepath + "temp.tci")
+        # self.tci.load(basepath + "temp.tci")
 
     def create(self, folder):
         """
@@ -178,6 +178,7 @@ class Grammar(object):
     # class itself, but this causes scope problems.
     ident = p.Word(p.alphas + '_', p.alphanums + '_.')
     value = p.Forward()
+    empty = p.Empty()
     s_int = p.Word(p.nums)
     s_flt = p.Word(p.nums + '.')
 
@@ -204,12 +205,13 @@ class Grammar(object):
         "ref" +
         p.Suppress("(") +
         value +
-        p.Suppress(")")
+        p.Suppress(")") +
+        p.Optional(ident)
     )
     s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
 
     # "ref(val_name)" mm
-    s_ref_unit = (
+    s_ref_unit = p.Combine(
         "ref" +
         p.Suppress("(") +
         value +
@@ -217,6 +219,14 @@ class Grammar(object):
         value
     )
     s_ref_unit.setParseAction(lambda tokens: [Ref(tokens[1])])
+
+    # "ref()"
+    s_ref_empty = (
+        "ref" +
+        p.Suppress("(") +
+        p.Suppress(")")
+    )
+    s_ref_empty.setParseAction(lambda tokens: [Ref("")])
 
     # sequence(ref(val1), ref(val2), 1.0)
     s_seq_element = p.Combine(value + p.Optional(' ') + p.Optional(ident))
@@ -249,11 +259,42 @@ class Grammar(object):
         lambda tokens: [Struct((dat[0], dat[1]) for dat in tokens[1:])]
     )
 
+    #  table
+    #    (
+    #    Lx  "ref(Lx)"      1
+    #    Ly  "ref(Ly)"      1
+    #    Wx  "ref(Wx)"      1
+    #    Wy  "ref(Wy)"      1
+    #    Lx  "ref(Lx)"      2
+    #    Ly  "ref(Ly)"      2
+    #    Wx  "ref(Wx)"      2
+    #    Wy  "ref(Wy)"      2
+    #    )
+    s_table_line = p.Group(p.OneOrMore(value, stopOn=p.LineEnd()))
+    s_table_element = p.OneOrMore(s_table_line)
+    s_table = (
+        "table" +
+        p.Suppress("(") +
+        s_table_element +
+        p.Suppress(")")
+    )
+    s_table.setParseAction(lambda tokens: [table(tokens[1:])])
+
+    s_table_empty = (
+        "table" +
+        p.Suppress("(") +
+        p.Suppress(")")
+    )
+    s_table.setParseAction(lambda tokens: [table("")])
+
     comment = p.QuotedString('"', unquoteResults=False)
     other = p.Word(p.alphanums + r'\/._-')
     s_val = p.Combine('"' + value + '"' + p.Optional(' ') + p.Optional(ident))
 
-    value << (quantity | s_ref | s_val | s_struct | s_seq | other | comment)
+    value << (quantity | s_val |
+              s_ref_empty | s_ref | s_ref_unit |
+              s_struct | s_seq | s_table | s_table_empty |
+              other | comment)
     member = p.Group(ident + p.Suppress(":") + value)
     physical = (
         ident + ident +
@@ -311,7 +352,7 @@ class Grammar(object):
     group_command = p.Group((command | function | function_call))
 
     # Add support for multiple QUIT statements.
-    command_interface = (p.ZeroOrMore(group_command) +
+    command_interface = (p.ZeroOrMore(group_command) + quit_command +
                          p.StringEnd())
     command_interface.ignore(p.cppStyleComment)
     command_interface.ignore(p.pythonStyleComment)
@@ -349,6 +390,7 @@ class Command(OrderedDict):
     """
 
     def __init__(self, target_name, command_name, other={}):
+        print(target_name, command_name, other)
         super(Command, self).__init__(other)
         self.target_name = str(target_name)
         self.command_name = str(command_name)
@@ -364,33 +406,33 @@ class Command(OrderedDict):
         return ' &\n'.join(lines)
 
     def __repr__(self):
-        return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
-                                               self.target_name,
-                                               self.command_name,
-                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
+        print(self.items())
+        return 'COMMAND OBJECT {} {} ( {} )'.format(self.target_name,
+                                                    self.command_name,
+                                                    ",".join([' {} : {}'.format(k, v) for k, v in self.items()]))
 
     # This code is shared between Command and Physical objects. Fix this.
-    def traverse(self, test, action):
-        """
-        Recursively visit all members of this object. See visit() for
-        parameter meanings.
-        """
-        for name, thing in self.items():
-            self.visit(name, thing, test, action)
+    # def traverse(self, test, action):
+    #    """
+    #    Recursively visit all members of this object. See visit() for
+    #    parameter meanings.
+    #    """
+    #    for name, thing in self.iteritems():
+    #        self.visit(name, thing, test, action)
 
-    def visit(self, name, thing, test, action):
-        """
-        Recursively visit every member of this object, calling
-        action(name, thing) if test(name, thing) is True.
-        """
-        if test(name, thing):
-            action(name, thing)
-        elif isinstance(thing, Sequence):
-            for index, element in enumerate(thing):
-                self.visit(index, element, test, action)
-        elif isinstance(thing, Struct):
-            for key, value in thing.items():
-                self.visit(key, value, test, action)
+    # def visit(self, name, thing, test, action):
+    #    """
+    #    Recursively visit every member of this object, calling
+    #    action(name, thing) if test(name, thing) is True.
+    #    """
+    #    if test(name, thing):
+    #        action(name, thing)
+    #    elif isinstance(thing, Sequence):
+    #        for index, element in enumerate(thing):
+    #            self.visit(index, element, test, action)
+    #    elif isinstance(thing, Struct):
+    #        for key, value in thing.iteritems():
+    #            self.visit(key, value, test, action)
 
 
 class BatchCommand(list):
@@ -401,6 +443,115 @@ class BatchCommand(list):
     def __repr__(self):
         return '{}({})'.format(self.__class__.__name__,
                                super(BatchCommand, self).__repr__())
+
+
+class CommandGrammar(object):
+    """
+    This class contains the pyparsing grammar for the TICRA .tor and
+    .tci file formats.
+    """
+
+    # It might be cleaner to have the grammar for each class in the
+    # class itself, but this causes scope problems.
+    # Added '.' to handle Brad's EBEX sims. See if this breaks anything.
+    # An identifier is no longer a valid Python variable.
+    identifier = p.Word(p.alphas + '_', p.alphanums + '_.')
+    plus_or_minus = p.Literal('+') ^ p.Literal('-')
+    value = p.Forward()
+    s_int = p.Word(p.nums)
+    s_flt = p.Word(p.nums + '.')
+
+    number = p.Combine(
+        p.Optional(plus_or_minus) +
+        p.Word(p.nums) +
+        p.Optional('.' + p.Word(p.nums)) +
+        p.Optional(p.CaselessLiteral('E') + p.Word(p.nums + '+-', p.nums)) +
+        p.Optional(' ')
+    )
+    quantity = (
+        number +
+        p.Optional(p.Word(p.alphas, p.alphanums + '-^/' + ' '), default=None) +
+        p.Optional(identifier)
+    )
+    quantity.setParseAction(lambda tokens: Quantity(*tokens))
+
+    value = p.Forward()
+    elements = p.delimitedList(value)
+
+    s_ref = (
+        "ref" +
+        p.Suppress("(") +
+        value +
+        p.Suppress(")")
+    )
+    s_ref.setParseAction(lambda tokens: [Ref(tokens[1])])
+
+    s_sequence_elements = p.Combine(
+        value + p.Optional(' ') + p.Optional(identifier)
+    )
+    s_sequence = (
+        "sequence" +
+        p.Suppress("(") +
+        p.delimitedList(s_sequence_elements) +
+        p.Suppress(")")
+    )
+    s_sequence.setParseAction(
+        lambda tokens: [Sequence(tokens[1:])]
+    )
+
+    s_struct_elements = p.Group(
+        identifier +
+        p.Suppress(":") +
+        p.Combine(
+            value +
+            p.Optional(' ') +
+            p.Optional(identifier))
+    )
+    s_struct = (
+        "struct" +
+        p.Suppress("(") +
+        p.delimitedList(s_struct_elements) +
+        p.Suppress(")")
+    )
+    s_struct.setParseAction(
+        lambda tokens: [Struct((dat[0], dat[1]) for dat in tokens[1:])]
+    )
+
+    comment = p.QuotedString('"', unquoteResults=False)
+
+    # This could be a filename or just a string. Added '\' to handle EBEX sim.
+    # Should convert to unix filename.
+    other = p.Word(p.alphanums + r'\/._-')
+    s_val = p.Combine(
+        '"' + value + '"' + p.Optional(' ') + p.Optional(identifier)
+    )
+    value << (quantity | s_ref | s_val | s_struct |
+              s_sequence | other | comment)
+
+    member = p.Group(identifier + p.Suppress(":") + value)
+    command = ("COMMAND OBJECT" +
+               identifier +
+               identifier +
+               p.Suppress('(') +
+               p.Optional(p.delimitedList(member)) +
+               p.Suppress(')'))
+    command.ignore(p.cppStyleComment)  # '// comment'
+    command.ignore(p.pythonStyleComment)  # '# comment'
+    command.ignore(p.Literal('&'))
+    command.setParseAction(
+        lambda tokens: [Command(tokens[1], tokens[2], tokens[3:])]
+    )
+
+    # Add support for other batch commands.
+    batch_command = p.CaselessLiteral(
+        'FILES READ ALL') + other + p.LineEnd().suppress()
+    batch_command.setParseAction(lambda tokens: [BatchCommand(tokens)])
+    quit_command = p.CaselessLiteral('QUIT')
+
+    # Add support for multiple QUIT statements.
+    command_interface = p.ZeroOrMore(command) + p.StringEnd()
+    command_interface.ignore(p.cppStyleComment)
+    command_interface.ignore(p.pythonStyleComment)
 
 
 class Physical(OrderedDict):
@@ -428,30 +579,7 @@ class Physical(OrderedDict):
         return '{}({!r}, {!r}, {{{}}})'.format(self.__class__.__name__,
                                                self.display_name,
                                                self.class_name,
-                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.items()]))
-
-    # This code is shared between Command and Physical objects. Fix this.
-    def traverse(self, test, action):
-        """
-        Recursively visit all members of this object. See visit() for
-        parameter meanings.
-        """
-        for name, thing in self.items():
-            self.visit(name, thing, test, action)
-
-    def visit(self, name, thing, test, action):
-        """
-        Recursively visit every member of this object, calling
-        action(name, thing) if test(name, thing) is True.
-        """
-        if test(name, thing):
-            action(name, thing)
-        elif isinstance(thing, Sequence):
-            for index, element in enumerate(thing):
-                self.visit(index, element, test, action)
-        elif isinstance(thing, Struct):
-            for key, value in thing.items():
-                self.visit(key, value, test, action)
+                                               ', '.join(['{!r}: {!r}'.format(k, v) for k, v in self.iteritems()]))
 
 
 class Ref(object):
@@ -481,36 +609,47 @@ class Ref(object):
     def __str__(self):
         return 'ref({})'.format(self.name)
 
-    # This will not work for referenced objects, only strings.
     def __repr__(self):
-        return '{}({!r})'.format(self.__class__.__name__,
-                                 self.ref)
+        return '{}({!r})'.format(self.__class__.__name__, self.ref)
 
 
 class Struct(OrderedDict):
 
     def __str__(self):
-        return 'struct({})'.format(', '.join('{}: {}'.format(k, v) for k, v in self.items()))
+        return 'struct({})'.format(', '.join('{}: {}'.format(k, v)
+                                             for k, v in self.items()))
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__,
-                               super(OrderedDict, self).__repr__())
+        return '{}({})'.format(
+            self.__class__.__name__, super(
+                OrderedDict, self).__repr__())
 
 
 class Sequence(list):
 
     def __str__(self):
-        return 'sequence({})'.format(', '.join(str(s) for s in self))
+        return 'sequence({})'.format(', '.join(str(j)
+                                               for j in (s for s in self)))
 
     def __repr__(self):
-        return '{}({})'.format(self.__class__.__name__,
-                               super(Sequence, self).__repr__())
+        return '{}({})'.format(
+            self.__class__.__name__, super(
+                Sequence, self).__repr__())
+
+
+class table(list):
+
+    def __str__(self):
+        return 'table(\n{}\n)'.format('\n'.join(["\t".join(s) for s in line] for line in self[0]))
+
+    def __repr__(self):
+        return '{}(\n{}\n)'.format(self.__class__.__name__,
+                                   super(table, self).__repr__())
 
 
 class Quantity(object):
     """
-    This class represents a physical quantity that may or may not
-    carry units.
+    This class represents a physical quantity that may or may not carry units.
     """
 
     def __init__(self, number, units=None):
@@ -541,7 +680,8 @@ class Quantity(object):
         if self.units is None:
             return '{}({!r})'.format(self.__class__.__name__, self.number)
         else:
-            return '{}({!r}, {!r})'.format(self.__class__.__name__, self.number, self.units)
+            return '{}({!r}, {!r})'.format(
+                self.__class__.__name__, self.number, self.units)
 
 
 class TicraTorEncoder(json.JSONEncoder):

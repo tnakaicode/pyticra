@@ -21,6 +21,8 @@ if __name__ == '__main__':
     tor_file = "./project/working/project.tor"
     try:
         grm.object_repository.parse_file(tor_file)
+        print(tor_file)
+        print(grm)
     except Exception as e:
         print(e)
 
