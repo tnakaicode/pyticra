@@ -222,8 +222,8 @@ FSS_mesh_range  periodic_unit_cell_planar_mesh
   unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
   invert_metallization : yes,
   element_parameters : sequence
-    (    struct(file_name: rectangular_loop.msh, unit: mm),
-    struct(file_name: rectangular_loop.msh, unit: mm)
+    (    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref()),
+    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref())
     ),
   layer_info       : sequence
     (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
@@ -251,8 +251,8 @@ FSS_mesh_20  periodic_unit_cell_planar_mesh
   unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
   invert_metallization : yes,
   element_parameters : sequence
-    (    struct(file_name: rectangular_loop.msh, unit: mm),
-    struct(file_name: rectangular_loop.msh, unit: mm)
+    (    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref()),
+    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref())
     ),
   layer_info       : sequence
     (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
@@ -280,8 +280,8 @@ FSS_mesh_30  periodic_unit_cell_planar_mesh
   unit_cell_size   : struct(x: 5.0 mm, y: 5.0 mm, skew_angle: 90.0, baseline: x),
   invert_metallization : yes,
   element_parameters : sequence
-    (    struct(file_name: rectangular_loop.msh, unit: mm),
-    struct(file_name: rectangular_loop.msh, unit: mm)
+    (    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref()),
+    struct(file_name: rectangular_loop.msh, unit: mm, external_command: ref())
     ),
   layer_info       : sequence
     (    struct(thickness: 0.0 mm, substrate: ref(), el_par_index: 1),
@@ -365,8 +365,7 @@ view_1  view
  
 puc_plot  puc_plot  
 (
-  objects          : sequence(ref(loop_range)),
-  transparent_neighbours : no
+  objects          : sequence(ref(loop_range))
 )
  
 puc_view  puc_view  
@@ -424,5 +423,5 @@ puc_view_05  puc_view
   objects          : sequence(ref(puc_plot_05))
 )
  
- //$$ Saved at 11:41:34 on 17.05.2021 by TICRA Tools 21.0 SN=008782
+ //$$ Saved at 08:15:31 on 01.11.2023 by TICRA Tools 23.1 SN=010211
   

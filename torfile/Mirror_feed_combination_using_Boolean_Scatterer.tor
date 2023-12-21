@@ -1,0 +1,290 @@
+/*parabola focal length
+ */ m1_f  real_variable  
+(
+  value            : 112.84
+)
+ 
+/*parabola semi-latus rectum
+ */ m1_p  real_variable  
+(
+  value            : "2*ref(m1_f)"
+)
+ 
+/*delta x
+ */ m1_dx  real_variable  
+(
+  value            : 9.0
+)
+ 
+m1_v_cs  coor_sys_grasp_angles  
+(
+)
+ 
+m1_oap_bor_mesh  bor_mesh  
+(
+  coor_sys         : ref(m1_v_cs),
+  nodes            : table
+    (
+        1  "ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(ref(m1_dx_off)))"  
+        2  "1*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(1*ref(m1_dx)+ref(m1_dx_off)))"  
+        3  "2*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(2*ref(m1_dx)+ref(m1_dx_off)))"  
+        4  "3*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(3*ref(m1_dx)+ref(m1_dx_off)))"  
+        5  "4*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(4*ref(m1_dx)+ref(m1_dx_off)))"  
+        6  "5*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(5*ref(m1_dx)+ref(m1_dx_off)))"  
+        7  "6*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(6*ref(m1_dx)+ref(m1_dx_off)))"  
+        8  "7*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(7*ref(m1_dx)+ref(m1_dx_off)))"  
+        9  "8*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(8*ref(m1_dx)+ref(m1_dx_off)))"  
+       10  "9*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(9*ref(m1_dx)+ref(m1_dx_off)))"  
+       11  "10*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(10*ref(m1_dx)+ref(m1_dx_off)))"  
+       12  "11*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(11*ref(m1_dx)+ref(m1_dx_off)))"  
+       13  "12*ref(m1_dx)+ref(m1_dx_off)"  "2*sqrt(ref(m1_f)*(12*ref(m1_dx)+ref(m1_dx_off)))"  
+       14  "ref(m1_dx_off)"    0.00000E+00  
+       15  "12*ref(m1_dx)+ref(m1_dx_off)"    0.00000E+00  
+    ),
+  linear_segments  : table
+    (
+        1     14      1      0      0    0.00000E+00    0.00000E+00  
+        2     13     15      0      0    0.00000E+00    0.00000E+00  
+    ),
+  cubic_segments   : table
+    (
+        1      1      2      3      4      0      0    0.00000E+00    0.00000E+00  
+        2      4      5      6      7      0      0    0.00000E+00    0.00000E+00  
+        3      7      8      9     10      0      0    0.00000E+00    0.00000E+00  
+        4     10     11     12     13      0      0    0.00000E+00    0.00000E+00  
+    ),
+  length_unit      : mm
+)
+ 
+m1_f_cs  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: "ref(m1_f)" mm)
+)
+ 
+/*delta x
+ */ m1_dx_off  real_variable  
+(
+  value            : "ref(m1_f)-50"
+)
+ 
+m1_p_cs  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 mm, y: "ref(m1_p)" mm, z: "ref(m1_f)" mm),
+  base             : ref(m1_v_cs)
+)
+ 
+m1_base_box  box  
+(
+  coor_sys         : ref(m1_p_cs),
+  x_length         : 110.0 mm,
+  y_length         : 110.0 mm,
+  z_length         : 105.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm)
+)
+ 
+m1_boolean  boolean_scatterer  
+(
+  boolean_definitions : sequence
+    (    struct(scatterer: ref(m1_base_box), operation: union, solid_representation: yes, tx: 0.0 m, ty: 0.0 m
+, tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(m1_oap_bor_mesh), operation: cut, solid_representation: yes, tx: 0.0 m, ty: 0.0 m, 
+tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(feed_boolean), operation: union, solid_representation: yes, tx: 0.0 m, ty: 0.0 m, 
+tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(feed_m1_strut), operation: union, solid_representation: yes, tx: -55.0 mm, ty: 
+-60.0 mm, tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(feed_m1_strut), operation: union, solid_representation: yes, tx: 55.0 mm, ty: 
+-60.0 mm, tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(feed_m1_strut_cutout), operation: cut, solid_representation: yes, tx: 0.0 mm, ty: 
+0.0 mm, tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0)
+    ),
+  tolerance        : 0.1E-04 mm
+)
+ 
+freq  frequency  
+(
+  frequency_list   : sequence(75.0 GHz)
+)
+ 
+mom  mom  
+(
+  frequency        : ref(freq),
+  scatterer        : ref(m1_boolean),
+  waveguide_ports  : sequence
+    (    struct(waveguide_port: ref(smooth_throat_port), coor_sys: ref(feed_cs), x: 0.0 m, y: 0.0 m, z: 
+-45.0 mm, normal: Z-axis)
+    )
+)
+ 
+spherical_grid  spherical_grid  
+(
+  coor_sys         : ref(m1_p_cs),
+  grid_type        : elevation_over_azimuth,
+  x_range          : struct(start: -90.0, end: 90.0, np: 181),
+  y_range          : struct(start: -90.0, end: 90.0, np: 181)
+)
+ 
+feed_cs  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: 83.18 mm, z: 0.0 mm),
+  theta            : -90.0,
+  phi              : -90.0,
+  base             : ref(m1_f_cs)
+)
+ 
+smooth_throat_port  circular_waveguide_port  
+(
+  radius           : 0.190853806369478E-02 m,
+  port_expansion_settings : ref(wg_port_modal_expansion_settings)
+)
+ 
+mom_wg_exc_waveguide_mode  circular_waveguide_mode  
+(
+  m_index          : 1,
+  n_index          : 1
+)
+ 
+mom_wg_exc  mom_waveguide_excitation  
+(
+  excitations      : sequence
+    (    struct(waveguide_port: ref(smooth_throat_port), waveguide_mode: ref(mom_wg_exc_waveguide_mode), 
+amplitude: 1.0, phase: 0.0)
+    )
+)
+ 
+planar_grid_cs  coor_sys_grasp_angles  
+(
+  origin           : struct(x: 0.0 m, y: 0.0 m, z: 0.0 mm),
+  theta            : 90.0,
+  base             : ref(m1_p_cs)
+)
+ 
+planar_grid  planar_grid  
+(
+  coor_sys         : ref(planar_grid_cs),
+  x_range          : struct(start: -200.0, end: 100.0, np: 301, unit: mm),
+  y_range          : struct(start: -200.0, end: 100.0, np: 301)
+)
+ 
+feed_base_box  box  
+(
+  coor_sys         : ref(feed_cs),
+  x_length         : 120.0 mm,
+  y_length         : 70.0 mm,
+  z_length         : 50.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 mm, z: -25.0 mm)
+)
+ 
+feed_bor_mesh  bor_mesh  
+(
+  coor_sys         : ref(feed_cs),
+  nodes            : table
+    (
+        1    0.00000E+00    0.00000E+00  
+        2    0.00000E+00    9.843999999999999E+00  
+        3   -4.50000E+01    1.908538064000000E+00  
+        4   -4.50000E+01    0.00000E+00  
+    ),
+  linear_segments  : table
+    (
+        1      1      2      0      0    0.00000E+00    0.00000E+00  
+        2      2      3      0      0    0.00000E+00    0.00000E+00  
+        3      3      4      0      0    0.00000E+00    0.00000E+00  
+    ),
+  length_unit      : mm
+)
+ 
+feed_boolean  boolean_scatterer  
+(
+  boolean_definitions : sequence
+    (    struct(scatterer: ref(feed_base_box), operation: union, solid_representation: yes, tx: 0.0 m, ty: 
+0.0 m, tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0),
+    struct(scatterer: ref(feed_bor_mesh), operation: cut, solid_representation: yes, tx: 0.0 m, ty: 0.0 m, 
+tz: 0.0 m, theta: 0.0, phi: 0.0, psi: 0.0)
+    ),
+  tolerance        : 0.1E-04 m
+)
+ 
+spherical_cut  spherical_cut  
+(
+  coor_sys         : ref(m1_p_cs),
+  theta_range      : struct(start: -90.0, end: 90.0, np: 361),
+  phi_range        : struct(start: 0.0, end: 90.0, np: 2)
+)
+ 
+wg_port_modal_expansion_settings  waveguide_port_modal_expansion_settings  
+(
+  no_of_modes      : 1
+)
+ 
+feed_m1_strut  box  
+(
+  coor_sys         : ref(m1_p_cs),
+  x_length         : 10.0 mm,
+  y_length         : 180.0 mm,
+  z_length         : 70.0 mm,
+  centre           : struct(x: 0.0 mm, y: 0.0 mm, z: 0.0 mm)
+)
+ 
+feed_m1_strut_cutout  box  
+(
+  coor_sys         : ref(feed_cs),
+  x_length         : 130.0 mm,
+  y_length         : 50.0 mm,
+  z_length         : 85.0 mm,
+  centre           : struct(x: 0.0 m, y: 0.0 mm, z: 50.0 mm)
+)
+ 
+//DO NOT MODIFY OBJECTS BELOW THIS LINE.
+//THESE OBJECTS ARE CREATED AND MANAGED BY THE
+//GRAPHICAL USER INTERFACE AND SHOULD NOT BE
+//MODIFIED MANUALLY!
+view_1  view  
+(
+  objects          : sequence(ref(output_points_plot_for_view_1),ref(coor_sys_plot_for_view_1),
+ref(mom_source_plot_for_view_1),ref(bor_plot_for_view_1),ref(boolean_scatterer_plot_for_view_1),
+ref(box_plot_for_view_1),ref(mom_plot_for_view_1)),
+  hidden_objects   : sequence(ref(planar_grid_cs),ref(feed_base_box),ref(spherical_grid),ref(m1_base_box),
+ref(feed_m1_strut),ref(feed_m1_strut_cutout),ref(feed_boolean),ref(m1_oap_bor_mesh),ref(mom),ref(planar_grid),
+ref(spherical_cut)),
+  resolution_index : 3,
+  show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, boolean_scatterer: show, rooftop_mirrors: 
+show, loads: show, bors: show, mom_sources: show, quasi_periodic_surfaces: show, unused: hide, ellipsoids: 
+show)
+)
+ 
+output_points_plot_for_view_1  output_points_plot  
+(
+)
+ 
+coor_sys_plot_for_view_1  coor_sys_plot  
+(
+  axis_length      : 30.0 mm
+)
+ 
+mom_source_plot_for_view_1  mom_source_plot  
+(
+)
+ 
+bor_plot_for_view_1  bor_plot  
+(
+)
+ 
+boolean_scatterer_plot_for_view_1  boolean_scatterer_plot  
+(
+)
+ 
+box_plot_for_view_1  box_plot  
+(
+  surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
+)
+ 
+mom_plot_for_view_1  mom_plot  
+(
+)
+ 
+ //$$ Saved at 14:33:42 on 28.11.2023 by TICRA Tools 23.1 SN=010921
+  

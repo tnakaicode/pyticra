@@ -232,8 +232,9 @@ ref(arbitrary_plate_plot_for_view_1)),
   show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: show, output_points: hide, 
 rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: hide, wires: hide, 
 radiating_devices: show, mom_meshes: show, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
-hide, plane_waves: hide, dgr_intercostals: hide, cad_files: show, rooftop_mirrors: hide, loads: hide, bors: 
-show, mom_sources: hide, quasi_periodic_surfaces: hide, ellipsoids: show)
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: show, boolean_scatterer: show, rooftop_mirrors: 
+hide, loads: hide, bors: show, mom_sources: hide, quasi_periodic_surfaces: hide, unused: hide, ellipsoids: 
+show)
 )
  
 view_1_box_plot  box_plot  
@@ -268,5 +269,5 @@ arbitrary_plate_plot_for_view_1  arbitrary_plate_plot
 (
 )
  
- //$$ Saved at 11:07:27 on 21.03.2023 by TICRA Tools 23.0 SN=010211
+ //$$ Saved at 05:17:41 on 11.11.2023 by TICRA Tools 23.1 SN=010211
   

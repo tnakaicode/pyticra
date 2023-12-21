@@ -207,9 +207,11 @@ view_1  view
   objects          : sequence(ref(view_1_coor_sys_plot),ref(view_1_reflector_plot),ref(view_1_feed_plot),
 ref(view_1_parallelogram_plot),ref(view_1_output_points_plot),ref(gtd_plot)),
   show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
-struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, radiating_devices: show, 
-mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: show, plane_waves: show, 
-dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: show, mom_sources: show)
+rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
+radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, boolean_scatterer: show, rooftop_mirrors: 
+show, loads: show, bors: show, mom_sources: show, quasi_periodic_surfaces: show, unused: hide, ellipsoids: 
+show)
 )
  
 view_1_coor_sys_plot  coor_sys_plot  
@@ -239,5 +241,5 @@ gtd_plot  gtd_plot
   colour_shifts    : 8
 )
  
- //$$ Saved at 15:44:32 on 02.04.2019 by TICRA Tools 19.0 SN=006398
+ //$$ Saved at 01:50:55 on 28.11.2023 by TICRA Tools 23.1 SN=010921
   

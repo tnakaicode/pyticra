@@ -81,8 +81,8 @@ coax_backing  piecewise_linear_bor
  
 coaxial_waveguide_mode  coaxial_waveguide_mode  
 (
-  m_index          : 1,
-  n_index          : 1
+  m_index          : 0,
+  n_index          : 0
 )
  
 circular_waveguide_port_modal_expansion_settings  circular_waveguide_port_modal_expansion_settings  
@@ -542,8 +542,9 @@ ref(view_1_mom_source_plot),ref(view_1_mom_plot),ref(view_1_box_plot),ref(arbitr
   show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: hide, output_points: hide, 
 rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: show, plates: show, wires: hide, 
 radiating_devices: show, mom_meshes: show, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
-hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, rooftop_mirrors: hide, loads: hide, bors: 
-show, mom_sources: hide, quasi_periodic_surfaces: hide, ellipsoids: show)
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, boolean_scatterer: show, rooftop_mirrors: 
+hide, loads: hide, bors: show, mom_sources: hide, quasi_periodic_surfaces: hide, unused: hide, ellipsoids: 
+show)
 )
  
 view_1_coor_sys_plot  coor_sys_plot  
@@ -574,5 +575,5 @@ arbitrary_plate_plot_for_view_1  arbitrary_plate_plot
 (
 )
  
- //$$ Saved at 09:56:06 on 16.12.2022 by TICRA Tools 22.1 SN=009627
+ //$$ Saved at 06:15:44 on 14.11.2023 by TICRA Tools 23.1 SN=010211
   

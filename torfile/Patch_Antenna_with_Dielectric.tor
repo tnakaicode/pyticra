@@ -81,8 +81,8 @@ coax_backing  piecewise_linear_bor
  
 coaxial_waveguide_mode  coaxial_waveguide_mode  
 (
-  m_index          : 1,
-  n_index          : 1
+  m_index          : 0,
+  n_index          : 0
 )
  
 circular_waveguide_port_modal_expansion_settings  circular_waveguide_port_modal_expansion_settings  

@@ -24,7 +24,7 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
 
-    dir_name = "c:/Program Files/TICRA/TICRA-Tools-23.0/TutorialCases/"
+    dir_name = "c:/Program Files/TICRA/TICRA-Tools-23.1/TutorialCases/"
     # print(glob.glob(dir_name + "/*"))
     print(os.listdir(dir_name))
     for i, name in enumerate(os.listdir(dir_name)):
@@ -60,6 +60,7 @@ if __name__ == '__main__':
 # 19 Lens_Refractor
 # 20 Matched_Feed Expected end of text, found 'mode'  (at char 5559), (line:186, col:1)
 # 21 MGTD_Dual_Reflector
+#  Mirror_feed_combination_using_Boolean_Scatterer
 # 22 NASA_Almond
 # 23 Offset_Reflector_in_Radome
 # 24 Optimisation_of_Reflectarray

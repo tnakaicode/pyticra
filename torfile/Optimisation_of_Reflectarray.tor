@@ -35,17 +35,17 @@ L  real_variable
  
 w  real_variable  
 (
-  value            : 0.399999999
+  value            : 0.399999985179831
 )
  
 b  real_variable  
 (
-  value            : 0.65745716578765
+  value            : 0.657537509736767
 )
  
 d  real_variable  
 (
-  value            : 0.793372856481411
+  value            : 0.790362519011545
 )
  
 Panel1_coor_sys  coor_sys  
@@ -249,8 +249,9 @@ ref(feed_plot_for_view_1),ref(output_points_plot_for_view_1)),
   show_hide        : struct(reflectors: show, coordinate_systems: show, feeds: show, output_points: show, 
 rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: show, plates: show, wires: show, 
 radiating_devices: show, mom_meshes: hide, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
-show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
-show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, boolean_scatterer: show, rooftop_mirrors: 
+show, loads: show, bors: show, mom_sources: show, quasi_periodic_surfaces: show, unused: hide, ellipsoids: 
+show)
 )
  
 puc_plot  puc_plot  
@@ -279,5 +280,5 @@ output_points_plot_for_view_1  output_points_plot
 (
 )
  
- //$$ Saved at 10:44:21 on 28.03.2023 by TICRA Tools 23.0 SN=010211
+ //$$ Saved at 07:31:42 on 01.11.2023 by TICRA Tools 23.1 SN=010211
   

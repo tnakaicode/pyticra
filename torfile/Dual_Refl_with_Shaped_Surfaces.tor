@@ -14,29 +14,6 @@ stat_coor_sys  coor_sys
   origin           : struct(x: 611.22672 mm, y: 0.0 mm, z: 116.74942 mm)
 )
  
-task1  optimisation_task  
-(
-  po_analysis      : sequence
-    (    struct(source: ref(elem_feed), po: ref(pos_sub_po)),
-    struct(source: ref(pos_sub_po), po: ref(pos_main_po))
-    ),
-  far_field        : sequence(ref(elem_feed),ref(pos_sub_po),ref(pos_main_po))
-)
- 
-pos_main_po  po_single_face_scatterer  
-(
-  frequency        : ref(pos_frequency),
-  scatterer        : ref(main_reflector),
-  po_points        : struct(po1: 29, po2: 70)
-)
- 
-pos_sub_po  po_single_face_scatterer  
-(
-  frequency        : ref(pos_frequency),
-  scatterer        : ref(subreflector),
-  po_points        : struct(po1: 29, po2: 70)
-)
- 
 main_reflector  reflector  
 (
   coor_sys         : ref(main_ref_coor),
@@ -45,9 +22,9 @@ main_reflector  reflector
   distortions      : sequence(ref(main_spline_shaping))
 )
  
-main_ref_coor  tabulated_coor_sys  
+main_ref_coor  coor_sys  
 (
-  file_name        : main_coor.cor,
+  origin           : struct(x: 611.2267183 mm, y: 0.0 mm, z: 0.0 mm),
   base             : ref(global_coor)
 )
  
@@ -62,7 +39,9 @@ main_spline_shaping  spline_surface
   file_name        : NorthAmerica.spl,
   xy_unit          : mm,
   coef_unit        : mm,
-  new_no_coef      : struct(nx: 16, ny: 16)
+  new_no_coef      : struct(nx: 16, ny: 16),
+  new_range        : struct(new_values: off, x_start: -500.0, y_start: -500.0, x_end: 500.0, y_end: 500.0, 
+unit: mm)
 )
  
 main_circle  elliptical_rim  
@@ -99,9 +78,8 @@ sub_ellipse  elliptical_rim
   half_axis        : struct(x: 224.94362 mm, y: 218.85709 mm)
 )
  
-rot_feed_coor  tabulated_coor_sys  
+rot_feed_coor  coor_sys  
 (
-  file_name        : feed_coor.cor,
   base             : ref(feed_coor)
 )
  
@@ -121,42 +99,9 @@ elem_feed  gaussian_beam_pattern
   taper            : -18.0
 )
  
-pos_frequency  wavelength  
+pos_frequency  frequency  
 (
-  wavelength_list  : sequence(25.0 mm)
-)
- 
-double_ref  optimisation  
-(
-  analysis         : sequence
-    (    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
-NorthAmerica_CowithXPDSuppr.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " "
-, theta_phi_cuts_file_name: " ", opt_sum_file_name: " "),
-    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
-NorthAmerica_XPD.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " ", 
-theta_phi_cuts_file_name: " ", opt_sum_file_name: " "),
-    struct(frequency: ref(pos_frequency), task: ref(task1), coor_sys: ref(stat_coor_sys), stations: 
-SouthAmerica_SLSuppr.sta, stations_partition: 0, polarisation_coor_sys: ref(), far_field_file_name: " ", 
-theta_phi_cuts_file_name: " ", opt_sum_file_name: " ")
-    ),
-  max_iterations   : 500,
-  surface_variables : sequence(ref(main_spline_shaping),ref(sub_spline_shaping)),
-  coor_sys_variables : sequence
-    (    struct(coor_sys: ref(main_ref_coor), x: off, x_min: 0.0 m, x_max: 0.0 m, y: off, y_min: 0.0 m, 
-y_max: 0.0 m, z: off, z_min: 0.0 m, z_max: 0.0 m, theta: off, theta_min: 0.0, theta_max: 0.0, phi: off, 
-phi_min: 0.0, phi_max: 0.0, psi: off, psi_min: 0.0, psi_max: 0.0, u: off, u_min: 0.0, u_max: 0.0, v: off, 
-v_min: 0.0, v_max: 0.0),
-    struct(coor_sys: ref(rot_feed_coor), x: off, x_min: 0.0 m, x_max: 0.0 m, y: off, y_min: 0.0 m, y_max: 
-0.0 m, z: off, z_min: 0.0 m, z_max: 0.0 m, theta: off, theta_min: 0.0, theta_max: 0.0, phi: off, phi_min: 0.0
-, phi_max: 0.0, psi: off, psi_min: 0.0, psi_max: 0.0, u: off, u_min: 0.0, u_max: 0.0, v: off, v_min: 0.0, 
-v_max: 0.0)
-    ),
-  far_field_grid   : sequence
-    (    struct(grid_type: uv, polarisation: linear, x_min: -0.3125, y_min: -0.3125, x_max: 0.3125, y_max: 
-0.3125, nx: 101, ny: 101)
-    ),
-  convergence_test : struct(on_off: on, test_succession: before_and_after_optimisation, accuracy: -60.0, 
-stations: on, output_grid: on)
+  frequency_list   : sequence(12.0 GHz)
 )
  
 sub_spline_shaping  spline_surface  
@@ -164,7 +109,9 @@ sub_spline_shaping  spline_surface
   file_name        : NorthAmerica_sub.spl,
   xy_unit          : mm,
   coef_unit        : mm,
-  new_no_coef      : struct(nx: 4, ny: 4)
+  new_no_coef      : struct(nx: 4, ny: 4),
+  new_range        : struct(new_values: off, x_start: "-224.94362-99.47099", y_start: -218.85709, x_end: 
+"224.94362-99.47099", y_end: 218.85709, unit: mm)
 )
  
 spherical_grid  spherical_grid  
@@ -181,6 +128,50 @@ NorthAmerica_points  tabulated_uv_points
   file_name        : NorthAmerica.fmt
 )
  
+po_dual_reflector  po_dual_reflector  
+(
+  frequency        : ref(pos_frequency),
+  scatterer_main   : ref(main_reflector),
+  scatterer_sub    : ref(subreflector)
+)
+ 
+optimisation_manager  optimisation_manager  
+(
+  variables        : sequence(ref(bulk_optimisation_variables_reflector_shaping),
+ref(bulk_optimisation_variables_reflector_shaping_sub)),
+  goals            : sequence
+    (    struct(goal: ref(NorthAmerica_XPD), weight: 1.0),
+    struct(goal: ref(SouthAmericaSLSuppr), weight: 1.0),
+    struct(goal: ref(NorthAmerica_CowithXPDSuppr), weight: 1.0)
+    ),
+  optimisation_settings : ref(optimisation_setting),
+  object_func_analysis : get_cur
+)
+ 
+bulk_optimisation_variables_reflector_shaping  bulk_optimisation_variables_reflector_shaping  
+(
+  target           : ref(main_reflector),
+  initialise_reflector_shape : struct(initialisation_type: none, initial_shaped_surface: 
+ref(initial_defocusing))
+)
+ 
+NorthAmerica_Co  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(elem_feed),ref(po_dual_reflector)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmerica.sta, partition: 0)
+)
+ 
+optimisation_setting  minmax_settings  
+(
+  max_iterations   : 500
+)
+ 
+bulk_optimisation_variables_reflector_shaping_sub  bulk_optimisation_variables_reflector_shaping  
+(
+  target           : ref(subreflector)
+)
+ 
 NorthAmerica_XPD_points  tabulated_uv_points  
 (
   coor_sys         : ref(stat_coor_sys),
@@ -188,25 +179,53 @@ NorthAmerica_XPD_points  tabulated_uv_points
   file_name        : NorthAmerica_XPD.fmt
 )
  
-NorthAmerica_CowithXPDSuppr  tabulated_uv_points  
+NorthAmerica_XPD  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(elem_feed),ref(po_dual_reflector)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmerica_XPD.sta, partition: 0)
+)
+ 
+NorthAmerica_CowithXPDSuppr  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(elem_feed),ref(po_dual_reflector)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmerica_CowithXPDSuppr.sta, partition: 0)
+)
+ 
+NorthAmerica_CowithXPDSuppr_points  tabulated_uv_points  
 (
   coor_sys         : ref(stat_coor_sys),
   stations_file    : NorthAmerica_CowithXPDSuppr.sta,
   file_name        : NorthAmerica_CowithXPDSuppr.fmt
 )
  
-NorthAmerica_CowithXPDSuppr2  tabulated_uv_points  
+NorthAmerica_CowithXPDSuppr2  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(elem_feed),ref(po_dual_reflector)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: NorthAmerica_CowithXPDSuppr2.sta, partition: 0)
+)
+ 
+NorthAmerica_CowithXPDSuppr2_points  tabulated_uv_points  
 (
   coor_sys         : ref(stat_coor_sys),
   stations_file    : NorthAmerica_CowithXPDSuppr2.sta,
   file_name        : NorthAmerica_CowithXPDSuppr2.fmt
 )
  
-SouthAmerica_SLSuppr  tabulated_uv_points  
+SouthAmericaSLSuppr_points  tabulated_uv_points  
 (
   coor_sys         : ref(stat_coor_sys),
   stations_file    : SouthAmerica_SLSuppr.sta,
   file_name        : SouthAmerica_SLSuppr.fmt
+)
+ 
+SouthAmericaSLSuppr  goal_far_field_shaped_beam_stations_file  
+(
+  source           : sequence(ref(elem_feed),ref(po_dual_reflector)),
+  coor_sys         : ref(stat_coor_sys),
+  stations_file    : struct(file_name: SouthAmerica_SLSuppr.sta, partition: 0)
 )
  
 //DO NOT MODIFY OBJECTS BELOW THIS LINE.
@@ -235,5 +254,5 @@ output_points_plot_for_view_1  output_points_plot
 (
 )
  
- //$$ Saved at 10:07:59 on 17.06.2023 by TICRA Tools 23.0 SN=010211
+ //$$ Saved at 13:23:03 on 01.11.2023 by TICRA Tools 23.1 SN=010211
   

@@ -36,8 +36,8 @@ periodic_unit_cell_planar_mesh  periodic_unit_cell_planar_mesh
   frequency        : ref(frequency),
   unit_cell_size   : struct(x: 3.816 mm, y: 3.816 mm, skew_angle: 90.0, baseline: x),
   element_parameters : sequence
-    (    struct(file_name: triple_dipoles_ratio.msh, unit: m),
-    struct(file_name: triple_dipoles_ratio.msh, unit: m)
+    (    struct(file_name: triple_dipoles_ratio.msh, unit: m, external_command: ref()),
+    struct(file_name: triple_dipoles_ratio.msh, unit: m, external_command: ref())
     ),
   layer_info       : sequence
     (    struct(thickness: 0.0 m, substrate: ref(), el_par_index: 1),
@@ -82,5 +82,5 @@ puc_view_01  puc_view
   objects          : sequence(ref(puc_plot_01))
 )
  
- //$$ Saved at 09:03:15 on 17.05.2021 by TICRA Tools 21.0 SN=008782
+ //$$ Saved at 08:27:55 on 01.11.2023 by TICRA Tools 23.1 SN=010211
   

@@ -12,7 +12,7 @@ MoM  mom
     (    struct(waveguide_port: ref(circular_waveguide_port), coor_sys: ref(refl_feed_coor_sys), x: 0.0 m, y: 
 0.0 m, z: "-20-3-2.440535" mm, normal: Z-axis)
     ),
-  file_name        : ""
+  file_name        : " "
 )
  
 global_coor_sys  coor_sys  
@@ -152,8 +152,9 @@ ref(rays_from_coordinate_systems)),
   show_hide        : struct(reflectors: show, coordinate_systems: hide, feeds: hide, output_points: hide, 
 rcs_cuts_grids: hide, struts: show, tabulated_meshes: show, boxes: hide, plates: show, wires: show, 
 radiating_devices: show, mom_meshes: show, apertures_in_screen: show, lenses: show, tabulated_planar_sources: 
-show, plane_waves: show, dgr_intercostals: show, cad_files: show, rooftop_mirrors: show, loads: show, bors: 
-show, mom_sources: show, quasi_periodic_surfaces: show, ellipsoids: show)
+show, plane_waves: show, dgr_intercostals: show, cad_files: show, boolean_scatterer: show, rooftop_mirrors: 
+show, loads: show, bors: show, mom_sources: show, quasi_periodic_surfaces: show, unused: hide, ellipsoids: 
+show)
 )
  
 view_1_cad_file_plot  cad_file_plot  
@@ -191,5 +192,5 @@ rays_from_coordinate_systems  rays_from_coordinate_systems
   colour_shifts    : -1
 )
  
- //$$ Saved at 11:42:14 on 29.09.2022 by TICRA Tools 22.0 SN=009627
+ //$$ Saved at 06:03:55 on 16.11.2023 by TICRA Tools 23.1 SN=010211
   

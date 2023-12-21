@@ -38,7 +38,7 @@ single_cut  spherical_cut
 (
   coor_sys         : ref(Cut_coor),
   theta_range      : struct(start: -45.0, end: 45.0, np: 161),
-  phi_range        : struct(start: 0.0, end: 90.0, np: 3),
+  phi_range        : struct(start: 0.0, end: 0.0, np: 1),
   frequency        : ref(Frequency)
 )
  
@@ -202,7 +202,7 @@ ground  rectangular_plate
  
 taper_angle  real_variable  
 (
-  value            : 12.311576412087
+  value            : 12.3907694940928
 )
  
 taper  real_variable  
@@ -240,8 +240,9 @@ ref(feed_plot_for_view_1),ref(plate_plot_for_view_1)),
   show_hide        : struct(reflectors: hide, coordinate_systems: show, feeds: show, output_points: hide, 
 rcs_cuts_grids: hide, struts: hide, tabulated_meshes: hide, boxes: hide, plates: hide, wires: hide, 
 radiating_devices: hide, mom_meshes: hide, apertures_in_screen: hide, lenses: hide, tabulated_planar_sources: 
-hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, rooftop_mirrors: hide, loads: hide, bors: 
-hide, mom_sources: hide, quasi_periodic_surfaces: show, ellipsoids: hide)
+hide, plane_waves: hide, dgr_intercostals: hide, cad_files: hide, boolean_scatterer: show, rooftop_mirrors: 
+hide, loads: hide, bors: hide, mom_sources: hide, quasi_periodic_surfaces: show, unused: hide, ellipsoids: 
+hide)
 )
  
 output_points_plot_for_view_1  output_points_plot  
@@ -278,5 +279,5 @@ plate_plot_for_view_1  plate_plot
   surface_colour   : struct(r: 0.72156862745098, g: 0.450980392156863, b: 0.2)
 )
  
- //$$ Saved at 11:30:52 on 08.06.2023 by TICRA Tools 23.0 SN=010211
+ //$$ Saved at 17:08:25 on 20.09.2023 by TICRA Tools 23.1 SN=010211
   
