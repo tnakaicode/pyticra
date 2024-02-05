@@ -216,11 +216,6 @@ def save_grasp_grd_multi(meta, filename, freqs=["100.0GHz"], name="e", dir_name=
         dir_name (str, optional): Defaults to "./".
         comment (list, optional): Defaults to [].
     """
-    nx, ny = meta["NX"], meta["NY"]
-    xs, ys = meta["XS"], meta["YS"]
-    xe, ye = meta["XE"], meta["YE"]
-    n_xy = nx * ny
-
     fp = open(dir_name + filename, "w")
     fp.write('{}\n'.format(filename))
     for line in comment + freqs:
@@ -232,6 +227,10 @@ def save_grasp_grd_multi(meta, filename, freqs=["100.0GHz"], name="e", dir_name=
         fp.write(f'{0:12d}{0:12d}\n')
     for i, freq in enumerate(freqs):
         comp = meta[freq][name].shape[0]
+        nx, ny = meta[freq]["NX"], meta[freq]["NY"]
+        xs, ys = meta[freq]["XS"], meta[freq]["YS"]
+        xe, ye = meta[freq]["XE"], meta[freq]["YE"]
+        n_xy = nx * ny
         fp.write(f' {xs: 0.10E} {ys: 0.10E} {xe: 0.10E} {ye: 0.10E}\n')
         fp.write(f'{nx:12d}{ny:12d}{0:12d}\n')
         data = np.empty((n_xy, 2 * comp))
